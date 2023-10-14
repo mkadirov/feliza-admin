@@ -159,13 +159,12 @@ function AddProduct() {
                 colorId: 1,
                 compatibleProductIdList: [1],
                 productSizeVariantDtoList: productSizeDetailes,
-                files: productImageList
             }
-
-            const res = createProduct(product)
-            console.log(res.message);
+            console.log(product);
             console.log(productSizeDetailes);
             console.log(productImageList);
+            const res = createProduct(product, productImageList)
+            console.log(res.message);
         });
         
         console.log(productList);

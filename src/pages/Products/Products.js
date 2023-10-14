@@ -66,14 +66,14 @@ function Products() {
 
             <div className="mt-4">
                 {
-                    products?.map(product => {
+                    products?.map(item => {
                         console.log(products);
                         return(
                             <div className="mt-2">
                                 <p>122232</p>
-                                <p>{product.product.nameUZB}</p>
-                                <p>{product.product.price}</p>
-                                <p>{product.product.brand}</p>   
+                                <p>{item.product.nameUZB}</p>
+                                <p>{item.product.price}</p>
+                                <p>{item.product.brand}</p>   
                             </div>
                             
                         )

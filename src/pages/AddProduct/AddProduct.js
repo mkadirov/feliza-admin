@@ -128,10 +128,11 @@ function AddProduct() {
 
     function createProductList() {
         let productList = [];
-       
+        let productImageList = [];
+        let productSizeDetailes = [];
+        
         colorList.map(colorItem => {
-            let productImageList = [];
-            let productSizeDetailes = [];
+            
             sizeDetailes.map(sizeDetail => {
                 if(sizeDetail.color == colorItem){
                     productSizeDetailes.push({size: sizeDetail.size, barCode: sizeDetail.barCode, quantity: sizeDetail.quantity})

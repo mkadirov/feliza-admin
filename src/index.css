@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-input {
+    height: 100%;
+    background-color: inherit;
+    padding-left: 10px;
+    width: 100%;
+}
+
+.main-input:focus {
+    outline: none;
+}
+
+.input-container {
+    @apply w-full  overflow-hidden flex items-center bg-gray-300;
+    height: 60px;
+    border-radius: 20px;
+}
+
+.image-container {
+    @apply w-full border  border-gray-400 mt-4;
+    height: 300px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.MuiDivider-root {
+    background-color: grey !important;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.errorInput {
+    border: 1px solid red;
+}

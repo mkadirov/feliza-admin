@@ -71,9 +71,9 @@ function Products() {
                         return(
                             <div className="mt-2">
                                 <p>122232</p>
-                                <p>{product.nameUZB}</p>
-                                <p>{product.price}</p>
-                                <p>{product.brand}</p>   
+                                <p>{product.product.nameUZB}</p>
+                                <p>{product.product.price}</p>
+                                <p>{product.product.brand}</p>   
                             </div>
                             
                         )

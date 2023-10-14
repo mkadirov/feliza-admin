@@ -167,7 +167,7 @@ function AddProduct() {
                 alert(res.message)
             }
         });
-
+        console.log(productSizeDetailes);
         console.log(productList);
     }
     

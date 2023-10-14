@@ -161,7 +161,7 @@ function AddProduct() {
             }
 
             const res =createProduct(product)
-            if(res) {
+            if(res.success) {
                 alert('maxsulot qöshildi')
             } else {
                 alert('xato')

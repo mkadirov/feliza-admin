@@ -7,6 +7,7 @@ import ColorBox from '../../components/AddProductComponents/ColorBoxs';
 import ColorIcon from '../../components/AddProductComponents/ColorIcon';
 import ImageContainer from '../../components/AddProductComponents/ImageContainer';
 import CategoryBox from '../../components/AddProductComponents/CategoryBox';
+import { createProduct } from '../../api';
 
 function AddProduct() {
     const navigate = useNavigate()
@@ -92,7 +93,7 @@ function AddProduct() {
       
         colorList.forEach((colorItem) => {
           sizeList.forEach((sizeItem) => {
-            newDetailes.push({ color: colorItem, size: sizeItem, barcode: '', quantity: '' });
+            newDetailes.push({ color: colorItem, size: sizeItem, barCode: '', quantity: '' });
           });
         });
         setSizeDetailes(newDetailes); 
@@ -105,11 +106,11 @@ function AddProduct() {
 
     
     function addBarcode(e, color, s) {
-        const barcode = e.target.value       
+        const barCode = e.target.value       
         const newList = [...sizeDetailes];
         const sizeIndex = newList.findIndex(item => item.color == color && item.size == s)
         if (sizeIndex !== -1) {
-            newList[sizeIndex].barcode = barcode; 
+            newList[sizeIndex].barCode = barCode; 
             setSizeDetailes(newList);
         }    
     }
@@ -133,7 +134,7 @@ function AddProduct() {
             let productSizeDetailes = [];
             sizeDetailes.map(sizeDetail => {
                 if(sizeDetail.color == colorItem){
-                    productSizeDetailes.push({size: sizeDetail.size, barcode: sizeDetail.barcode, quantity: sizeDetail.quantity})
+                    productSizeDetailes.push({size: sizeDetail.size, barCode: sizeDetail.barCode, quantity: sizeDetail.quantity})
                 }
             })
 
@@ -155,9 +156,11 @@ function AddProduct() {
                 categoryId: [1],
                 colorId: 1,
                 compatibleProductIdList: [1],
+                productSizeVariantDtoList: productSizeDetailes,
+                files: productImageList
             }
 
-            productList.push(product)
+            createProduct(product)
         });
 
         console.log(productList);
@@ -363,7 +366,7 @@ function AddProduct() {
                                                                          type="text" 
                                                                          className='main-input' 
                                                                          placeholder='Barcode...'
-                                                                         value={detail?.barcode !== undefined ? detail.barcode : ''}
+                                                                         value={detail?.barCode !== undefined ? detail.barCode : ''}
                                                                          onChange={(e) => addBarcode(e, colorItem, sizeItem)}
                                                                         />  
                                                                     </div>

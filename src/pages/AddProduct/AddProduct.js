@@ -165,6 +165,7 @@ function AddProduct() {
             console.log(res.message);
         });
         console.log(productSizeDetailes);
+        console.log(productImageList);
         console.log(productList);
     }
     

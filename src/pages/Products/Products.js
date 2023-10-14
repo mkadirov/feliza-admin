@@ -23,7 +23,7 @@ function Products() {
     useEffect( () => {
         async function fetchData() {
             const res = await getAllProducts();
-            
+            console.log(res);
             if(res.success) {
                 setProducts(res.data)
             }
@@ -67,8 +67,10 @@ function Products() {
             <div className="mt-4">
                 {
                     products?.map(product => {
+                        console.log(products);
                         return(
                             <div className="mt-2">
+                                <p>122232</p>
                                 <p>{product.nameUZB}</p>
                                 <p>{product.price}</p>
                                 <p>{product.brand}</p>   

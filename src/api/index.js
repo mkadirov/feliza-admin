@@ -8,7 +8,7 @@ const createProduct = async(data) => {
         const res = await axios.post(apiUrl + 'product/add', data)
         return  res.message
     } catch (error) {
-        return {success: false, message: error.message}
+        return error.message
     }
 }
 

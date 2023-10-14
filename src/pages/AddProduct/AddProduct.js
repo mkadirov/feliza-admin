@@ -130,7 +130,7 @@ function AddProduct() {
         let productList = [];
         let productImageList = [];
         let productSizeDetailes = [];
-        
+
         colorList.map(colorItem => {
             
             sizeDetailes.map(sizeDetail => {
@@ -158,15 +158,11 @@ function AddProduct() {
                 colorId: 1,
                 compatibleProductIdList: [1],
                 productSizeVariantDtoList: productSizeDetailes,
-                // files: productImageList
+                files: productImageList
             }
 
             const res = createProduct(product)
-            if(res.success) {
-                alert('maxsulot qöshildi')
-            } else {
-                alert(res.message)
-            }
+            console.log(res.message);
         });
         console.log(productSizeDetailes);
         console.log(productList);

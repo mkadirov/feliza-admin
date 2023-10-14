@@ -157,7 +157,7 @@ function AddProduct() {
                 colorId: 1,
                 compatibleProductIdList: [1],
                 productSizeVariantDtoList: productSizeDetailes,
-                files: productImageList
+                // files: productImageList
             }
 
             const res =createProduct(product)

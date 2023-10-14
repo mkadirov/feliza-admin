@@ -5,12 +5,13 @@ import { grey } from '@mui/material/colors'
 import AddIcon from '@mui/icons-material/Add';
 import { Search } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { getAllProducts } from '../../api';
 
 function Products() {
 
     const [activePage, setActivePage] = useState(1)
     const navigate = useNavigate()
-
+    const [products, setProducts] = useState([])
     const StyledChip = styled(Chip)({
 
         '&.activeChip': {
@@ -18,6 +19,17 @@ function Products() {
         }
 
     })
+
+    useEffect( () => {
+        async function fetchData() {
+            const res = await getAllProducts();
+            
+            if(res.success) {
+                setProducts(res.data)
+            }
+        }
+        fetchData();
+    }, []);
   return (
     <MainLayout>
         <div className="mt-12 ">
@@ -50,7 +62,23 @@ function Products() {
                 >
                     Qo'shish
                 </Button>
-            </div>  
+            </div>
+
+            <div className="mt-4">
+                {
+                    products?.map(product => {
+                        return(
+                            <div className="mt-2">
+                                <p>{product.nameUZB}</p>
+                                <p>{product.price}</p>
+                                <p>{product.brand}</p>   
+                            </div>
+                            
+                        )
+                    })
+                }
+            </div>
+
         </div>
     </MainLayout>
   )

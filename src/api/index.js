@@ -24,4 +24,14 @@ const createProduct = async(product, imageFiles) => {
 }
 
 
-export {createProduct}
+const getAllProducts = async() => {
+    try {
+        const res = await axios.get(apiUrl + 'product')
+        return {success: true, data: res.data}
+    } catch (error) {
+        return {success: false}
+    }
+}
+
+
+export {createProduct, getAllProducts}

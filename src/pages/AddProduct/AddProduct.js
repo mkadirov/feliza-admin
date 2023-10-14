@@ -160,11 +160,11 @@ function AddProduct() {
                 // files: productImageList
             }
 
-            const res =createProduct(product)
+            const res = createProduct(product)
             if(res.success) {
                 alert('maxsulot qöshildi')
             } else {
-                alert('xato')
+                alert(res.message)
             }
         });
 

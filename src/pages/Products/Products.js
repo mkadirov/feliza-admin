@@ -74,9 +74,7 @@ function Products() {
                         return(
                             <div key={index} className="mt-2">
                                 <p>122232</p>
-                                {/* <p>{item.product.nameUZB}</p>
                                 <p>{item.product.price}</p>
-                                <p>{item.product.brand}</p>    */}
                             </div>
                             
                         )

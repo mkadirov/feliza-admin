@@ -6,9 +6,12 @@ const apiUrl = 'https://felizabackend.de/api/'
 const createProduct = async(product, imageFiles) => {
 
     const formData = new FormData();
-    imageFiles.forEach((file, index) => {
-        formData.append(`files[${index}]`, file);
+    let images = [];
+    imageFiles.map((file, index) => {
+        // formData.append(`files[${index}]`, file);
+        images.push(file)
     });
+    formData.append('files', images)
     formData.append('productDto', JSON.stringify(product));
 
     try {

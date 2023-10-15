@@ -163,8 +163,7 @@ function AddProduct() {
             console.log(product);
             console.log(productSizeDetailes);
             console.log(productImageList);
-            const res = createProduct(product, productImageList)
-            console.log(res.message);
+            createProduct(product, productImageList)
         });
         
         console.log(productList);

@@ -74,7 +74,9 @@ function Products() {
                         return(
                             <div key={index} className="mt-2">
                                 <p>122232</p>
-                                <p>{item.product.price}</p>
+                                <p>Price : {item.product.price}</p>
+                                <p>Name: {item.product.nameUZB}</p>
+                                <p>RefNumber: {item.product.referenceNumber}</p>
                             </div>
                             
                         )

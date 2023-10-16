@@ -11,7 +11,7 @@ const createProduct = async(product, imageFiles) => {
         formData.append('files', file)
     });
    
-    formData.append('productDto', JSON.stringify(product));
+    formData.append('productDto', product);
 
     try {
       const response = await axios.post(apiUrl + 'product/add', formData, {

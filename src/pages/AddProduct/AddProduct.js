@@ -169,6 +169,7 @@ function AddProduct() {
     const colors = ['red', 'blue', 'green', 'yellow', 'coral', 'pink', 'black', 'white']
     return (
     <Container sx={{border: '1px solid grey'}}>
+        <form encType="multipart/form-data" onSubmit={createProductList}>
         <Button sx={{my: 2}} variant='contained' onClick={() =>  navigate('/products')}  startIcon={<WestIcon/>}> 
             Mahsulotlar
         </Button>
@@ -410,12 +411,13 @@ function AddProduct() {
         <Divider/>
 
         <div className="flex justify-end mt-2 mb-6">
-            <Button onClick={createProductList} variant='contained'>
+            <Button type='submit' variant='contained'>
                 Kiritish
             </Button>
         </div>
 
 
+        </form>
     </Container>
   )
 }

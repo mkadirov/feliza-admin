@@ -4,7 +4,7 @@ import React from 'react'
 function ImageContainer({imageList, colorItem, handleImageChange}) {
   return (
     <div className="image-container">
-        <form encType="multipart/form-data">
+        
 
         <div className='flex flex-col gap-3'>
             <input type="file" multiple accept='image/*' placeholder='Data' id={`image-input-btn-${colorItem}`} hidden onChange={(e) =>handleImageChange(e, colorItem)}/>
@@ -29,7 +29,7 @@ function ImageContainer({imageList, colorItem, handleImageChange}) {
                 }
             </div>
 
-        </div>
+        
         </form>
         
             

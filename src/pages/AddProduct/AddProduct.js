@@ -39,8 +39,8 @@ function AddProduct() {
 
 
     const handleImageChange = (e, color) => {
+
         const files = e.target.files;
-        console.log(color);
         if (files && files.length > 0) {
           const newColorImages = { colorName: color, imagesList: Array.from(files) };
           const colorIndex = imageList.findIndex((item) => item.colorName === color);
@@ -127,9 +127,7 @@ function AddProduct() {
 
 
     function createProductList() {
-        let productList = [];
         
-
         colorList.map(colorItem => {
             let productImageList = [];
             let productSizeDetailes = [];
@@ -165,8 +163,6 @@ function AddProduct() {
             console.log(productImageList);
             createProduct(product, productImageList)
         });
-        
-        console.log(productList);
     }
     
 

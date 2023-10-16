@@ -7,9 +7,9 @@ const createProduct = async(product, imageFiles) => {
 
     const formData = new FormData();
    
-    imageFiles.map((file, index) => {
-        formData.append('files', file)
-    });
+    for (let i = 0; i < imageFiles.length; i++) {
+        formData.append('files', imageFiles[i]);
+    }
    
     formData.append('productDto', JSON.stringify(product));
 

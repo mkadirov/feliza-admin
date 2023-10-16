@@ -29,8 +29,8 @@ function ImageContainer({imageList, colorItem, handleImageChange}) {
                 }
             </div>
 
+        </div>
         
-        </form>
         
             
     </div>

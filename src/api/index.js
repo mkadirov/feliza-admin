@@ -3,7 +3,7 @@ import axios from 'axios'
 const apiUrl = 'https://felizabackend.de/api/'
 
 
-const createProduct = async(product, files) => {
+const createProduct = async(productDto, files) => {
 
     // const formData = new FormData();
    
@@ -17,7 +17,7 @@ const createProduct = async(product, files) => {
     // console.log(formData);
 
     try {
-      const response = await axios.post(apiUrl + 'product/add', files, {
+      const response = await axios.post(apiUrl + 'product/add',productDto, files, {
         headers: {
            'Accept': 'application/json',
            'Content-Type': 'multipart/form-data',

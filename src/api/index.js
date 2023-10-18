@@ -11,16 +11,11 @@ const createProduct = async(product, imageFiles) => {
         formData.append('files', imageFiles[i]);
     }
    
-    //formData.append('productDto', JSON.stringify(product));
-    const productDto = JSON.stringify(product)
-    console.log(product);
-    console.log(imageFiles);
-    console.log(formData);
+    formData.append('productDto', JSON.stringify(product));
 
     try {
-      const response = await axios.post(apiUrl + 'product/add', productDto, formData, {
+      const response = await axios.post(apiUrl + 'product/add', formData, {
         headers: {
-           'Accept': 'application/json',
            'Content-Type': 'multipart/form-data',
         },
       });

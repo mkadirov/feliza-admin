@@ -77,6 +77,9 @@ function Products() {
                                 <p>Price: {item.product.price}</p>
                                 <p>Name: {item.product.nameUZB}</p>
                                 <p>RefNumber: {item.product.referenceNumber}</p>
+                                <div className='image-container'>
+                                    <img src={item.productImagesList[0]?.url} alt="" />
+                                </div>
                             </div>
                         )
                     })

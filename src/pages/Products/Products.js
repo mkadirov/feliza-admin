@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import MainLayout from '../../components/Layout/MainLayout'
-import { Button, Chip, Divider, styled } from '@mui/material'
+import { Button, Chip, Divider, Grid, styled } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import AddIcon from '@mui/icons-material/Add';
 import { Search } from '@mui/icons-material';
@@ -67,24 +67,25 @@ function Products() {
                 </Button>
             </div>
 
-            <div className="mt-4">
+            <Grid container  className="mt-4">
                 {
                     products?.map((item, index) => {
                         console.log(item);
                         return(
-                            <div key={index} className="mt-2">
+                            <Grid item xs= {3} spacing={2} key={index} className="mt-2">
+                                <div className='image-container'>
+                                    <img src={item.productImagesList[0]?.url} alt="" />
+                                </div>
                                 <p>122232</p>
                                 <p>Price: {item.product.price}</p>
                                 <p>Name: {item.product.nameUZB}</p>
                                 <p>RefNumber: {item.product.referenceNumber}</p>
-                                <div className='image-container'>
-                                    <img src={item.productImagesList[0]?.url} alt="" />
-                                </div>
-                            </div>
+                                
+                            </Grid>
                         )
                     })
                 }
-            </div>
+            </Grid container >
 
         </div>
     </MainLayout>

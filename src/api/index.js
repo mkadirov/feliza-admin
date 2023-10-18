@@ -3,7 +3,7 @@ import axios from 'axios'
 const apiUrl = 'https://felizabackend.de/api/'
 
 
-const createProduct = async(product, imageList) => {
+const createProduct = async(product, imageFiles) => {
 
     const formData = new FormData();
    

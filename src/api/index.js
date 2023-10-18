@@ -3,21 +3,21 @@ import axios from 'axios'
 const apiUrl = 'https://felizabackend.de/api/'
 
 
-const createProduct = async(product, imageFiles) => {
+const createProduct = async(product, files) => {
 
-    const formData = new FormData();
+    // const formData = new FormData();
    
-    for (let i = 0; i < imageFiles.length; i++) {
-        formData.append('files', imageFiles[i]);
-    }
+    // for (let i = 0; i < imageFiles.length; i++) {
+    //     formData.append('files', imageFiles[i]);
+    // }
    
-    formData.append('productDto', JSON.stringify(product));
-    console.log(product);
-    console.log(imageFiles);
-    console.log(formData);
+    // formData.append('productDto', JSON.stringify(product));
+    // console.log(product);
+    // console.log(imageFiles);
+    // console.log(formData);
 
     try {
-      const response = await axios.post(apiUrl + 'product/add', formData, {
+      const response = await axios.post(apiUrl + 'product/add', files, {
         headers: {
            'Accept': 'application/json',
            'Content-Type': 'multipart/form-data',

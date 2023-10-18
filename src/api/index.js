@@ -12,12 +12,15 @@ const createProduct = async(product, imageFiles) => {
     }
    
     formData.append('productDto', JSON.stringify(product));
-
+    console.log(product);
+    console.log(imageFiles);
     console.log(formData);
+
     try {
       const response = await axios.post(apiUrl + 'product/add', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+           'Accept': 'application/json',
+           'Content-Type': 'multipart/form-data',
         },
       });
       console.log('Response from server:', response.data);

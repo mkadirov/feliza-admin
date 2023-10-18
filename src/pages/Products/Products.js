@@ -85,7 +85,7 @@ function Products() {
                         )
                     })
                 }
-            </Grid container >
+            </Grid>
 
         </div>
     </MainLayout>

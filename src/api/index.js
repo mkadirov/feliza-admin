@@ -41,7 +41,7 @@ const addCategory = async(category) => {
   // console.log(category);
   // formData.append('category', category)
   try {
-    const res = await axios(apiUrl + 'categories/add', category)
+    const res = await axios.post(apiUrl + 'categories/add', category)
     return {success: true, data: res.data}
   } catch (error) {
     return {success: false}

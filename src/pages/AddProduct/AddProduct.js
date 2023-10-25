@@ -8,6 +8,8 @@ import ColorIcon from '../../components/AddProductComponents/ColorIcon';
 import ImageContainer from '../../components/AddProductComponents/ImageContainer';
 import CategoryBox from '../../components/AddProductComponents/CategoryBox';
 import { createProduct } from '../../api';
+import ProductMainDetailes from '../../components/AddProductComponents/ProductMainDetailes';
+import SizeColorContainer from '../../components/AddProductComponents/SizeColorContainer';
 
 function AddProduct() {
     const navigate = useNavigate()
@@ -192,8 +194,12 @@ function AddProduct() {
             Mahsulot turi
         </p>
         <div className="flex gap-2 w-full">
-            <StyledButton className={productType == 1? 'activeButton' : 'inactiveButton'} onClick={() => setProductType(1)}>
-                Oddiy Mahsulot
+            <StyledButton className={productType == 1? 'activeButton' : 'inactiveButton'} 
+                onClick={() => {
+                    setProductType(1)
+                    setSizeList([])
+                }}>
+                Oddiy Mahsulot 
             </StyledButton>
             <StyledButton className={productType == 2? 'activeButton' : 'inactiveButton'} onClick={() => setProductType(2)}>
                 Turkumli mahsulot
@@ -253,160 +259,17 @@ function AddProduct() {
         </div>
 
         
-        <Grid container spacing={1} sx={{my: 2}}>
-            <Grid item xs={6}>
-                <div className="flex-1 p-3 rounded-3xl border border-gray-400" >
-                    <p className="text-2xl mt-3 mb-2">
-                        Ranglar
-                    </p>
-                    <Box className="input-container pl-3"  >
-                        <div className="flex items-center gap-2 ">
-                            {
-                                (colorList.length == 0) && (<Typography sx={{color: grey[500]}}>Rang tanlang</Typography>)
-                            }
-                            {
-                                colorList.map(item => { 
-                                    return(
-                                        <div key={item}>                                           
-                                            <ColorIcon deleteColor={deleteColor} color= {item}/>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    
-                    </Box>
-                    <div className="input-container mt-3 pl-3" >
-                        <div className="flex gap-2 items-center">
-                           {
-                            colors.map(color => {
-                                return(
-                                    <ColorBox key={color} addColor= {addColor} color = {color}/>
-                                )
-                            })
-                           }
-                        </div>
-                    </div>
-                </div>
-            
-            </Grid>
-            <Grid item xs={6}> 
-                <div className="flex-1 p-3 rounded-3xl border border-gray-400" style={{display: productType==1? 'none': 'block'}}>
-                    <p className="text-2xl mt-3 mb-2">
-                        Ölchamlar
-                    </p>
-                    <div className="input-container " >
-                        <input 
-                            placeholder="O'lcham kriting" 
-                            style={{flex: 1}} 
-                            type="text" 
-                            className='main-input'
-                            value={size}
-                            onChange={(e) => handleSize(e)}
-                        />
-                    
-                        <Button onClick={addSize}>
-                           Qöshish
-                        </Button>
-                    
-                    </div>
-
-                    <div className="input-container mt-3 pl-3" >
-                        <div className="flex items-center gap-2 ">
-                            {
-                                sizeList.map(item => { 
-                                    const key = item + 'chip'
-                                    return(
-                                        <div key={key} >
-                                            <Chip
-                                            key={item} 
-                                            variant='outlined' 
-                                            label={item} 
-                                            onDelete={() => deleteSize(item)} />
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-                </div>
-            </Grid>
-        </Grid>
+        <SizeColorContainer colorList={colorList} deleteColor={deleteColor} colors={colors} addColor={addColor}
+            handleSize={handleSize} addSize={addSize} sizeList={sizeList} deleteSize={deleteSize} 
+            productType={productType} size={size}
+        />
 
         <Divider/>
 
-        <div className='my-5'>
-            {
-                colorList.map(colorItem => 
-                    {
-                        const key = colorItem + 'go'
-                        return(
-                            <div key={key}>
-                                <ImageContainer colorItem={colorItem} imageList={imageList} handleImageChange={handleImageChange}/>
-                                {
-                                    sizeList.map(sizeItem => {
-                                        const key = sizeItem + 'size'
-                                        const detail = sizeDetailes.find(item => item.color == colorItem && item.size == sizeItem);
-                                        return(
-                                            <div key={key} className="input-container pl-3 mt-3 ">
-                                                <div className="flex w-full">
-                                                    <div className="flex items-center gap-2 " style={{width: '150px', height: '40px'}}>
-                                                        <ColorBox color= {colorItem}/>
-                                                        <Typography>
-                                                           / {sizeItem}
-                                                        </Typography>
-                                                    </div>
-
-                                                    <div className="flex-1">
-                                                        <Grid container spacing={2} pr={2}>
-                                                            <Grid item xs={6}> 
-                                                                <div className="flex pl-2 bg-gray-200 rounded-xl" style={{height: '40px'}}>
-                                                                    <div className='w-full'>
-                                                                        <input
-                                                                         type="text" 
-                                                                         className='main-input' 
-                                                                         placeholder='Barcode...'
-                                                                         value={detail?.barCode !== undefined ? detail.barCode : ''}
-                                                                         onChange={(e) => addBarcode(e, colorItem, sizeItem)}
-                                                                        />  
-                                                                    </div>
-                                                                    <Button sx={{px: 2}}>
-                                                                       Generatsiya
-                                                                    </Button>
-                                                                </div>
-                                                            </Grid>
-                                                            <Grid item xs={6}> 
-                                                            <div className="flex pl-2 bg-gray-200 rounded-xl" style={{height: '40px'}}>
-                                                                    <div className='w-full'>
-                                                                        <input 
-                                                                            type="number" 
-                                                                            className='main-input ' 
-                                                                            placeholder='Mahsulot soni...'
-                                                                            value={detail?.quantity !== undefined ? detail.quantity : 0}
-                                                                            onChange={(e) => addQuantity(e, colorItem, sizeItem)}
-                                                                        />  
-                                                                    </div>
-                                                                    <Button sx={{px: 2}}>
-                                                                       Generatsiya
-                                                                    </Button>
-                                                                </div>
-                                                            </Grid>
-                                                            
-                                                        </Grid>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                    
-                                }
-                            </div>
-                        )
-                        
-                    }
-                )
-            }
-        </div>
+        <ProductMainDetailes colorList={colorList} imageList= {imageList} 
+            handleImageChange={handleImageChange} sizeDetailes={sizeDetailes} addBarcode={addBarcode}
+            addQuantity={addQuantity} sizeList={sizeList}
+        />
 
         <Divider/>
 
@@ -415,9 +278,7 @@ function AddProduct() {
                 Kiritish
             </Button >
         </div>
-
-
-        
+   
     </Container>
   )
 }

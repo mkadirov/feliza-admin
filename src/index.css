@@ -20,6 +20,17 @@ body {
     outline: none;
 }
 
+.settings-input {
+    height: 70%;
+    padding-left: 10px;
+    width: 100%;
+    border-radius: 15px;
+}
+
+.settings-input:focus {
+    outline: none;
+}
+
 .input-container {
     @apply w-full  overflow-hidden flex items-center bg-gray-300;
     height: 60px;
@@ -39,7 +50,7 @@ body {
     background-color: grey !important;
 }
 
-.image-container {
+.image-box {
     width: 200px;
     height: 200px;
 }

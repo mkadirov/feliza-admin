@@ -73,7 +73,7 @@ function Products() {
                         console.log(item);
                         return(
                             <Grid item xs= {3} spacing={2} key={index} className="mt-2">
-                                <div className='image-container'>
+                                <div className='image-box'>
                                     <img src={item.productImagesList[0]?.url} alt="" />
                                 </div>
                                 <p>122232</p>

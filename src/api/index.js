@@ -36,4 +36,23 @@ const getAllProducts = async() => {
 }
 
 
-export {createProduct, getAllProducts}
+const addCategory = async(category) => {
+  try {
+    const res = await axios(apiUrl + 'categories/add', category)
+    return {success: true, data: res.data}
+  } catch (error) {
+    return {success: false}
+  }
+}
+
+const addBrend = async(brend) => {
+  try {
+    const res = await axios(apiUrl + 'brends/add', brend)
+    return {success: true, data: res.data}
+  } catch (error) {
+    return {success: false}
+  }
+}
+
+
+export {createProduct, getAllProducts, addCategory, addBrend}

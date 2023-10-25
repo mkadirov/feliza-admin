@@ -21,7 +21,7 @@ function AddCategory() {
           setNameRu('');
           setNameUz('');
         } else {
-          alert('Xatolik');
+          alert(res.message);
         }
       }
 

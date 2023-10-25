@@ -43,7 +43,7 @@ const addCategory = async(category) => {
     if(res.status == 200) {
       return {success: true, data: res.data}
     }else {
-      return {success: false}
+      return {success: false, message: res.message}
     }
   } catch (error) {
      console.log(error.message);

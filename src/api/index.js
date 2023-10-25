@@ -37,14 +37,16 @@ const getAllProducts = async() => {
 
 
 const addCategory = async(category) => {
-  // const formData = new FormData();
-  // console.log(category);
-  // formData.append('category', category)
+  
   try {
     const res = await axios.post(apiUrl + 'categories/add', category)
-    return {success: true, data: res.data}
+    if(res.status == 200) {
+      return {success: true, data: res.data}
+    }else {
+      return {success: false}
+    }
   } catch (error) {
-    return {success: false}
+     console.log(error.message);
   }
 }
 

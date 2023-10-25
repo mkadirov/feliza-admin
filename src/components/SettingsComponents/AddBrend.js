@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { addBrend } from '../../api'
+import { addBrend } from '../../api/Category'
 
 function AddBrend() {
 
@@ -8,15 +8,15 @@ function AddBrend() {
     
 
 
-    const createBrend = () => {
-        const res = addBrend({name: name})
+    // const createBrend = () => {
+    //     const res = addBrend({name: name})
 
-        if(res.success) {
-            alert('Kategoriya qöshildi')
-        } else {
-            alert('Xatolik')
-        }
-    }
+    //     if(res.success) {
+    //         alert('Kategoriya qöshildi')
+    //     } else {
+    //         alert('Xatolik')
+    //     }
+    // }
   return (
     <div className="my-5">
         <p className="text-2xl text-center">
@@ -36,9 +36,9 @@ function AddBrend() {
                     />
                     
                 </div>
-                <Button onClick={createBrend}>
+                {/* <Button onClick={createBrend}>
                     Qöshish
-                </Button>
+                </Button> */}
             </div>
         </div>
     </div>

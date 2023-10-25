@@ -7,9 +7,10 @@ import ColorBox from '../../components/AddProductComponents/ColorBoxs';
 import ColorIcon from '../../components/AddProductComponents/ColorIcon';
 import ImageContainer from '../../components/AddProductComponents/ImageContainer';
 import CategoryBox from '../../components/AddProductComponents/CategoryBox';
-import { createProduct } from '../../api';
+
 import ProductMainDetailes from '../../components/AddProductComponents/ProductMainDetailes';
 import SizeColorContainer from '../../components/AddProductComponents/SizeColorContainer';
+import { createProduct } from '../../api/Product';
 
 function AddProduct() {
     const navigate = useNavigate()

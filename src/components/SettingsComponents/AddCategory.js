@@ -1,12 +1,13 @@
-import { Button, Typography } from '@mui/material'
+import { Button, Divider, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { addCategory, getAllCategories } from '../../api'
+import HandelCategory from './HandelCategory'
+import { addCategory, getAllCategories } from '../../api/Category'
 
 function AddCategory() {
     const [nameUz, setNameUz] = useState('')
     const [nameRu, setNameRu] = useState('')
     const [newCategory, setNewCategory] = useState('')
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState([{nameUZB: 'Fudbolka', nameRUS: 'Fudbolka'}]);
 
 
 
@@ -17,7 +18,7 @@ function AddCategory() {
         }
       
         const res = await addCategory(category)
-        if (res.success) {
+        if (res?.success) {
           alert('Kategoriya qöshildi');
           setNameRu('');
           setNameUz('');
@@ -30,7 +31,7 @@ function AddCategory() {
     useEffect(() => {
         const fetchData = async() => {
             const res = await getAllCategories();
-            if(res.success) {
+            if(res?.success) {
                 setCategories(res.data)
             }
         }
@@ -67,20 +68,11 @@ function AddCategory() {
                     Qöshish
                 </Button>
             </div>
-
-
-            <div className="my-5">
-                {
-                    categories?.map(category => {
-                        return (
-                            <Typography key={category.nameUZB}>
-                                {category.nameUZB}
-                            </Typography>
-                        )
-                    })
-                }
-            </div>
         </div>
+
+        <Divider/>
+
+        <HandelCategory categories= {categories} setNewCategory= {setNewCategory}/>
     </div>
   )
 }

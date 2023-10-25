@@ -5,7 +5,8 @@ import { grey } from '@mui/material/colors'
 import AddIcon from '@mui/icons-material/Add';
 import { Search } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { getAllProducts } from '../../api';
+import { getAllProducts } from '../../api/Product';
+
 
 function Products() {
 

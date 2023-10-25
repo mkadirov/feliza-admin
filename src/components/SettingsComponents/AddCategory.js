@@ -18,6 +18,8 @@ function AddCategory() {
 
         if(res.success) {
             alert('Kategoriya qöshildi')
+            setNameRu('')
+            setNameUz('')
         } else {
             alert('Xatolik')
         }

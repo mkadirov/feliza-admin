@@ -37,11 +37,11 @@ const getAllProducts = async() => {
 
 
 const addCategory = async(category) => {
-  const formData = new FormData();
-  console.log(category);
-  formData.append('category', category)
+  // const formData = new FormData();
+  // console.log(category);
+  // formData.append('category', category)
   try {
-    const res = await axios(apiUrl + 'categories/add', formData)
+    const res = await axios(apiUrl + 'categories/add', category)
     return {success: true, data: res.data}
   } catch (error) {
     return {success: false}

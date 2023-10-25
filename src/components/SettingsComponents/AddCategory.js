@@ -1,11 +1,12 @@
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { addCategory } from '../../api'
+import { addCategory, getAllCategories } from '../../api'
 
 function AddCategory() {
     const [nameUz, setNameUz] = useState('')
     const [nameRu, setNameRu] = useState('')
     const [newCategory, setNewCategory] = useState('')
+    const [categories, setCategories] = useState([]);
 
 
 
@@ -20,10 +21,22 @@ function AddCategory() {
           alert('Kategoriya qöshildi');
           setNameRu('');
           setNameUz('');
+          setNewCategory(nameUz)
         } else {
           alert(res.message);
         }
-      }
+    }
+
+    useEffect(() => {
+        const fetchData = async() => {
+            const res = await getAllCategories();
+            if(res.success) {
+                setCategories(res.data)
+            }
+        }
+
+        fetchData();
+    }, [newCategory])
 
   return (
     <div className="mt-6">
@@ -53,6 +66,19 @@ function AddCategory() {
                 <Button onClick={createCategory}>
                     Qöshish
                 </Button>
+            </div>
+
+
+            <div className="my-5">
+                {
+                    categories?.map(category => {
+                        return (
+                            <Typography key={category.nameUZB}>
+                                {category.nameUZB}
+                            </Typography>
+                        )
+                    })
+                }
             </div>
         </div>
     </div>

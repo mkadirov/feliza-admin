@@ -9,21 +9,21 @@ function AddCategory() {
 
 
 
-    const createCategory = () => {
+    const createCategory = async () => {
         const category = {
-            nameUZB: nameUz, 
-            nameRUS: nameRu
+          nameUZB: nameUz, 
+          nameRUS: nameRu
         }
-        const res = addCategory(category)
-
-        if(res.success) {
-            alert('Kategoriya qöshildi')
-            setNameRu('')
-            setNameUz('')
+      
+        const res = await addCategory(category)
+        if (res.success) {
+          alert('Kategoriya qöshildi');
+          setNameRu('');
+          setNameUz('');
         } else {
-            alert('Xatolik')
+          alert('Xatolik');
         }
-    }
+      }
 
   return (
     <div className="mt-6">

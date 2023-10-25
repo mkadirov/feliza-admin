@@ -10,7 +10,11 @@ function AddCategory() {
 
 
     const createCategory = () => {
-        const res = addCategory({nameUZB: nameUz, nameRUS: nameRu})
+        const category = {
+            nameUZB: nameUz, 
+            nameRUS: nameRu
+        }
+        const res = addCategory(category)
 
         if(res.success) {
             alert('Kategoriya qöshildi')

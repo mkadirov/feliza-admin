@@ -6,7 +6,7 @@ function HandelCategory({categories, setNewCategory}) {
 
     const deleteCategoryById = async(id) => {
         const res = await deleteCategory(id);
-        setNewCategory('Deleted')
+        setNewCategory(id)
     }
     
   return (

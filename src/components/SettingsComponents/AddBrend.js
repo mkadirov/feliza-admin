@@ -18,6 +18,7 @@ function AddBrend() {
 
         if(res?.success) {
             setLastAction(name + 'added')
+            setName('')
         } else {
             alert('Xatolik')
         }

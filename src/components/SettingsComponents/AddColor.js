@@ -1,27 +1,66 @@
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { addColor, deleteColor, getAllColors } from '../../api/Color'
+import SmallColorIcon from '../Global/SmallColorIcon'
+import HandelColor from './HandelColor'
+
 
 function AddColor() {
 
     const [nameUz, setNameUz] = useState('')
     const [nameRu, setNameRu] = useState('')
     const [colorCode, setColorCode] = useState('')
-    const [newCategory, setNewCategory] = useState('')
+    const [lastAction, setLastAction] = useState('');
+    const [colors, setColors] = useState([]);
 
 
-    const createCategory = () => {
-        // //const res = addCategory({name: nameUz})
+    const createColor = async() => {
 
-        // if(res.success) {
-        //     alert('Kategoriya qöshildi')
-        // } else {
-        //     alert('Xatolik')
-        // }
+        if(nameRu.trim() !== '' && nameUz.trim() !== '' && colorCode.trim() !== '') {
+            const color = {
+                nameUZB: nameUz,
+                nameRUS: nameRu,
+                colorCode: colorCode
+            }
+            const res = await addColor(color)
+    
+            if(res?.success) {
+                setLastAction(nameUz + 'created');
+                setNameRu('');
+                setNameUz('');
+                setColorCode('');
+            } else {
+                alert('Xatolik')
+            }
+        } else {
+            alert("Bösh matin kritish mumkin emas");
+        }
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await getAllColors();
+            if(res?.success) {
+                setColors(res.data)
+            }
+        }
+        fetchData();
+    }, [lastAction])
+
+    const deleteColorById = async(id) => {
+        const res = await deleteColor(id);
+        if(res.success) {
+            setLastAction(id + 'deleted')
+        } else {
+            alert('Xatolik')
+        }
+    }
+
+
   return (
     <div className="my-5">
         <p className="text-2xl text-center">
-            Rang qöshish
+            Yangi rang qöshish
         </p>
 
         <div className="my-5">
@@ -51,11 +90,13 @@ function AddColor() {
                         onChange={(e) => setColorCode(e.target.value)}
                     />
                 </div>
-                <Button onClick={createCategory}>
+                <Button onClick={createColor}>
                     Qöshish
                 </Button>
             </div>
         </div>
+
+        <HandelColor colors={colors} deleteColorById={deleteColorById} setLastAction={setLastAction}/>
     </div>
   )
 }

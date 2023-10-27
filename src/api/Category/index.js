@@ -34,7 +34,7 @@ const getAllCategories = async() => {
 const deleteCategory = async(id) => {
     try {
         const res = await axios.delete(apiUrl + 'categories/delete/' + id);
-        return {success: true}
+        return {success: true, data: res.data}
     } catch (error) {
         console.log(error.message);
     }

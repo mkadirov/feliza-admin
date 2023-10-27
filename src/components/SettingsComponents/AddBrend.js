@@ -7,7 +7,7 @@ function AddBrend() {
 
     const [name, setName] = useState('')
     const [brends, setBrends] = useState([])
-    
+    const [lastAction, setLastAction] = useState('')
 
 
     const createBrend = async() => {
@@ -17,7 +17,7 @@ function AddBrend() {
         const res = await addBrend(brand)
 
         if(res?.success) {
-            alert('Kategoriya qöshildi')
+            setLastAction(name + 'added')
         } else {
             alert('Xatolik')
         }
@@ -31,7 +31,7 @@ function AddBrend() {
             }
         }
         fetchData();
-    },[])
+    },[lastAction])
 
 
   return (

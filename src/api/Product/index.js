@@ -37,14 +37,7 @@ const getAllProducts = async() => {
 
 
 
-const addBrend = async(brend) => {
-  try {
-    const res = await axios(apiUrl + 'brends/add', brend)
-    return {success: true, data: res.data}
-  } catch (error) {
-    return {success: false}
-  }
-}
 
 
-export {createProduct, getAllProducts, addBrend}
+
+export {createProduct, getAllProducts}

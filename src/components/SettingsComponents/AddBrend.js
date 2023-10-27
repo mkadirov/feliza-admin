@@ -1,22 +1,39 @@
-import { Button } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { addBrend } from '../../api/Category'
+import { addBrend, getAllBrends } from '../../api/Brand'
+
 
 function AddBrend() {
 
     const [name, setName] = useState('')
+    const [brends, setBrends] = useState([])
     
 
 
-    // const createBrend = () => {
-    //     const res = addBrend({name: name})
+    const createBrend = async() => {
+        const brand = {
+            name: name
+        }
+        const res = await addBrend(brand)
 
-    //     if(res.success) {
-    //         alert('Kategoriya qöshildi')
-    //     } else {
-    //         alert('Xatolik')
-    //     }
-    // }
+        if(res?.success) {
+            alert('Kategoriya qöshildi')
+        } else {
+            alert('Xatolik')
+        }
+    }
+
+    useEffect(() => {
+        const fetchData = async() => {
+            const res = await getAllBrends();
+            if(res?.success) {
+                setBrends(res.data);
+            }
+        }
+        fetchData();
+    },[])
+
+
   return (
     <div className="my-5">
         <p className="text-2xl text-center">
@@ -34,12 +51,25 @@ function AddBrend() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
+                   
                     
                 </div>
-                {/* <Button onClick={createBrend}>
+                <Button onClick={createBrend}>
                     Qöshish
-                </Button> */}
+                </Button>
             </div>
+        </div>
+
+        <div className="my-5">
+            {
+                brends.map(item => {
+                    return(
+                        <Typography key={item.id}>
+                            {item.name}
+                        </Typography>
+                    )
+                })
+            }
         </div>
     </div>
   )

@@ -15,7 +15,7 @@ function HandelCategory({categories, setNewCategory}) {
             {
                 categories?.map(category => {
                     return (
-                        <Grid sx={{my: 1}} item xs={10} key={category.nameUZB}>
+                        <Grid sx={{mt: 1}} item xs={10} key={category.nameUZB}>
                             <div className="w-full flex p-2 border border-gray-400 shadow-lg rounded">
                                 <div className="w-full flex items-center gap-2">
                                     <Typography>

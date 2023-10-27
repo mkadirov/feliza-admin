@@ -5,7 +5,7 @@ const apiUrl = 'https://felizabackend.de/api/'
 
 const addBrend = async(brend) => {
     try {
-      const res = await axios.post(apiUrl + 'brends/add', brend)
+      const res = await axios.post(apiUrl + 'brand/add', brend)
       if(res.status == 200) {
         return {success: true, data: res.data}
       } else {
@@ -18,7 +18,7 @@ const addBrend = async(brend) => {
 
 const getAllBrends = async() => {
     try {
-        const res = await axios.get(apiUrl + 'brends');
+        const res = await axios.get(apiUrl + 'brand');
         if(res.status == 200) {
             return {success: true, data: res.data}
         }

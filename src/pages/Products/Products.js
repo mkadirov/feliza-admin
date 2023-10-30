@@ -77,7 +77,8 @@ function Products() {
                                 <div className='image-box'>
                                     <img src={item.productImagesList[0]?.url} alt="" />
                                 </div>
-                                <p>122232</p>
+                                <p>{item.product.compatibleProducts}</p>
+                                <p>Mahsulot IDsi: {item.product.id}</p>
                                 <p>Price: {item.product.price}</p>
                                 <p>Name: {item.product.nameUZB}</p>
                                 <p>RefNumber: {item.product.referenceNumber}</p>

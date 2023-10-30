@@ -11,22 +11,7 @@ function ColorIcon({color, deleteColor}) {
         border: '1px solid grey'
     })
 
-    const InnerCircle = styled(Box)({
-        width: '20px',
-        height: '20px',
-        position: 'absolute',
-        backgroundColor: 'red',
-        color: 'white',
-        top: 0,
-        right: 0,
-        transform: 'translate(25%, -25%)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        border: '1px solid gray',
-        borderRadius: '100%',
-        cursor: 'pointer'
-    })
+  
 
   return (
     <Badge badgeContent= {'x'} color='error' onClick={() => deleteColor(color)} sx={{cursor: 'pointer'}}>

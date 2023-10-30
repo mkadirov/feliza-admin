@@ -1,44 +1,148 @@
-import { Button, Grid, Typography } from '@mui/material'
-import React from 'react'
-import { deleteCategory } from '../../api/Category'
+import { Box, Button, Grid, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { deleteCategory, editCategory } from '../../api/Category'
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function HandelCategory({categories, setNewCategory}) {
+
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => setOpen(false);
+    const [nameUz, setNameUz] = useState('');
+    const [nameRu, setNameRu] = useState('');
+    const [categoryId, setCategoryId] = useState(0)
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
 
     const deleteCategoryById = async(id) => {
         const res = await deleteCategory(id);
         setNewCategory(id)
     }
+
+    const editCategoryById = async() => {
+        const category = {
+            nameUZB: nameUz,
+            nameRUS: nameRu
+        }
+        const res = await editCategory(categoryId, category);
+        if(res.success) {
+            setNewCategory(nameUz + nameRu)
+            setNameRu('');
+            setNameUz('');
+            setCategoryId(0);
+            setOpen(false);
+        }
+    }
     
   return (
     <div className="my-5">
-        <Grid container spacing={4}>
-            {
-                categories?.map(category => {
-                    return (
-                        <Grid sx={{mt: 1}} item xs={10} key={category.nameUZB}>
-                            <div className="w-full flex p-2 border border-gray-400 shadow-lg rounded">
-                                <div className="w-full flex items-center gap-2">
-                                    <Typography>
-                                        NameUZB: {category.nameUZB}
-                                    </Typography>
-                                    <Typography>
-                                        NameRUS: {category.nameRUS}
-                                    </Typography>
-                                </div>
-                                <div className="flex items-center">
-                                    <Button>
-                                        Edit
-                                    </Button>
-                                    <Button onClick={() => deleteCategoryById(category.id)}>
-                                        Delete
-                                    </Button>
-                                </div>
-                            </div>
-                        </Grid>
-                    )
-                })
-            }
-        </Grid>
+        
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead className='bg-gray-300'>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell >Name UZB</TableCell>
+            <TableCell>Name RUS</TableCell>
+            <TableCell align="right">Actions</TableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {categories.map((row, idx) => (
+            <TableRow
+              key={row.id}
+              sx={{ '&:last-child td': { border: 0 } }}
+            >
+              <TableCell sx={{width: '10px', borderRight: '1px solid grey'}} component="th" scope="row">
+                {idx + 1}
+              </TableCell>
+              <TableCell>{row.nameUZB}</TableCell>
+              <TableCell >{row.nameRUS}</TableCell>
+              <TableCell align="right">
+                <IconButton
+                    onClick={() => {
+                        setOpen(true);
+                        setNameUz(row.nameUZB);
+                        setNameRu(row.nameRUS);
+                        setCategoryId(row.id);
+                    }}
+                >
+                    <EditIcon/>
+                </IconButton>
+
+                <IconButton onClick={() => deleteCategoryById(row.id)}>
+                    <DeleteIcon/>
+                </IconButton>
+              </TableCell>
+              
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+    <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Kategoriya özgartirish
+                </Typography>
+
+                <div className="my-5">
+                    <TextField 
+                        id="outlined-basic" 
+                        label="Name Uz" 
+                        variant="outlined" 
+                        size='small' 
+                        fullWidth
+                        value={nameUz}
+                        onChange={(e) => setNameUz(e.target.value)}
+                    />
+                    <TextField 
+                        sx={{my: 2}} 
+                        id="outlined-basic" 
+                        label="Name Ru" 
+                        variant="outlined" 
+                        fullWidth 
+                        size='small' 
+                        value={nameRu}
+                        onChange={(e) => setNameRu(e.target.value)}
+                    />
+                    {/* <TextField 
+                        id="outlined-basic" 
+                        label="Rang kodi"
+                        variant="outlined" 
+                        size='small' 
+                        fullWidth
+                        value={colorCode}
+                        onChange={(e) => setColorCode(e.target.value)}
+                    /> */}
+                    <Button 
+                        sx={{mt: 2}} 
+                        variant='contained' 
+                        fullWidth
+                        onClick={editCategoryById}
+                    >
+                        Edit
+                    </Button>
+                </div>
+            </Box>
+        </Modal>
     </div>
   )
 }

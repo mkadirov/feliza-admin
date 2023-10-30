@@ -7,7 +7,7 @@ function AddCategory() {
     const [nameUz, setNameUz] = useState('')
     const [nameRu, setNameRu] = useState('')
     const [newCategory, setNewCategory] = useState('')
-    const [categories, setCategories] = useState([{nameUZB: 'Fudbolka', nameRUS: 'Fudbolka'}]);
+    const [categories, setCategories] = useState([]);
 
 
 
@@ -19,7 +19,6 @@ function AddCategory() {
       
         const res = await addCategory(category)
         if (res?.success) {
-          alert('Kategoriya qöshildi');
           setNameRu('');
           setNameUz('');
           setNewCategory(nameUz)

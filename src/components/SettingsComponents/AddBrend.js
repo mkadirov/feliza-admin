@@ -1,6 +1,7 @@
 import { Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { addBrend, getAllBrends } from '../../api/Brand'
+import HandelBrand from './HandelBrand'
 
 
 function AddBrend() {
@@ -61,17 +62,7 @@ function AddBrend() {
             </div>
         </div>
 
-        <div className="my-5">
-            {
-                brends.map(item => {
-                    return(
-                        <Typography key={item.id}>
-                            {item.name}
-                        </Typography>
-                    )
-                })
-            }
-        </div>
+        <HandelBrand brends= {brends} setLastAction = {setLastAction}/>
     </div>
   )
 }

@@ -1,23 +1,24 @@
-import { Badge, Box, Button, Chip, Container, Divider, Grid, Typography, styled, useTheme } from '@mui/material'
+import {Box, Button, Container, Divider, styled} from '@mui/material'
 import WestIcon from '@mui/icons-material/West';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
-import ColorBox from '../../components/AddProductComponents/ColorBoxs';
-import ColorIcon from '../../components/AddProductComponents/ColorIcon';
-import ImageContainer from '../../components/AddProductComponents/ImageContainer';
 import CategoryBox from '../../components/AddProductComponents/CategoryBox';
 
 import ProductMainDetailes from '../../components/AddProductComponents/ProductMainDetailes';
 import SizeColorContainer from '../../components/AddProductComponents/SizeColorContainer';
 import { createProduct } from '../../api/Product';
+import { getAllColors } from '../../api/Color';
+import BrandPriceContainer from '../../components/AddProductComponents/BrandPriceContainer';
+import NameDescription from '../../components/AddProductComponents/NameDescription';
 
 function AddProduct() {
     const navigate = useNavigate()
    
     const [actionType, setActionType] = useState(1);
     const [productType, setProductType] = useState(2)
-    const [productName, setProductName] = useState('');
+    const [productNameUz, setProductNameUz] = useState('');
+    const [productNameRu, setProductNameRu] = useState('');
     const [refNumber, setRefNumber] = useState('')
     const [size, setSize] = useState('')
     const [sizeList, setSizeList] = useState([]);
@@ -25,6 +26,14 @@ function AddProduct() {
     const [imageList, setImageList] = useState([]);
     const [sizeDetailes, setSizeDetailes] = useState([])
     const [categoryList, setCategoryList] = useState([])
+    const [colors, setColors] = useState([])
+    const [brand, setBrand] = useState('');
+    const [price, setPrice] = useState('');
+    const [importPrice, setImportPrice] = useState('');
+    const [compatibleProductId, setCompatibleProductId] = useState([]);
+    const [descriptionUz, setDescriptionUz] = useState('');
+    const [descriptionRu, setDescriptionRu] = useState('');
+
 
     const StyledButton = styled(Box)(({theme}) => ({
         borderRadius: '20px',
@@ -80,7 +89,19 @@ function AddProduct() {
         setSizeList(list.filter(s => s!=item))
     }
 
+    useEffect(()=> {
+        const fetchData = async () => {
+            const res = await getAllColors();
+            if(res?.success) {
+                setColors(res.data)
+            }
+        }
+
+        fetchData();
+    }, [])
+
     function addColor(color) {
+        
         if(!colorList.includes(color)){
             setImageList([...imageList, {colorName: color, imagesList: [] }])
             setColorList([...colorList, color])
@@ -129,7 +150,7 @@ function AddProduct() {
     }
 
 
-    function createProductList() {
+   function  createProductList() {
         
         colorList.map(colorItem => {
             let productImageList = [];
@@ -147,29 +168,42 @@ function AddProduct() {
                 }
             })
 
+            const colorObj = colors.find(item => item.colorCode == colorItem)
+            const categoryIdList = categoryList.map(item => item.id)
+            const compatibleProduct = compatibleProductId.find(item => item.color == colorItem)
+
             const product = {
-                nameUZB: productName,
-                nameRUS: productName,
-                descriptionUZB: "testuzb",
-                descriptionRUS: "testrus",
+                nameUZB: productNameUz,
+                nameRUS: productNameRu,
+                descriptionUZB: descriptionUz,
+                descriptionRUS: descriptionRu,
                 referenceNumber: refNumber,
-                price: 150000,
+                importPrice: importPrice,
+                sellPrice: price,
                 sale: 0,
-                brandId: 1,
-                categoryId: [1],
-                colorId: 1,
-                compatibleProductIdList: [1],
+                brandId: brand.id,
+                categoryId: categoryIdList,
+                colorId: colorObj.id,
+                compatibleProductsId: compatibleProduct.groupId,
                 productSizeVariantDtoList: productSizeDetailes,
             }
             console.log(product);
-            console.log(productSizeDetailes);
-            console.log(productImageList);
-            createProduct(product, productImageList)
+            
+            ;
+            const fetchData = async() => {
+                const res = await createProduct(product, productImageList)
+                if(res?.success) {
+                    console.log('Mahsulot yaratildi');
+                } else {
+                    console.log('Xatolik!!!!!!!!!!!!!!!');
+                }
+            }
+            fetchData();
         });
     }
     
 
-    const colors = ['red', 'blue', 'green', 'yellow', 'coral', 'pink', 'black', 'white']
+    
     return (
     <Container sx={{border: '1px solid grey'}}>
         
@@ -207,19 +241,12 @@ function AddProduct() {
             </StyledButton>
             
         </div>
-        <p className="text-2xl mt-3 mb-2">
-            Mahsulot nomi *
-        </p>
-        <div className="input-container " >
-            <input 
-                placeholder='Mahsulot nomini kriting' 
-                style={{flex: 1}} 
-                type="text" 
-                className='main-input'
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-            />
-        </div>
+        <NameDescription productNameUz={productNameUz} setProductNameUz={setProductNameUz} 
+         productNameRu={productNameRu} setProductNameRu={setProductNameRu}
+        descriptionRu={descriptionRu} descriptionUz = {descriptionUz} 
+        setDescriptionRu={setDescriptionRu} setDescriptionUz = {setDescriptionUz}/>
+
+
 
         <CategoryBox categoryList= {categoryList} setCategoryList= {setCategoryList}/>
 
@@ -260,6 +287,10 @@ function AddProduct() {
         </div>
 
         
+        <BrandPriceContainer brand = {brand} setBrand = {setBrand} price = {price} setPrice = {setPrice}  
+        importPrice= {importPrice} setImportPrice = {setImportPrice} 
+        />
+
         <SizeColorContainer colorList={colorList} deleteColor={deleteColor} colors={colors} addColor={addColor}
             handleSize={handleSize} addSize={addSize} sizeList={sizeList} deleteSize={deleteSize} 
             productType={productType} size={size}
@@ -269,7 +300,7 @@ function AddProduct() {
 
         <ProductMainDetailes colorList={colorList} imageList= {imageList} 
             handleImageChange={handleImageChange} sizeDetailes={sizeDetailes} addBarcode={addBarcode}
-            addQuantity={addQuantity} sizeList={sizeList}
+            addQuantity={addQuantity} sizeList={sizeList} compatibleProductId= {compatibleProductId} setCompatibleProductId = {setCompatibleProductId} 
         />
 
         <Divider/>

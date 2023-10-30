@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ColorIcon from './ColorIcon'
 import ColorBox from './ColorBoxs'
 import { Box, Button, Chip, Grid, Typography } from '@mui/material'
 import { grey } from '@mui/material/colors'
+import { getAllColors } from '../../api/Color'
 
-function SizeColorContainer({colorList, deleteColor, colors, addColor, handleSize, 
+
+function SizeColorContainer({colorList, colors, deleteColor, addColor, handleSize, 
     addSize, sizeList, deleteSize, productType, size }) {
+
   return (
     <div className='my-5'>
 
@@ -37,7 +40,7 @@ function SizeColorContainer({colorList, deleteColor, colors, addColor, handleSiz
                            {
                             colors.map(color => {
                                 return(
-                                    <ColorBox key={color} addColor= {addColor} color = {color}/>
+                                    <ColorBox key={color.id} addColor= {addColor} color = {color.colorCode}/>
                                 )
                             })
                            }

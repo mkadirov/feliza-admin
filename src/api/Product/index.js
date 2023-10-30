@@ -20,8 +20,14 @@ const createProduct = async(product, imageFiles) => {
         },
       });
       console.log('Response from server:', response.data);
+      if(response.status == 200) {
+        return {success: true, data: response.data}
+      }else {
+        return {success: false}
+      }
     } catch (error) {
       console.error('Error sending the request:', error);
+      return {success: false}
     }
 }
 
@@ -34,10 +40,6 @@ const getAllProducts = async() => {
         return {success: false}
     }
 }
-
-
-
-
 
 
 export {createProduct, getAllProducts}

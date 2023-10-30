@@ -1,9 +1,9 @@
 import { Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import SmallColorIcon from '../Global/SmallColorIcon'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { editColor } from '../../api/Color';
+import LongColorIcon from '../Global/LongColorIcon';
 
 function HandelColor({colors, deleteColorById, setLastAction}) {
 
@@ -52,8 +52,9 @@ function HandelColor({colors, deleteColorById, setLastAction}) {
             
         <TableContainer component={Paper} sx={{mt: 4}}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <TableHead>
+            <TableHead className='bg-gray-300'>
               <TableRow>
+              <TableCell>#</TableCell>
                 <TableCell>Name UZB</TableCell>
                 <TableCell >Name RUS</TableCell>
                 <TableCell align="start">Icon</TableCell>
@@ -61,17 +62,18 @@ function HandelColor({colors, deleteColorById, setLastAction}) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {colors.map((color) => (
+              {colors.map((color, idx) => (
                 <TableRow
                   key={color.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ '&:last-child td': { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
-                    {color.nameUZB}
+                  <TableCell sx={{width: '10px', borderRight: '1px solid grey'}} component="th" scope="row">
+                    {idx + 1}
                   </TableCell>
+                  <TableCell>{color.nameUZB}</TableCell>
                   <TableCell >{color.nameRUS}</TableCell>
                   <TableCell align="right">
-                    <SmallColorIcon color= {color.colorCode}/>
+                    <LongColorIcon color= {color.colorCode}/>
                   </TableCell>
                   <TableCell align="right">
                         <IconButton onClick={() => {

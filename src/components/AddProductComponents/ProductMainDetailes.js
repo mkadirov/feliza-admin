@@ -2,9 +2,11 @@ import React from 'react'
 import ImageContainer from './ImageContainer'
 import { Button, Grid, Typography } from '@mui/material'
 import ColorBox from './ColorBoxs'
+import CompatableProducts from './CompatableProducts'
+
 
 function ProductMainDetailes({colorList, imageList, handleImageChange, 
-    sizeDetailes, addBarcode, addQuantity, sizeList}) {
+    sizeDetailes, addBarcode, addQuantity, sizeList, compatibleProductId, setCompatibleProductId}) {
 
 
   return (
@@ -16,6 +18,7 @@ function ProductMainDetailes({colorList, imageList, handleImageChange,
                         return(
                             <div key={key}>
                                 <ImageContainer colorItem={colorItem} imageList={imageList} handleImageChange={handleImageChange}/>
+                                <CompatableProducts compatibleProductId= {compatibleProductId} setCompatibleProductId = {setCompatibleProductId} colorItem={colorItem}/>
                                 {
                                     sizeList.map(sizeItem => {
                                         const key = sizeItem + 'size'

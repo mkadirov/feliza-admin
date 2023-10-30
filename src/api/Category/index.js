@@ -34,11 +34,28 @@ const getAllCategories = async() => {
 const deleteCategory = async(id) => {
     try {
         const res = await axios.delete(apiUrl + 'categories/delete/' + id);
-        return {success: true, data: res.data}
+        if(res.status == 200) {
+          return {success: true, data: res.data}
+        } else {
+          return {success: false}
+        }
     } catch (error) {
-        console.log(error.message);
+        return {success: false}
     }
 }
 
+const editCategory = async(id, category) => {
+  try {
+    const res = await axios.put(apiUrl + 'categories/update/' + id, category);
+    if(res.status == 200) {
+      return {success: true, data: res.data}
+    } else {
+      return {success: false}
+    }
+  } catch (error) {
+    return {success: false}
+  }
+}
+
   
-export {addCategory, getAllCategories, deleteCategory}
+export {addCategory, getAllCategories, deleteCategory, editCategory}

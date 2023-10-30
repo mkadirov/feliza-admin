@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -9,14 +9,15 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { Box, Chip } from '@mui/material';
-import { categoryArray } from '../../data/CategotyList';
+import { getAllCategories } from '../../api/Category';
 
-const categories = categoryArray;
+
 
 export default function CategoryBox({categoryList, setCategoryList}) {
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [categories, setCategories] = useState([])
 
 
   const handleMenuItemClick = (event, categoryItem, index) => {
@@ -44,6 +45,16 @@ export default function CategoryBox({categoryList, setCategoryList}) {
     setOpen(false);
   };
 
+  useEffect(() => {
+    const fetchData = async() => {
+      const res = await getAllCategories();
+      if(res?.success) {
+        setCategories(res.data);
+      }
+    }
+    fetchData();
+  }, [])
+
   return (
     <div className="my-3">
         <p className="text-2xl mb-1">
@@ -53,11 +64,11 @@ export default function CategoryBox({categoryList, setCategoryList}) {
             <div className="flex-1 h-full pl-3 flex gap-2 items-center">
               {
                 categoryList.map(categoryItem => {
-                  const key = categoryItem.name + 'chip';
+                  const key = categoryItem.nameUZB + 'chip';
                   return (
                     <Chip
                       key={key}
-                      label= {categoryItem.name}
+                      label= {categoryItem.nameUZB}
                       variant='outlined'
                       onDelete={()=> deleteCategory(categoryItem)}
                     />
@@ -102,12 +113,12 @@ export default function CategoryBox({categoryList, setCategoryList}) {
                         <MenuList id="split-button-menu" autoFocusItem>
                           {categories.map((categoryItem, index) => (
                             <MenuItem
-                              key={categoryItem.name}
+                              key={categoryItem.id}
                               // selected={categoryList.some(item => item.id == categoryItem.id)}
                               onClick={(event) => handleMenuItemClick(event, categoryItem, index)}
                               disabled = {categoryList.some(item => item.id == categoryItem.id)}
                             >
-                              {categoryItem.name}
+                              {categoryItem.nameUZB}
                             </MenuItem>
                           ))}
                         </MenuList>

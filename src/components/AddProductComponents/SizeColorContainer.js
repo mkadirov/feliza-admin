@@ -50,11 +50,11 @@ function SizeColorContainer({colorList, colors, deleteColor, addColor, handleSiz
             
             </Grid>
             <Grid item xs={6}> 
-                <div className="flex-1 p-3 rounded-3xl border border-gray-400" style={{display: productType==1? 'none': 'block'}}>
+                <div className="flex-1 p-3 rounded-3xl border border-gray-400" >
                     <p className="text-2xl mt-3 mb-2">
                         Ölchamlar
                     </p>
-                    <div className="input-container " >
+                    <div className="input-container " style={{display: productType==1? 'none': 'flex'}}>
                         <input 
                             placeholder="O'lcham kriting" 
                             style={{flex: 1}} 
@@ -81,7 +81,7 @@ function SizeColorContainer({colorList, colors, deleteColor, addColor, handleSiz
                                             key={item} 
                                             variant='outlined' 
                                             label={item} 
-                                            onDelete={() => deleteSize(item)} />
+                                            onDelete={productType==1? undefined : () => deleteSize(item)} />
                                         </div>
                                     )
                                 })

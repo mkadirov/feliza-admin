@@ -27,7 +27,19 @@ body {
     border-radius: 15px;
 }
 
-.settings-input:focus {
+.dropdown-box {
+    height: 70%;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    border-radius: 15px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input:focus {
     outline: none;
 }
 

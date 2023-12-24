@@ -184,7 +184,7 @@ function AddProduct() {
                 brandId: brand.id,
                 categoryId: categoryIdList,
                 colorId: colorObj.id,
-                compatibleProductsId: compatibleProduct.groupId,
+                //compatibleProductsId: compatibleProduct.groupId,
                 productSizeVariantDtoList: productSizeDetailes,
             }
             console.log(product);
@@ -231,12 +231,17 @@ function AddProduct() {
         <div className="flex gap-2 w-full">
             <StyledButton className={productType == 1? 'activeButton' : 'inactiveButton'} 
                 onClick={() => {
+                    const newArray = ['Standard']
                     setProductType(1)
-                    setSizeList([])
+                    setSizeList(newArray)
                 }}>
                 Oddiy Mahsulot 
             </StyledButton>
-            <StyledButton className={productType == 2? 'activeButton' : 'inactiveButton'} onClick={() => setProductType(2)}>
+            <StyledButton className={productType == 2? 'activeButton' : 'inactiveButton'} 
+                onClick={() => {
+                    setProductType(2)
+                    setSizeList([])
+                }}>
                 Turkumli mahsulot
             </StyledButton>
             
@@ -251,7 +256,7 @@ function AddProduct() {
         <CategoryBox categoryList= {categoryList} setCategoryList= {setCategoryList}/>
 
         <div className="w-full flex gap-2 mt-3">
-            <div className="flex-1" style={{display: productType==2? 'none': 'block'}}>
+            {/* <div className="flex-1" style={{display: productType==2? 'none': 'block'}}>
                 <p className="text-2xl mt-3 mb-2">
                     Barcode *
                 </p>
@@ -265,7 +270,7 @@ function AddProduct() {
                         Generatsiya qilish
                     </Button>
                 </Box>
-            </div>
+            </div> */}
             <div className="flex-1">
                 <p className="text-2xl mt-3 mb-2">
                     Reference nomer *

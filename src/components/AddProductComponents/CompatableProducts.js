@@ -47,7 +47,6 @@ function CompatableProducts({compatibleProductId, setCompatibleProductId, colorI
                        value={objIndex>=0? compatibleProductId[objIndex].groupId: ''}
                        onChange={(e) => addCompatableProductId(e)}
                    />
-    
                    <Button onClick={createNewCompatableProduct}>
                       Generatsiya qilish
                    </Button>

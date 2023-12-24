@@ -9,7 +9,7 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { Box, Chip } from '@mui/material';
-import { getAllCategories } from '../../api/Category';
+import { getAllCategories, getSubCategories } from '../../api/Category';
 
 
 
@@ -47,7 +47,7 @@ export default function CategoryBox({categoryList, setCategoryList}) {
 
   useEffect(() => {
     const fetchData = async() => {
-      const res = await getAllCategories();
+      const res = await getSubCategories();
       if(res?.success) {
         setCategories(res.data);
       }
@@ -114,11 +114,10 @@ export default function CategoryBox({categoryList, setCategoryList}) {
                           {categories.map((categoryItem, index) => (
                             <MenuItem
                               key={categoryItem.id}
-                              // selected={categoryList.some(item => item.id == categoryItem.id)}
                               onClick={(event) => handleMenuItemClick(event, categoryItem, index)}
                               disabled = {categoryList.some(item => item.id == categoryItem.id)}
                             >
-                              {categoryItem.nameUZB}
+                              {categoryItem.nameUZB} - {categoryItem.parentCategoryUZ}
                             </MenuItem>
                           ))}
                         </MenuList>

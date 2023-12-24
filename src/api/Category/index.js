@@ -57,5 +57,32 @@ const editCategory = async(id, category) => {
   }
 }
 
+
+const getParentCategory = async() => {
+  try {
+    const res = await axios.get(apiUrl + 'categories/getParentCategories')
+    if(res.status == 200) {
+      return {success: true, data: res.data}
+    } else {
+      return {success: false}
+    }
+  } catch (error) {
+    return {success: false}
+  }
+}
+
+const getSubCategories = async() => {
+  try {
+    const res = await axios.get(apiUrl + 'categories/getSubCategories')
+    if(res.status == 200) {
+      return {success: true, data: res.data}
+    } else {
+      return {success: false}
+    }
+  } catch (error) {
+    return {success: false}
+  }
+}
+
   
-export {addCategory, getAllCategories, deleteCategory, editCategory}
+export {addCategory, getAllCategories, deleteCategory, editCategory, getParentCategory, getSubCategories}

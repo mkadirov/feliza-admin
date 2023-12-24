@@ -52,6 +52,7 @@ function HandelCategory({categories, setNewCategory}) {
         <TableHead className='bg-gray-300'>
           <TableRow>
             <TableCell>#</TableCell>
+            <TableCell >Main Category</TableCell>
             <TableCell >Name UZB</TableCell>
             <TableCell>Name RUS</TableCell>
             <TableCell align="right">Actions</TableCell>
@@ -67,6 +68,7 @@ function HandelCategory({categories, setNewCategory}) {
               <TableCell sx={{width: '10px', borderRight: '1px solid grey'}} component="th" scope="row">
                 {idx + 1}
               </TableCell>
+              <TableCell>{row.parentCategoryUZ}</TableCell>
               <TableCell>{row.nameUZB}</TableCell>
               <TableCell >{row.nameRUS}</TableCell>
               <TableCell align="right">

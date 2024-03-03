@@ -5,7 +5,15 @@ const apiUrl = 'https://felizabackend.de/api/'
 
 const addBrend = async(brend) => {
     try {
-      const res = await axios.post(apiUrl + 'brand/add', brend)
+      const token = localStorage.getItem('userToken');
+      console.log(token);
+      const res = await axios.post(apiUrl + 'brand/addBrand', brend, {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+      });
+      
       if(res.status == 200) {
         return {success: true, data: res.data}
       } else {
@@ -18,7 +26,7 @@ const addBrend = async(brend) => {
 
 const getAllBrends = async() => {
     try {
-        const res = await axios.get(apiUrl + 'brand');
+        const res = await axios.get(apiUrl + 'brand/getAllBrands');
         if(res.status == 200) {
             return {success: true, data: res.data}
         }

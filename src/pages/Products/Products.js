@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Search } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { getAllProducts } from '../../api/Product';
+import ProductMainCard from '../../components/Cards/ProductMainCard';
 
 
 function Products() {
@@ -13,6 +14,7 @@ function Products() {
     const [activePage, setActivePage] = useState(1)
     const navigate = useNavigate()
     const [products, setProducts] = useState([])
+    const [newProduct, setNewProduct] = useState('')
 
     
     const StyledChip = styled(Chip)({
@@ -26,20 +28,18 @@ function Products() {
     useEffect( () => {
         async function fetchData() {
             const res = await getAllProducts();
-            console.log(res);
             if(res.success) {
                 setProducts(res.data)
-                console.log(res.data);
             }
         }
         fetchData();
-    }, []);
+    }, [newProduct]);
   return (
     <MainLayout>
         <div className="mt-12 ">
 
             <div className="py-4 flex gap-2">
-                <StyledChip className={activePage == 1? 'activeChip' : 'inactiveChip'}  label='Barcha mahsulotlar(0)' onClick= {() => setActivePage(1)}/>
+                <StyledChip className={activePage == 1? 'activeChip' : 'inactiveChip'}  label={`Barcha mahsulotlar(${products.length})`} onClick= {() => setActivePage(1)}/>
                 <StyledChip className={activePage == 2? 'activeChip' : 'inactiveChip'}  label='Aktiv(0)' onClick= {() => setActivePage(2)}/>
                 <StyledChip className={activePage == 3? 'activeChip' : 'inactiveChip'}  label='Kam qolgan mahsulotlar(0)' onClick= {() => setActivePage(3)}/>
                 <StyledChip className={activePage == 4? 'activeChip' : 'inactiveChip'}  label='Tugagan mahsulotlar(0)' onClick= {() => setActivePage(4)}/>
@@ -56,7 +56,7 @@ function Products() {
                 </div>
                 <div className="rounded-md bg-gray-300 h-full flex " >
                     <Button>
-                        Filter
+                        Qidirish
                     </Button>
                 </div>
                 <Button 
@@ -68,21 +68,12 @@ function Products() {
                 </Button>
             </div>
 
-            <Grid container  className="mt-4">
+            <Grid container  sx={{marginTop: 3}}  spacing={2}>
                 {
                     products?.map((item, index) => {
-                        console.log(item);
                         return(
-                            <Grid item xs= {3} spacing={2} key={index} className="mt-2">
-                                <div className='image-box'>
-                                    <img src={item.productImagesList[0]?.url} alt="" />
-                                </div>
-                                <p>{item.product.compatibleProducts}</p>
-                                <p>Mahsulot IDsi: {item.product.id}</p>
-                                <p>Price: {item.product.price}</p>
-                                <p>Name: {item.product.nameUZB}</p>
-                                <p>RefNumber: {item.product.referenceNumber}</p>
-                                
+                            <Grid item xs= {6} md= {4} lg= {4} xl= {3} key={index} className="mt-2">
+                                <ProductMainCard item={item} setNewProduct = {setNewProduct}/>
                             </Grid>
                         )
                     })

@@ -16,6 +16,7 @@ function NameDescription({productNameUz, setProductNameUz, descriptionRu,
                 type="text" 
                 className='main-input'
                 value={productNameUz}
+                maxLength="18"
                 onChange={(e) => setProductNameUz(e.target.value)}
             />
         </div>
@@ -28,6 +29,7 @@ function NameDescription({productNameUz, setProductNameUz, descriptionRu,
                 style={{flex: 1}} 
                 type="text" 
                 className='main-input'
+                maxLength="18"
                 value={productNameRu}
                 onChange={(e) => setProductNameRu(e.target.value)}
             />

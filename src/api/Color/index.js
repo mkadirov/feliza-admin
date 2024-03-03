@@ -5,7 +5,14 @@ const apiUrl = 'https://felizabackend.de/api/'
 
 const addColor = async (color) => {
     try {
-        const res = await axios.post(apiUrl + 'color/add', color)
+        const token = localStorage.getItem('userToken');
+        console.log(token);
+        const res = await axios.post(apiUrl + 'color/addColor', color, {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
         if(res.status == 200) {
             return {success: true, data: res.data}
         } else {
@@ -18,7 +25,7 @@ const addColor = async (color) => {
 
 const getAllColors = async() => {
     try {
-        const res = await axios.get(apiUrl + 'color');
+        const res = await axios.get(apiUrl + 'color/getAllColors');
         if(res.status == 200) {
             return {success: true, data: res.data}
         }
@@ -29,7 +36,14 @@ const getAllColors = async() => {
 
 const deleteColor = async(id) => {
     try {
-        const res = await axios.delete(apiUrl + 'color/' + id);
+        const token = localStorage.getItem('userToken');
+        console.log(token);
+        const res = await axios.delete(apiUrl + 'color/deleteColor/' + id, {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
         if(res.status == 200) {
             return {success: true, data: res.data}
         }else {
@@ -45,7 +59,14 @@ const editColor = async(id, color) => {
     try {
         console.log(color);
         console.log(id);
-        const res = await axios.put(apiUrl + 'color/' + id, color);
+        const token = localStorage.getItem('userToken');
+        console.log(token);
+        const res = await axios.put(apiUrl + 'color/deleteColor/' + id, color,  {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
         if(res.status == 200) {
             return {success: true, data: res.data}
         }else {

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import MainLayout from './components/Layout/MainLayout';
 import LoginPage from './pages/Login/LoginPage';
@@ -9,6 +9,7 @@ import Customers from './pages/Customers/Customers';
 import Settings from './pages/Settings/Settings';
 import Orders from './pages/Orders/Orders';
 import AddProduct from './pages/AddProduct/AddProduct';
+import Interface from './pages/Interface/Interface';
 
 
 function App() {
@@ -17,20 +18,26 @@ function App() {
   
   return (
     <>
-      
       <BrowserRouter>
         <Routes>
-          <Route path='/' element= {<LoginPage setIsLogin= {setIsLogin}/>}/>
-          {
-            true && <><Route path='/home' element={<HomePage />} />
-            <Route path='/products' element = {<Products/>}/>
-            <Route path='/customers' element= {<Customers/>}/>
-            <Route path='/settings' element ={<Settings/>}/>
-            <Route path='/orders' element = {<Orders/>}/>
-            <Route path='/addproduct' element = {<AddProduct/>}/>
+          <Route path="/" element={<LoginPage setIsLogin={setIsLogin} />} />
+          {isLogin ? (
+            <>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/customers" element={<Customers />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/addproduct" element={<AddProduct />}/>
+              <Route path="/interface" element={<Interface />}/>
             </>
-
-          }
+          ) : (
+            // Redirect to login page if not logged in
+            <Route
+              path="/*"
+              element={<Navigate to="/" />}
+            />
+          )}
         </Routes>
       </BrowserRouter>
     </>

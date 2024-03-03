@@ -9,7 +9,7 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { Box, Chip } from '@mui/material';
-import { getAllCategories, getSubCategories } from '../../api/Category';
+import { getAllCategories, getParentCategory, getSubCategories, getSubCategoriesByParent } from '../../api/Category';
 
 
 
@@ -17,12 +17,17 @@ export default function CategoryBox({categoryList, setCategoryList}) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const [selectedIndex, setSelectedIndex] = useState(1);
-  const [categories, setCategories] = useState([])
+  const [parentCategory, setParentCategory] = useState(0)
+  const [list, setList] = useState([])
+  const [parentCategoryList, setParentCategoryList] = useState([])
 
 
   const handleMenuItemClick = (event, categoryItem, index) => {
     setSelectedIndex(index);
     const isExists = categoryList.some(item => item.id == categoryItem.id);
+    if(parentCategory == 0) {
+      setParentCategory(categoryItem.nameUZB)
+    }
     if(!isExists) {
       setCategoryList([...categoryList, categoryItem])
     }
@@ -30,7 +35,15 @@ export default function CategoryBox({categoryList, setCategoryList}) {
   };
 
   function deleteCategory(category) {
-    setCategoryList(categoryList.filter(item => item.id != category.id))
+    // Check if the index is 0, and set categoryList to an empty array
+    if (categoryList.findIndex(item => item.id === category.id) === 0) {
+      setCategoryList([]);
+      setParentCategory(0);
+      setList(parentCategoryList);
+    } else {
+      // Filter out the specified category
+      setCategoryList(categoryList.filter(item => item.id !== category.id));
+    }
   }
 
   const handleToggle = () => {
@@ -41,19 +54,33 @@ export default function CategoryBox({categoryList, setCategoryList}) {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   };
 
   useEffect(() => {
     const fetchData = async() => {
-      const res = await getSubCategories();
+      const res = await getParentCategory();
       if(res?.success) {
-        setCategories(res.data);
+        setList(res.data);
+        setParentCategoryList(res.data)
       }
     }
     fetchData();
   }, [])
+
+  useEffect(() => {
+    const fetchData = async() => {
+      const res = await getSubCategoriesByParent(parentCategory);
+      if(res?.success) {
+        setList(res.data);
+      }
+    }
+    if(parentCategory !== 0) {
+      fetchData();
+    }
+  }, [parentCategory])
+  
+  
 
   return (
     <div className="my-3">
@@ -111,13 +138,13 @@ export default function CategoryBox({categoryList, setCategoryList}) {
                     <Paper>
                       <ClickAwayListener onClickAway={handleClose}>
                         <MenuList id="split-button-menu" autoFocusItem>
-                          {categories.map((categoryItem, index) => (
+                          {list.map((categoryItem, index) => (
                             <MenuItem
                               key={categoryItem.id}
                               onClick={(event) => handleMenuItemClick(event, categoryItem, index)}
                               disabled = {categoryList.some(item => item.id == categoryItem.id)}
                             >
-                              {categoryItem.nameUZB} - {categoryItem.parentCategoryUZ}
+                              {categoryItem.nameUZB}
                             </MenuItem>
                           ))}
                         </MenuList>

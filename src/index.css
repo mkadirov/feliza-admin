@@ -44,9 +44,14 @@ input:focus {
 }
 
 .input-container {
-    @apply w-full  overflow-hidden flex items-center bg-gray-300;
+    @apply w-full  overflow-hidden flex items-center gap-2 bg-gray-300;
     height: 60px;
-    border-radius: 20px;
+    border-radius: 10px;
+}
+
+.input-container-big {
+    @apply w-full overflow-hidden  items-center bg-gray-300; 
+    border-radius: 10px;
 }
 
 .image-container {
@@ -63,8 +68,8 @@ input:focus {
 }
 
 .image-box {
-    width: 200px;
-    height: 200px;
+    width: 320px;
+    height: 440px;
 }
 
 img {

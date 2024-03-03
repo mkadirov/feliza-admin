@@ -2,7 +2,7 @@ import { Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, Tab
 import React, { useState } from 'react'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteBrand, editBrand } from '../../api/Brand';
+import { deleteBrand, editBrand } from '../../../api/Brand';
 
 function HandelBrand({brends, setLastAction}) {
 
@@ -61,7 +61,7 @@ function HandelBrand({brends, setLastAction}) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {brends.map((row, idx) => (
+              {brends?.map((row, idx) => (
                 <TableRow
                   key={row.id}
                   sx={{ '&:last-child td': { border: 0 } }}

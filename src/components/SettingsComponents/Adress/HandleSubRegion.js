@@ -1,16 +1,17 @@
 import { Box, Button, Grid, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { deleteCategory, editCategory } from '../../api/Category'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import {deleteSubRegion, editSubRegion, getParentRegionById } from '../../../api/Address/Region';
+import MainRegionDropDown from './MainRegionDropDown';
 
-function HandelCategory({categories, setNewCategory}) {
-
+function HandleSubRegion({setNewSubRegion, parentRegion, setParentRegion, subRegions, regions}) {
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
-    const [nameUz, setNameUz] = useState('');
-    const [nameRu, setNameRu] = useState('');
-    const [categoryId, setCategoryId] = useState(0)
+    const [name, setName] = useState('');
+    const [postCode, setPostCode] = useState('');
+    const [regionId, setRegionId] = useState(0)
+    
 
     const style = {
         position: 'absolute',
@@ -24,25 +25,32 @@ function HandelCategory({categories, setNewCategory}) {
         p: 4,
       };
 
-    const deleteCategoryById = async(id) => {
-        const res = await deleteCategory(id);
-        setNewCategory(id)
+    const deleteSubRegionById = async(id) => {
+        const res = await deleteSubRegion(id);
+        if(res.success) {
+          console.log('ishladi');
+            setNewSubRegion(id)
+        }
     }
 
-    const editCategoryById = async() => {
-        const category = {
-            nameUZB: nameUz,
-            nameRUS: nameRu
+    const editSubRegionById = async() => {
+        const region = {
+            name: name,
+            postCode: postCode,
+            regionId: parentRegion.id
         }
-        const res = await editCategory(categoryId, category);
+        const res = await editSubRegion(regionId, region);
         if(res.success) {
-            setNewCategory(nameUz + nameRu)
-            setNameRu('');
-            setNameUz('');
-            setCategoryId(0);
+            setNewSubRegion(name + postCode)
+            setName('');
+            setPostCode('');
+            setRegionId(0);
+            setParentRegion('')
             setOpen(false);
+            
         }
     }
+
     
   return (
     <div className="my-5">
@@ -52,15 +60,14 @@ function HandelCategory({categories, setNewCategory}) {
         <TableHead className='bg-gray-300'>
           <TableRow>
             <TableCell>#</TableCell>
-            <TableCell >Main Category</TableCell>
-            <TableCell >Name UZB</TableCell>
-            <TableCell>Name RUS</TableCell>
+            <TableCell >Viloyat</TableCell>
+            <TableCell >Tuman</TableCell>
+            <TableCell >Postkod</TableCell>
             <TableCell align="right">Actions</TableCell>
-            
           </TableRow>
         </TableHead>
         <TableBody>
-          {categories.map((row, idx) => (
+          {Array.isArray(subRegions) && subRegions.map((row, idx) => (
             <TableRow
               key={row.id}
               sx={{ '&:last-child td': { border: 0 } }}
@@ -68,22 +75,24 @@ function HandelCategory({categories, setNewCategory}) {
               <TableCell sx={{width: '10px', borderRight: '1px solid grey'}} component="th" scope="row">
                 {idx + 1}
               </TableCell>
-              <TableCell>{row.parentCategoryUZ}</TableCell>
-              <TableCell>{row.nameUZB}</TableCell>
-              <TableCell >{row.nameRUS}</TableCell>
+              <TableCell>{row.region.name}</TableCell>
+              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.postCode}</TableCell>
               <TableCell align="right">
                 <IconButton
                     onClick={() => {
+                      console.log(row);
                         setOpen(true);
-                        setNameUz(row.nameUZB);
-                        setNameRu(row.nameRUS);
-                        setCategoryId(row.id);
+                        setName(row.name);
+                        setPostCode(row.postCode);
+                        setRegionId(row.id);
+                        setParentRegion(row.region)
                     }}
                 >
                     <EditIcon/>
                 </IconButton>
 
-                <IconButton onClick={() => deleteCategoryById(row.id)}>
+                <IconButton onClick={() => deleteSubRegionById(row.id)}>
                     <DeleteIcon/>
                 </IconButton>
               </TableCell>
@@ -102,43 +111,45 @@ function HandelCategory({categories, setNewCategory}) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Kategoriya özgartirish
+                  Region özgartirish
                 </Typography>
 
                 <div className="my-5">
+                    <div className="dropdown-box">
+                       <input 
+                            type="text" 
+                            placeholder='Main Region'
+                            value={parentRegion.name}
+                            onChange={(e) => setParentRegion(e.target.value)}
+                            readOnly
+                        
+                        />
+                        <MainRegionDropDown setParentRegion = {setParentRegion} regions = {regions}/>
+                    </div>
                     <TextField 
                         id="outlined-basic" 
-                        label="Name Uz" 
+                        label="Tuman" 
                         variant="outlined" 
                         size='small' 
                         fullWidth
-                        value={nameUz}
-                        onChange={(e) => setNameUz(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                     />
                     <TextField 
                         sx={{my: 2}} 
                         id="outlined-basic" 
-                        label="Name Ru" 
+                        label="Postkod" 
                         variant="outlined" 
                         fullWidth 
                         size='small' 
-                        value={nameRu}
-                        onChange={(e) => setNameRu(e.target.value)}
+                        value={postCode}
+                        onChange={(e) => setPostCode(e.target.value)}
                     />
-                    {/* <TextField 
-                        id="outlined-basic" 
-                        label="Rang kodi"
-                        variant="outlined" 
-                        size='small' 
-                        fullWidth
-                        value={colorCode}
-                        onChange={(e) => setColorCode(e.target.value)}
-                    /> */}
                     <Button 
                         sx={{mt: 2}} 
                         variant='contained' 
                         fullWidth
-                        onClick={editCategoryById}
+                        onClick={editSubRegionById}
                     >
                         Edit
                     </Button>
@@ -149,4 +160,4 @@ function HandelCategory({categories, setNewCategory}) {
   )
 }
 
-export default HandelCategory
+export default HandleSubRegion

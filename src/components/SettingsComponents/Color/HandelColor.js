@@ -2,8 +2,8 @@ import { Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, Tab
 import React, { useState } from 'react'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColor } from '../../api/Color';
-import LongColorIcon from '../Global/LongColorIcon';
+import { editColor } from '../../../api/Color';
+import LongColorIcon from '../../Global/LongColorIcon';
 
 function HandelColor({colors, deleteColorById, setLastAction}) {
 
@@ -56,13 +56,13 @@ function HandelColor({colors, deleteColorById, setLastAction}) {
               <TableRow>
               <TableCell>#</TableCell>
                 <TableCell>Name UZB</TableCell>
-                <TableCell >Name RUS</TableCell>
+                <TableCell>Name RUS</TableCell>
                 <TableCell align="start">Icon</TableCell>
                 <TableCell align="right">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {colors.map((color, idx) => (
+              {colors?.map((color, idx) => (
                 <TableRow
                   key={color.id}
                   sx={{ '&:last-child td': { border: 0 } }}

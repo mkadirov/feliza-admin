@@ -1,4 +1,4 @@
-import {BarChart, QrCodeScanner, EmojiPeople, Settings, ShoppingBag} from '@mui/icons-material'
+import {BarChart, QrCodeScanner, EmojiPeople, Settings, ShoppingBag, ColorLens} from '@mui/icons-material'
 
 export const navList = [
     {
@@ -17,7 +17,7 @@ export const navList = [
         icon: <ShoppingBag/>
     },
     {
-        title: 'Mijozlar',
+        title: 'Foydalanuvchilar',
         path: '/customers',
         icon: <EmojiPeople/>
     },
@@ -26,8 +26,10 @@ export const navList = [
         path: '/settings',
         icon: <Settings/>
     },
-    
-
-
+    {
+        title: 'Interface',
+        path: '/interface',
+        icon: <ColorLens/>
+    },
 ]
 

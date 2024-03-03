@@ -3,23 +3,29 @@ import axios from 'axios'
 const apiUrl = 'https://felizabackend.de/api/'
 
 const addCategory = async(category) => {
-  
     try {
-      const res = await axios.post(apiUrl + 'categories/add', category)
+      const token = localStorage.getItem('userToken');
+      console.log(token);
+      const res = await axios.post(apiUrl + 'categories/addCategory', category, {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+      });
       if(res.status == 200) {
         return {success: true, data: res.data}
       }else {
         return {success: false, message: res.message}
       }
     } catch (error) {
-       console.log(error.message);
+       return {success: false, message: error.message}
     }
   }
 
   
 const getAllCategories = async() => {
     try {
-      const res = await axios.get(apiUrl + 'categories')
+      const res = await axios.get(apiUrl + 'categories/getAllCategories')
       if(res.status == 200) {
         return {success: true, data: res.data}
       } else {
@@ -33,7 +39,14 @@ const getAllCategories = async() => {
 
 const deleteCategory = async(id) => {
     try {
-        const res = await axios.delete(apiUrl + 'categories/delete/' + id);
+      const token = localStorage.getItem('userToken');
+      console.log(token);
+      const res = await axios.delete(apiUrl + 'categories/deleteCategory/' + id, {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+      });
         if(res.status == 200) {
           return {success: true, data: res.data}
         } else {
@@ -46,7 +59,15 @@ const deleteCategory = async(id) => {
 
 const editCategory = async(id, category) => {
   try {
-    const res = await axios.put(apiUrl + 'categories/update/' + id, category);
+    const token = localStorage.getItem('userToken');
+      console.log(token);
+      console.log(category);
+      const res = await axios.put(apiUrl + 'categories/editCategory/' + id, category, {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+      });
     if(res.status == 200) {
       return {success: true, data: res.data}
     } else {
@@ -84,5 +105,19 @@ const getSubCategories = async() => {
   }
 }
 
+const getSubCategoriesByParent = async(parent) => {
+
+  try {
+    const res = await axios.get('https://felizabackend.de/api/categories/getSubCategoriesByParent/' + parent)
+    if(res.status == 200) {
+      return {success: true, data: res.data}
+    } else {
+      return {success: false}
+    }
+  } catch (error) {
+    return {success: false}
+  }
+}
+
   
-export {addCategory, getAllCategories, deleteCategory, editCategory, getParentCategory, getSubCategories}
+export {addCategory, getAllCategories, deleteCategory, editCategory, getParentCategory, getSubCategories, getSubCategoriesByParent}

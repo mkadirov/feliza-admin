@@ -151,7 +151,7 @@ function AddProduct() {
 
 
    function  createProductList() {
-        
+        let counter = 0;
         colorList.map(colorItem => {
             let productImageList = [];
             let productSizeDetailes = [];
@@ -193,13 +193,34 @@ function AddProduct() {
             const fetchData = async() => {
                 const res = await createProduct(product, productImageList)
                 if(res?.success) {
+                    
                     console.log('Mahsulot yaratildi');
+                    
                 } else {
                     console.log('Xatolik!!!!!!!!!!!!!!!');
                 }
             }
             fetchData();
         });
+
+        refreshForm();
+    }
+
+    const refreshForm = () => {
+
+        setProductNameUz('');
+        setDescriptionRu('');
+        setDescriptionUz('');
+        setDescriptionRu('');
+        setRefNumber('');
+        setImportPrice('');
+        setPrice('');
+        setBrand('');
+        setCategoryList([]);
+        setColorList([]);
+        setImageList([]);
+        setSizeDetailes([]);
+        setSizeList([])
     }
     
 

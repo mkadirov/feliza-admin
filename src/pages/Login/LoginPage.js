@@ -1,25 +1,30 @@
 import { Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../../api/Login';
 
 function LoginPage({setIsLogin}) {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const [message, setMessage] = useState('')
 
-    function checkUser() {
-        if(login == 'admin' && password == '123') {
+    const checkUser = async() =>  {
+        const userDetailes = {
+            phoneNumber: login,
+            password: password
+        }
+        const res = await loginUser(userDetailes)
+
+        if(res.success) {
             setIsLogin(true)
             navigate('/home')
-            
-            
+            setLogin('')
+            setPassword('')
         } else {
-            alert("Login yoki parol notög'ri kritildi")
-        }
-
-        setLogin('')
-        setPassword('')
+            setMessage(message)
+        } 
     }
 
 
@@ -49,6 +54,7 @@ function LoginPage({setIsLogin}) {
                 label="Password" 
                 variant="outlined" 
                 fullWidth
+                type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 />
@@ -65,8 +71,8 @@ function LoginPage({setIsLogin}) {
             </Button>
             
             
-            <p className="text-end">
-                Parolni unuttingizni?
+            <p className="text-end text-red-500">
+                {message}
             </p>
             
             </div>

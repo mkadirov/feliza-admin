@@ -36,7 +36,7 @@ function MainLayout({children, props}) {
   const list = navList;
 
   const StyledListItem = styled(ListItem)(({theme}) => ({
-    marginBottom: '10px',
+    // marginBottom: '10px',
     '&:hover ,&.active': {
       backgroundColor: grey[400],
       color: 'white'
@@ -51,14 +51,17 @@ function MainLayout({children, props}) {
       <Divider />
       <List>
         {list.map((item) => (
-          <StyledListItem onClick={() => navigate(item.path)} className={currentPath.startsWith(item.path)? 'active': 'inactive'} key={item.title} disablePadding>
+          <Box>
+            <StyledListItem onClick={() => navigate(item.path)} className={currentPath.startsWith(item.path)? 'active': 'inactive'} key={item.title} disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 {item.icon}
               </ListItemIcon>
               <ListItemText primary={item.title} />
             </ListItemButton>
-          </StyledListItem>
+            </StyledListItem>
+            <Divider/>
+          </Box>
         ))}
       </List>
       
@@ -80,7 +83,7 @@ function MainLayout({children, props}) {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar display='flex' justifyContent='space-between' >
+        <Toolbar display='flex'>
             <Box flex={1}>
             <IconButton
               color="inherit"
@@ -92,7 +95,7 @@ function MainLayout({children, props}) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Responsive drawer
+              Admin dashbord
             </Typography>
             </Box>
 
@@ -138,7 +141,7 @@ function MainLayout({children, props}) {
       <Toolbar/>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, paddingRight: 5, paddingTop: 4, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         
         {children}

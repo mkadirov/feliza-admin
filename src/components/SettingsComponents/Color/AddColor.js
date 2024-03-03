@@ -1,7 +1,7 @@
 import { Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { addColor, deleteColor, getAllColors } from '../../api/Color'
-import SmallColorIcon from '../Global/SmallColorIcon'
+import { addColor, deleteColor, getAllColors } from '../../../api/Color'
+import SmallColorIcon from '../../Global/SmallColorIcon'
 import HandelColor from './HandelColor'
 
 

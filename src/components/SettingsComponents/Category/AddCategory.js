@@ -1,7 +1,7 @@
 import { Button, Divider, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import HandelCategory from './HandelCategory'
-import { addCategory, getAllCategories } from '../../api/Category'
+import { addCategory, getAllCategories } from '../../../api/Category'
 import MainCategoryDropDown from './MainCategoryDropDown'
 
 function AddCategory() {

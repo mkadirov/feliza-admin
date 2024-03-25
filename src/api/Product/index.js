@@ -15,7 +15,6 @@ const createProduct = async(product, imageFiles) => {
 
     try {
       const token = localStorage.getItem('userToken');
-      console.log(token);
       const response = await axios.post(apiUrl + 'addProduct', formData, {
         headers: {
            'Content-Type': 'multipart/form-data',
@@ -26,11 +25,11 @@ const createProduct = async(product, imageFiles) => {
       if(response.status == 200) {
         return {success: true, data: response.data}
       }else {
-        return {success: false}
+        return {success: false, message: response.message}
       }
     } catch (error) {
-      console.error('Error sending the request:', error);
-      return {success: false}
+      
+      return {success: false, message: error}
     }
 }
 
@@ -65,7 +64,35 @@ const deleteProduct = async(id) => {
   }
 }
 
+const getProductByID = async(id) => {
+  try {
+      const res = await axios.get(apiUrl + 'getProductById/' + id);
+      if(res.status == 200) {
+          return {success: true, data: res.data}
+          
+      } else {
+          return {success: false}
+      }
+  } catch (error) {
+      return {success: false}
+  }
+}
+
+const getProductByRefNumber = async(refNumber) => {
+  try {
+    const res = await axios.get(apiUrl + 'getProductsByReferenceNumber/' + refNumber);
+    if(res.status == 200) {
+        return {success: true, data: res.data}
+        
+    } else {
+        return {success: false, message: 'res Error'}
+    }
+  } catch (error) {
+      return {success: false, message: error}
+  }
+}
 
 
 
-export {createProduct, getAllProducts, deleteProduct}
+
+export {createProduct, getAllProducts, deleteProduct, getProductByID, getProductByRefNumber}

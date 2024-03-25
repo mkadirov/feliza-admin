@@ -11,6 +11,7 @@ import { createProduct } from '../../api/Product';
 import { getAllColors } from '../../api/Color';
 import BrandPriceContainer from '../../components/AddProductComponents/BrandPriceContainer';
 import NameDescription from '../../components/AddProductComponents/NameDescription';
+import RefNumber from '../../components/AddProductComponents/RefNumber';
 
 function AddProduct() {
     const navigate = useNavigate()
@@ -30,9 +31,11 @@ function AddProduct() {
     const [brand, setBrand] = useState('');
     const [price, setPrice] = useState('');
     const [importPrice, setImportPrice] = useState('');
-    const [compatibleProductId, setCompatibleProductId] = useState([]);
+    const [backUpList, setBackUpList] = useState([]);
     const [descriptionUz, setDescriptionUz] = useState('');
     const [descriptionRu, setDescriptionRu] = useState('');
+    const [refreshCategory, setRefreshCategory] = useState(0)
+    const [colorListRefresh, setColorListRefresh] = useState([])
 
 
     const StyledButton = styled(Box)(({theme}) => ({
@@ -117,7 +120,12 @@ function AddProduct() {
       
         colorList.forEach((colorItem) => {
           sizeList.forEach((sizeItem) => {
-            newDetailes.push({ color: colorItem, size: sizeItem, barCode: '', quantity: '' });
+            const tempSizeDetail = backUpList.find(item => item.color == colorItem && item.size == sizeItem);
+            if(tempSizeDetail) {
+                newDetailes.push(tempSizeDetail)
+            } else {
+                newDetailes.push({ color: colorItem, size: sizeItem, barCode: '', quantity: '' });
+            }
           });
         });
         setSizeDetailes(newDetailes); 
@@ -131,27 +139,51 @@ function AddProduct() {
     
     function addBarcode(e, color, s) {
         const barCode = e.target.value       
-        const newList = [...sizeDetailes];
-        const sizeIndex = newList.findIndex(item => item.color == color && item.size == s)
-        if (sizeIndex !== -1) {
-            newList[sizeIndex].barCode = barCode; 
-            setSizeDetailes(newList);
-        }    
+        // const newList = [...sizeDetailes];
+        // const sizeIndex = newList.findIndex(item => item.color == color && item.size == s)
+        // if (sizeIndex !== -1) {
+        //     newList[sizeIndex].barCode = barCode; 
+        //     setSizeDetailes(newList);
+        // } 
+        setSizeDetailes(prevData => prevData.map(item =>
+                item.color == color && item.size == s ? { ...item, barCode: barCode } : item
+            )
+          );   
+    }
+    function addGeneretedBarcode(barCode, color, s) {
+             
+        // const newList = [...sizeDetailes];
+        // const sizeIndex = newList.findIndex(item => item.color == color && item.size == s)
+        // if (sizeIndex !== -1) {
+        //     newList[sizeIndex].barCode = barCode; 
+        //     setSizeDetailes(newList);
+        // }  
+        
+        setSizeDetailes(prevData => prevData.map(item =>
+                item.color == color && item.size == s ? { ...item, barCode: barCode } : item
+            )
+          );
     }
 
     function addQuantity(e, color, s) {
         const quantity = e.target.value 
-        const newList = [...sizeDetailes];
-        const sizeIndex = newList.findIndex(item => item.color == color && item.size == s)
-        if (sizeIndex !== -1 && quantity >= 0) {
-            newList[sizeIndex].quantity = quantity; 
-            setSizeDetailes(newList);
-        }
+        // const newList = [...sizeDetailes];
+        // const sizeIndex = newList.findIndex(item => item.color == color && item.size == s)
+        // if (sizeIndex !== -1 && quantity >= 0) {
+        //     newList[sizeIndex].quantity = quantity; 
+        //     setSizeDetailes(newList);
+        // }
+
+        setSizeDetailes(prevData => prevData.map(item =>
+                item.color == color && item.size == s ? { ...item, quantity: quantity } : item
+            )
+          );
     }
 
 
    function  createProductList() {
         let counter = 0;
+        setBackUpList(sizeDetailes);
         colorList.map(colorItem => {
             let productImageList = [];
             let productSizeDetailes = [];
@@ -170,7 +202,6 @@ function AddProduct() {
 
             const colorObj = colors.find(item => item.colorCode == colorItem)
             const categoryIdList = categoryList.map(item => item.id)
-            const compatibleProduct = compatibleProductId.find(item => item.color == colorItem)
 
             const product = {
                 nameUZB: productNameUz,
@@ -184,7 +215,6 @@ function AddProduct() {
                 brandId: brand.id,
                 categoryId: categoryIdList,
                 colorId: colorObj.id,
-                //compatibleProductsId: compatibleProduct.groupId,
                 productSizeVariantDtoList: productSizeDetailes,
             }
             console.log(product);
@@ -193,7 +223,6 @@ function AddProduct() {
             const fetchData = async() => {
                 const res = await createProduct(product, productImageList)
                 if(res?.success) {
-                    
                     console.log('Mahsulot yaratildi');
                     
                 } else {
@@ -205,22 +234,27 @@ function AddProduct() {
 
         refreshForm();
     }
+    
+    
 
     const refreshForm = () => {
-
-        setProductNameUz('');
-        setDescriptionRu('');
-        setDescriptionUz('');
-        setDescriptionRu('');
-        setRefNumber('');
-        setImportPrice('');
-        setPrice('');
-        setBrand('');
-        setCategoryList([]);
-        setColorList([]);
-        setImageList([]);
-        setSizeDetailes([]);
-        setSizeList([])
+        console.log(colorListRefresh);
+        setColorList(prev => prev.filter(item => !colorListRefresh.includes(item)))
+        // setProductNameUz('');
+        // setProductNameRu('');
+        // setDescriptionUz('');
+        // setDescriptionRu('');
+        // setRefNumber('');
+        // setImportPrice('');
+        // setPrice('');
+        // setBrand('');
+        // setCategoryList([]);
+        // setColorList([]);
+        // setImageList([]);
+        // setSizeDetailes([]);
+        // setSizeList([])
+        // setRefreshCategory(prev => prev + 1);
+        
     }
     
 
@@ -274,43 +308,9 @@ function AddProduct() {
 
 
 
-        <CategoryBox categoryList= {categoryList} setCategoryList= {setCategoryList}/>
+        <CategoryBox categoryList= {categoryList} setCategoryList= {setCategoryList} refreshCategory = {refreshCategory}/>
 
-        <div className="w-full flex gap-2 mt-3">
-            {/* <div className="flex-1" style={{display: productType==2? 'none': 'block'}}>
-                <p className="text-2xl mt-3 mb-2">
-                    Barcode *
-                </p>
-                <Box className="input-container "  >
-                    <input 
-                        placeholder='Reference number kriting' 
-                        style={{flex: 1}} type="text" 
-                        className='main-input'
-                    />
-                    <Button>
-                        Generatsiya qilish
-                    </Button>
-                </Box>
-            </div> */}
-            <div className="flex-1">
-                <p className="text-2xl mt-3 mb-2">
-                    Reference nomer *
-                </p>
-                <div className="input-container " >
-                    <input 
-                        placeholder='Mahsulot nomini kriting' 
-                        style={{flex: 1}} 
-                        type="text" 
-                        className='main-input'
-                        value={refNumber}
-                        onChange={(e) => setRefNumber(e.target.value)}
-                    />
-                    <Button>
-                        Generatsiya qilish
-                    </Button>
-                </div>
-            </div>
-        </div>
+        <RefNumber refNumber={refNumber} setRefNumber={setRefNumber}/>
 
         
         <BrandPriceContainer brand = {brand} setBrand = {setBrand} price = {price} setPrice = {setPrice}  
@@ -326,7 +326,7 @@ function AddProduct() {
 
         <ProductMainDetailes colorList={colorList} imageList= {imageList} 
             handleImageChange={handleImageChange} sizeDetailes={sizeDetailes} addBarcode={addBarcode}
-            addQuantity={addQuantity} sizeList={sizeList} compatibleProductId= {compatibleProductId} setCompatibleProductId = {setCompatibleProductId} 
+            addQuantity={addQuantity} sizeList={sizeList} addGeneretedBarcode = {addGeneretedBarcode}
         />
 
         <Divider/>

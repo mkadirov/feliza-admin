@@ -50,9 +50,14 @@ function MainLayout({children, props}) {
       </Toolbar>
       <Divider />
       <List>
-        {list.map((item) => (
+        {list.map((item, idx) => (
           <Box>
-            <StyledListItem onClick={() => navigate(item.path)} className={currentPath.startsWith(item.path)? 'active': 'inactive'} key={item.title} disablePadding>
+            <StyledListItem
+              onClick={() => navigate(item.path)} 
+              className={currentPath.startsWith(item.path)? 'active': 'inactive'} 
+              key={item.title + idx} 
+              disablePadding
+            >
             <ListItemButton>
               <ListItemIcon>
                 {item.icon}

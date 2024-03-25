@@ -10,7 +10,7 @@ import { deleteProduct } from '../../api/Product';
 function ProductMainCard({item, setNewProduct}) {
 
   const deleteProductById = async() => {
-    const res = await deleteProduct(item.product.id)
+    const res = await deleteProduct(item.id)
 
     if(res.success) {
       console.log('Mahsulot öchirildi');
@@ -20,22 +20,22 @@ function ProductMainCard({item, setNewProduct}) {
 
   return (
     <Card sx={{ maxWidth: 320 }}>
-      <CardActionArea>
+      
         <div className='image-box'>
-            <img src={item.productImagesList[0]?.url} alt="" />
+            <img src={item.productImages[0]?.url} alt="" />
         </div>
         <CardContent>
           <Typography gutterBottom variant="h7" component="div">
-            {item.product.nameUZB}
+            {item.nameUZB}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            ID: {item.product.id}
+            ID: {item.id}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Ref: {item.product.referenceNumber}
+            Ref: {item.referenceNumber}
           </Typography>
         </CardContent>
-      </CardActionArea>
+      
 
       <Box>
         <IconButton onClick={deleteProductById}>

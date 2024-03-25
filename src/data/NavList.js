@@ -1,4 +1,4 @@
-import {BarChart, QrCodeScanner, EmojiPeople, Settings, ShoppingBag, ColorLens} from '@mui/icons-material'
+import {BarChart, QrCodeScanner, EmojiPeople, Settings, ShoppingBag, ColorLens, Percent} from '@mui/icons-material'
 
 export const navList = [
     {
@@ -30,6 +30,11 @@ export const navList = [
         title: 'Interface',
         path: '/interface',
         icon: <ColorLens/>
+    },
+    {
+        title: 'Sale',
+        path: '/sale',
+        icon: <Percent/>
     },
 ]
 

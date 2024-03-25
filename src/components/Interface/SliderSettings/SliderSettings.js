@@ -40,7 +40,7 @@ function SliderSettings() {
             }
           </Grid>
           <div className="flex justify-end mt-2">
-            <Button variant='contained' onClick={addNewSlide}>
+            <Button variant='contained' size='small' onClick={addNewSlide}>
               Yangi sahifa qöshish
             </Button>
           </div>

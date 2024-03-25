@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ImageContainer from './ImageContainer'
 import { Button, Grid, Typography } from '@mui/material'
 import ColorBox from './ColorBoxs'
@@ -6,8 +6,16 @@ import CompatableProducts from './CompatableProducts'
 
 
 function ProductMainDetailes({colorList, imageList, handleImageChange, 
-    sizeDetailes, addBarcode, addQuantity, sizeList, compatibleProductId, setCompatibleProductId}) {
+    sizeDetailes, addBarcode, addQuantity, sizeList, compatibleProductId, setCompatibleProductId, addGeneretedBarcode}) {
 
+        
+
+        const genereteBarCode =(colorItem, sizeItem) => {
+            const barcode ='B' + (new Date().getTime())
+            addGeneretedBarcode(barcode, colorItem, sizeItem)
+        }
+
+       
 
   return (
     <div className='my-5'>
@@ -18,7 +26,7 @@ function ProductMainDetailes({colorList, imageList, handleImageChange,
                         return(
                             <div key={key}>
                                 <ImageContainer colorItem={colorItem} imageList={imageList} handleImageChange={handleImageChange}/>
-                                <CompatableProducts compatibleProductId= {compatibleProductId} setCompatibleProductId = {setCompatibleProductId} colorItem={colorItem}/>
+                                {/* <CompatableProducts compatibleProductId= {compatibleProductId} setCompatibleProductId = {setCompatibleProductId} colorItem={colorItem}/> */}
                                 {
                                     sizeList.map(sizeItem => {
                                         const key = sizeItem + 'size'
@@ -46,7 +54,7 @@ function ProductMainDetailes({colorList, imageList, handleImageChange,
                                                                          onChange={(e) => addBarcode(e, colorItem, sizeItem)}
                                                                         />  
                                                                     </div>
-                                                                    <Button sx={{px: 2}}>
+                                                                    <Button sx={{px: 2}} onClick={() => genereteBarCode(colorItem, sizeItem)}>
                                                                        Generatsiya
                                                                     </Button>
                                                                 </div>

@@ -36,7 +36,6 @@ function SubRegionDropDown({subRegions, setSubRegion}) {
     };
   
     useEffect(() => {
-        console.log(subRegions);
       setOptions(subRegions)
     }, [subRegions])
   

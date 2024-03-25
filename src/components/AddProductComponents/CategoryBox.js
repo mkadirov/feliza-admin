@@ -9,11 +9,11 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { Box, Chip } from '@mui/material';
-import { getAllCategories, getParentCategory, getSubCategories, getSubCategoriesByParent } from '../../api/Category';
+import {getParentCategory, getSubCategories, getSubCategoriesByParent } from '../../api/Category';
 
 
 
-export default function CategoryBox({categoryList, setCategoryList}) {
+export default function CategoryBox({categoryList, setCategoryList, refreshCategory}) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const [selectedIndex, setSelectedIndex] = useState(1);
@@ -61,12 +61,13 @@ export default function CategoryBox({categoryList, setCategoryList}) {
     const fetchData = async() => {
       const res = await getParentCategory();
       if(res?.success) {
+        setParentCategory(0)
         setList(res.data);
         setParentCategoryList(res.data)
       }
     }
     fetchData();
-  }, [])
+  }, [refreshCategory])
 
   useEffect(() => {
     const fetchData = async() => {

@@ -51,7 +51,6 @@ function AddRegion() {
         const fetchData = async() => {
             const res = await getSubRegions();
             if(res?.success) {
-                console.log(res.data);
                 setSubRegions(res.data)
             }
         }

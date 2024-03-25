@@ -57,7 +57,7 @@ function HandelColor({colors, deleteColorById, setLastAction}) {
               <TableCell>#</TableCell>
                 <TableCell>Name UZB</TableCell>
                 <TableCell>Name RUS</TableCell>
-                <TableCell align="start">Icon</TableCell>
+                <TableCell align="left">Icon</TableCell>
                 <TableCell align="right">Action</TableCell>
               </TableRow>
             </TableHead>

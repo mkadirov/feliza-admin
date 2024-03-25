@@ -10,6 +10,7 @@ import Settings from './pages/Settings/Settings';
 import Orders from './pages/Orders/Orders';
 import AddProduct from './pages/AddProduct/AddProduct';
 import Interface from './pages/Interface/Interface';
+import SalePage from './pages/SalePage/SalePage';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
               <Route path="/orders" element={<Orders />} />
               <Route path="/addproduct" element={<AddProduct />}/>
               <Route path="/interface" element={<Interface />}/>
+              <Route path="/sale" element={<SalePage />}/>
             </>
           ) : (
             // Redirect to login page if not logged in

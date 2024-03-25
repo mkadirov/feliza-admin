@@ -72,6 +72,21 @@ input:focus {
     height: 440px;
 }
 
+.look-box {
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.global-mage-box {
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+
 img {
     width: 100%;
     height: 100%;

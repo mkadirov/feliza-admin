@@ -33,10 +33,27 @@ const addLookCollection = async(files, item) => {
 const getAllCollections = async() => {
   try {
       const res = await axios.get(apiUrl + 'getLookCollection')
-      return {success: true, data: res.data}
+      if(res.status == 200) {
+        return {success: true, data: res.data}
+      } else {
+        return {success: false, message: 'res Error'}
+      }
   } catch (error) {
-      return {success: false}
+      return {success: false, message: error}
   }
 }
 
-export {addLookCollection, getAllCollections}
+const getLookCollectionByID = async (id) => {
+  try {
+    const res = await axios.get(apiUrl + 'getLookCollectionById/' + id);
+    if(res.status == 200) {
+      return {success: true, data: res.data}
+    } else {
+      return {success: false, message: 'res Error'}
+    }
+  } catch (error) {
+    return {success: false, message: error}
+  }
+}
+
+export {addLookCollection, getAllCollections, getLookCollectionByID}

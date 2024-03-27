@@ -1,6 +1,6 @@
 import { Box, Button, Card, Grid, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import SliderCard from '../../Cards/SliderCard'
+import SliderCard from '../../Cards/SliderCard/SliderCard'
 import { sliderList } from '../../../data/SliderList'
 
 function SliderSettings() {
@@ -12,10 +12,6 @@ function SliderSettings() {
     setList(sliderList)
   }, [isChanged])
 
-  const addNewSlide = () => {
-    const newList = [...list]
-    setList([...newList, {}])
-  }
 
 
   return (
@@ -27,23 +23,10 @@ function SliderSettings() {
           </p>
 
           <Grid container spacing={2}>
-            {
-              list.map((item, idx) => {
-                const key = idx * 99
-
-                return(
-                  <Grid item xs= {6} key={key}>
-                    <SliderCard item={item} idx = {idx} setIsChanged = {setIsChanged}/>
+          <Grid item xs= {12} >
+                    <SliderCard  setIsChanged = {setIsChanged}/>
                   </Grid>
-                )
-              })
-            }
           </Grid>
-          <div className="flex justify-end mt-2">
-            <Button variant='contained' size='small' onClick={addNewSlide}>
-              Yangi sahifa qöshish
-            </Button>
-          </div>
         </div>
       </Card>
     </div>

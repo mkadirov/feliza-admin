@@ -37,7 +37,11 @@ const createProduct = async(product, imageFiles) => {
 const getAllProducts = async() => {
     try {
         const res = await axios.get(apiUrl + 'getAllProducts')
-        return {success: true, data: res.data}
+        if(res.status == 200) {
+          return {success: true, data: res.data}
+        } else {
+          return {success: false}
+        }
     } catch (error) {
         return {success: false}
     }

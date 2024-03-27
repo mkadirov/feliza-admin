@@ -40,6 +40,7 @@ export default function CategoryBox({categoryList, setCategoryList, refreshCateg
       setCategoryList([]);
       setParentCategory(0);
       setList(parentCategoryList);
+      
     } else {
       // Filter out the specified category
       setCategoryList(categoryList.filter(item => item.id !== category.id));

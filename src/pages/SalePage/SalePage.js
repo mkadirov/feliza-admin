@@ -3,6 +3,7 @@ import MainLayout from '../../components/Layout/MainLayout'
 import { Box, Button, Card, Grid } from '@mui/material'
 import { getProductByRefNumber } from '../../api/Product';
 import HandelSaleList from '../../components/SalePage/HandelSaleList';
+import { addSaleProduct } from '../../api/Sale';
 
 function SalePage() {
     const [name, setName] = useState('');
@@ -63,10 +64,31 @@ function SalePage() {
 
 
     const createSaleGroup = () => {
-        setSaleProducts([]);
-    }
+        
 
+        const fetchData = async () => {
+            const result = saleProducts.map(item => item.refNumber)
+            const saleProductObj = {
+                sale: sale,
+                name: name,
+                referenceNumberList: result
+            }
+            
+            const res = await addSaleProduct(saleProductObj);
     
+            if(res.success) {
+                setSaleProducts([]);
+                setName('')
+                setSale('')
+                alert('Sale group saqlandi')
+            }
+        }
+        if(sale !== 0 && name.trim() !== '' && saleProducts.length !== 0) {
+            fetchData();
+        } else {
+            alert("Töliq ma'lumot kiritilmadi")
+        }
+    }
 
   return (
     <MainLayout>
@@ -140,8 +162,11 @@ function SalePage() {
                     </Box>
                 </Box>
             </Card>
-
+            
+            {/* Sale productlar listi va ularni bosharish */}
             <HandelSaleList list = {saleProducts} sale={sale} deleteSaleProduct = {deleteSaleProduct}/>
+
+
             <Box display={'flex'} justifyContent={'end'} marginTop={2}>  
                 <Button variant='contained' size='small' onClick={createSaleGroup}>
                     Saqlash

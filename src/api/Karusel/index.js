@@ -2,15 +2,14 @@ import axios from 'axios'
 
 const apiUrl = 'https://felizabackend.de/api/karusel/'
 
-
-const createKarusel = async(item, image) => {
-
+const createKarusel = async(files, karuselSlide) => {
     const formData = new FormData();
 
-    formData.append('file', image);
-    formData.append('karuselDto', JSON.stringify(item));
-    console.log(formData);
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i]);
+    }
 
+    formData.append('karuselDto', JSON.stringify(karuselSlide));
     try {
       const token = localStorage.getItem('userToken');
       const response = await axios.post(apiUrl + 'addKarusel', formData, {
@@ -31,4 +30,37 @@ const createKarusel = async(item, image) => {
     }
 }
 
-export {createKarusel}
+const getAllKaruselSlides = async() => {
+  try {
+      const res = await axios.get(apiUrl + 'getAllKarusels')
+      if(res.status == 200) {
+        return {success: true, data: res.data}
+      } else {
+        return {success: false}
+      }
+  } catch (error) {
+      return {success: false}
+  }
+}
+
+
+const deleteKaruselSlideByID = async(id) => {
+  try {
+    const token = localStorage.getItem('userToken');
+    const res = await axios.delete(apiUrl + 'deleteKarusel/' + id, {
+         headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+    });
+      if(res.status == 200) {
+        return {success: true, data: res.data}
+      } else {
+        return {success: false}
+      }
+  } catch (error) {
+      return {success: false}
+  }
+}
+
+export {createKarusel, getAllKaruselSlides, deleteKaruselSlideByID}

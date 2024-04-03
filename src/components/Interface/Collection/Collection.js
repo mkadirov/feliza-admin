@@ -6,27 +6,27 @@ import { addLookCollection } from '../../../api/LookCollection';
 import HandelCollection from './HandelCollection';
 
 function Collection() {
-    const [image, setImage] = useState(null)
-    const [showImageBox, setShowImageBox] = useState(false)
+    const [lookImage, setLookImage] = useState(null)
+    const [showLookImageBox, setShowLookImageBox] = useState(false)
     const [tempProduct, setTempProduct] = useState('');
     const [showTempProduct, setShowTempProduct] = useState(false);
     const [lookProducts, setLookProducts] = useState([])
     const [productId, setProductId] = useState('');
-    const [imageList, setImageList] = useState([])
+    const [lookImageList, setLookImageList] = useState([])
     const [refresfList, setRefreshList] = useState(0)
 
 
 
-    const handleImageChange = (event) => {
-        setShowImageBox(true)
+    const handleLookImageChange = (event) => {
+        setShowLookImageBox(true)
         const files = event.target.files;
-        setImage(files[0]);
-        setImageList(files)
+        setLookImage(files[0]);
+        setLookImageList(files)
         
     }
 
     const deleteMainImage = () => {
-        setShowImageBox(false);
+        setShowLookImageBox(false);
     }
 
 
@@ -61,15 +61,15 @@ function Collection() {
         const item = {
             productIds: productIdList
         }
-        const res = await addLookCollection(imageList, item)
+        const res = await addLookCollection(lookImageList, item)
         if(res.success) {
             console.log(res.data);
             console.log('Collection yaratildi');
-            setImage(null);
-            setImageList([]);
+            setLookImage(null);
+            setLookImageList([]);
             setLookProducts([]);
             setProductId('');
-            setShowImageBox(false);
+            setShowLookImageBox(false);
             setShowTempProduct(false);
             setTempProduct('')
             setRefreshList(prev => prev + 1)
@@ -91,29 +91,29 @@ function Collection() {
                 <Grid container spacing={1}>
 
                     <Grid item xs = {3} >
-                    <Box sx={{ display: showImageBox? 'none' : 'flex', justifyContent: 'center', alignItems: 'center', height: {xs: '380px', xl: '480px'}}}>
+                    <Box sx={{ display: showLookImageBox? 'none' : 'flex', justifyContent: 'center', alignItems: 'center', height: {xs: '380px', xl: '480px'}}}>
 
                         <input 
                             type="file" 
                             multiple
                             accept='image/*' 
                             placeholder='Data' 
-                            id={'card-image-input-btn'} 
+                            id={'card-image-input-btn-look'} 
                             hidden 
-                            onChange={(e) => handleImageChange(e)}
+                            onChange={(e) => handleLookImageChange(e)}
                         />
 
                         <div>
-                            <Button variant='outlined' onClick={() => document.getElementById('card-image-input-btn').click()}>
+                            <Button variant='outlined' onClick={() => document.getElementById('card-image-input-btn-look').click()}>
                                 Rasm yuklash
                             </Button>
                         </div>
                     </Box>
                 
-                    <Box sx={{display : showImageBox? 'block' : 'none'}}>
+                    <Box sx={{display : showLookImageBox? 'block' : 'none'}}>
                         <Box sx={{position: 'relative', height: {xs: '380px', xl: '480px'}}}>
-                        {image ? (
-                          <img src={URL.createObjectURL(image)} alt="" />
+                        {lookImage ? (
+                          <img src={URL.createObjectURL(lookImage)} alt="" />
                           ) : (
                           <span>Error: Image URL not found</span>
                         )}

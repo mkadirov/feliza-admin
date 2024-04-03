@@ -1,17 +1,19 @@
-import { Box, Button, Card, Typography } from '@mui/material'
+import { Box, Button, Card, IconButton, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CategoryDropDown from './CategoryDropDown';
 import SaleDropDown from './SaleDropDown';
 import SearchProduct from './SearchProduct';
 import SearchLook from './SearchLook';
 import { createKarusel } from '../../../api/Karusel';
+import { Delete } from '@mui/icons-material';
 
 
-function SliderCard() {
+function SliderCard({setIsChanged}) {
     const [linkId, setLinkId] = useState('')
     const [image, setImage] = useState(null)
     const [showImageBox, setShowImageBox] = useState(false)
     const [linkType, setLinkType] = useState('product_id')
+    const [images, setImages] = useState([])
 
 
     useEffect(() => {
@@ -20,9 +22,11 @@ function SliderCard() {
     
 
     const handleImageChange = (event) => {
+        
+        const files = event.target.files;
+        setImage(files[0]);
+        setImages(files)
         setShowImageBox(true)
-        const file = event.target.files[0];
-        setImage(file);
     }
 
     const handelClick = () => {
@@ -34,28 +38,35 @@ function SliderCard() {
     }
 
     const createNewSlide = async() => {
-        const item = {
+        const karuselSlide = {
             karuselType: linkType,
             parameterId: linkId
         }
-        console.log(item);
-        console.log(image);
-        const res = await createKarusel(item, image);
+        const res = await createKarusel(images, karuselSlide);
 
         if(res.success) {
             console.log('Slide yaratildi');
             setShowImageBox(false);
             setImage(null);
             setLinkId('');
-            setLinkType('ProductId')  
+            setLinkType('ProductId') 
+            setIsChanged(prev => prev + 1) 
+        } else {
+            alert('Xatolik')
         }
+    }
+
+    const deleteSlideImage = () => {
+        setShowImageBox(false)
+        setImage(null);
+        setImages([]);
     }
 
   return (
     <Card>
         <div className="flex p-1">
 
-            <div className="w-2/5 ">
+            <div className="w-2/5 relative">
                 <div className={` ${showImageBox ? 'hidden' : 'block'} flex justify-center items-center border border-gray-300 rounded-md`} 
                      style={{height: '280px'}}>
 
@@ -81,6 +92,13 @@ function SliderCard() {
                     image ? (<img src={URL.createObjectURL(image)} alt="" />) : (<Box></Box>)
                    }
                 </div>
+                {
+                    showImageBox && (
+                        <IconButton onClick={deleteSlideImage} sx={{position: 'absolute', top: 5, right: 5, backgroundColor: 'white'}}>
+                            <Delete/>
+                        </IconButton>
+                    )
+                }
             </div>
 
             <div className="w-3/5 flex justify-between flex-col">
@@ -107,7 +125,7 @@ function SliderCard() {
                         >
                             Category
                         </Button>
-                        <Button 
+                        {/* <Button 
                             variant={linkType == 'sale_id' ? 'contained' : 'outlined'} 
                             size='small'
                             onClick={() => setLinkType('sale_id')}
@@ -120,7 +138,7 @@ function SliderCard() {
                             onClick={() => setLinkType('all_sale')}
                         >
                             All sale
-                        </Button>
+                        </Button> */}
                     </div>
                     {
                         linkType == 'product_id' && (
@@ -146,14 +164,14 @@ function SliderCard() {
                             
                         )
                     }
-                    {
+                    {/* {
                         linkType == 'sale_id' && (
                             <Box>
                                 <SaleDropDown setLinkId={setLinkId}/>
                             </Box>
                             
                         )
-                    }
+                    } */}
                     <Box >
                         <Box display={'flex'} gap={2} justifyContent={'center'} marginTop={2}>
                             <Box display={'flex'} gap={1}>

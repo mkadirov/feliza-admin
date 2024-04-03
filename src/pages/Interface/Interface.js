@@ -37,7 +37,7 @@ function Interface() {
             <div className="my-3">
                 <div className={index === 1 ? 'block' : 'hidden'}>
                     <SliderSettings/>
-
+                    
                     <Divider sx={{marginY: 3}}/>
                     
                     <BestsellerSlider/>

@@ -35,4 +35,23 @@ const getAllSaleGroups = async() => {
     }
 }
 
-export {addSaleProduct, getAllSaleGroups}
+const deleteSaleGroupByID = async(id) => {
+  try {
+    const token = localStorage.getItem('userToken');
+    const res = await axios.delete(apiUrl + 'removeSaleGroup/' + id, {
+         headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+    });
+      if(res.status == 200) {
+        return {success: true, data: res.data}
+      } else {
+        return {success: false}
+      }
+  } catch (error) {
+      return {success: false}
+  }
+}
+
+export {addSaleProduct, getAllSaleGroups, deleteSaleGroupByID}

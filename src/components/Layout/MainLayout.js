@@ -146,7 +146,7 @@ function MainLayout({children, props}) {
       <Toolbar/>
       <Box
         component="main"
-        sx={{ flexGrow: 1, paddingRight: 5, paddingTop: 4, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, paddingRight: 5, paddingTop: 9, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         
         {children}

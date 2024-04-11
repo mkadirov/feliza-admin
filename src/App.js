@@ -11,6 +11,7 @@ import Orders from './pages/Orders/Orders';
 import AddProduct from './pages/AddProduct/AddProduct';
 import Interface from './pages/Interface/Interface';
 import SalePage from './pages/SalePage/SalePage';
+import Order from './pages/Order/Order';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
               <Route path="/addproduct" element={<AddProduct />}/>
               <Route path="/interface" element={<Interface />}/>
               <Route path="/sale" element={<SalePage />}/>
+              <Route path="/order/:id" element={<Order/>}/>
             </>
           ) : (
             // Redirect to login page if not logged in

@@ -9,10 +9,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function NewOrders({newOrders}) {
+function ShippedOrders({shippedOrders}) {
     const navigate = useNavigate();
 
-    let sum = newOrders?.reduce((acc, item) => acc + item.orderCost, 0);
+    let sum = shippedOrders?.reduce((acc, item) => acc + item.orderCost, 0);
+    
 
   return (
     <Box>
@@ -22,7 +23,7 @@ function NewOrders({newOrders}) {
                     Yangi buyurtmalar soni: 
                 </Typography>
                 <Typography>
-                    {newOrders?.length}
+                    {shippedOrders?.length}
                 </Typography>
             </Box>
             <Box display={'flex'} gap={2}>
@@ -30,7 +31,7 @@ function NewOrders({newOrders}) {
                     Yangi buyurtmalarning umumiy qiymati: 
                 </Typography>
                 <Typography>
-                    {sum?.toLocaleString().replace(/,/g, ' ')} söm
+                    {sum.toLocaleString().replace(/,/g, ' ')} söm
                 </Typography>
             </Box>
         </Card>
@@ -48,7 +49,7 @@ function NewOrders({newOrders}) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {newOrders?.map((row, idx) => {
+                {shippedOrders?.map((row, idx) => {
                     const date = new Date(row.createdAt);
                     const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
                     return (
@@ -65,7 +66,7 @@ function NewOrders({newOrders}) {
                           <TableCell align="right">{row.address.region.name}</TableCell>
                           <TableCell align="right">{row.orderCost}</TableCell>
                           <TableCell align="right">{formattedDate}</TableCell>
-                          <TableCell align="right">{'Yangi buyurtma'}</TableCell>
+                          <TableCell align="right">{'bekor qilingan'}</TableCell>
                         </TableRow>
                       )
                     }
@@ -79,4 +80,4 @@ function NewOrders({newOrders}) {
   )
 }
 
-export default NewOrders
+export default ShippedOrders

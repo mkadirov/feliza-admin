@@ -19,6 +19,57 @@ const getNewOrders = async() => {
     }
 }
 
+const getCanceledOrders = async() => {
+    try {
+        const token = localStorage.getItem('userToken');
+        const res = await axios.get(baseUrl + 'getRejectedOrders', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+        });
+        if(res.status == 200) {
+            return {success: true, data: res.data}
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const getShippedOrders = async() => {
+    try {
+        const token = localStorage.getItem('userToken');
+        const res = await axios.get(baseUrl + 'getSendOrders', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+        });
+        if(res.status == 200) {
+            return {success: true, data: res.data}
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const getPackagedOrders = async() => {
+    try {
+        const token = localStorage.getItem('userToken');
+        const res = await axios.get(baseUrl + 'getPackOrders', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+        });
+        if(res.status == 200) {
+            return {success: true, data: res.data}
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 const getOrderById = async(id) => {
     try {
         const token = localStorage.getItem('userToken');
@@ -39,4 +90,44 @@ const getOrderById = async(id) => {
     }
 }
 
-export { getNewOrders, getOrderById}
+const orderPackedUp = async(id) => {
+    try {
+        const token = localStorage.getItem('userToken');
+        console.log(token);
+        const res = await axios.put(baseUrl + 'editStatusToPack/' + id, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+        });
+        if(res.status == 200) {
+            return {success: true, data: res.data}
+        }else {
+            return {success: false}
+        }
+    } catch (error) {
+        return {success: false}
+    }
+}
+
+const cancelOrder = async(id) => {
+    try {
+        const token = localStorage.getItem('userToken');
+        console.log(token);
+        const res = await axios.put(baseUrl + 'editStatusToRejected/' + id, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+        });
+        if(res.status == 200) {
+            return {success: true, data: res.data}
+        }else {
+            return {success: false}
+        }
+    } catch (error) {
+        return {success: false}
+    }
+}
+
+export { getNewOrders, getOrderById, orderPackedUp, cancelOrder, getCanceledOrders, getPackagedOrders, getShippedOrders}

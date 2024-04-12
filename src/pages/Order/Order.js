@@ -5,10 +5,13 @@ import MainLayout from '../../components/Layout/MainLayout';
 import { getOrderById } from '../../api/Orders';
 import OrderInfo from '../../components/Order/OrderInfo';
 import OrderProductCard from '../../components/Order/OrderProductCard';
+import ModalDialog from '../../components/Order/ModalDialog';
 
 function Order() {
     const [order, setOrder] = useState('')
     const {id} = useParams();
+    const [open, setOpen] = useState(false);
+    const [actionType, setActionType] = useState(1)
 
 
     useEffect(() => {
@@ -22,6 +25,10 @@ function Order() {
       fetchData();
     }, [id])
 
+    const handleClick = (value) => {
+      setActionType(value);
+      setOpen(true);
+    };
     
   return (
     <MainLayout>
@@ -30,13 +37,27 @@ function Order() {
           <OrderInfo order={order}/>
 
           <Box display={'flex'} justifyContent={'end'} gap={1}>
-            <Button variant='contained' size='small' sx={{backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: '#c62828'}}}>
+            <Button variant='contained' size='small' 
+              sx={{backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: '#c62828'}, 
+              display: order?.orderStatusType === 'REJECTED' ? 'none' : 'block'
+              }}
+              onClick={() => handleClick(1)}
+            >
               Bekor qilish
             </Button>
-            <Button size='small' variant='contained'>
+            <Button size='small' variant='contained' onClick={() => handleClick(2)}
+              sx = {{display: order?.orderStatusType === 'REJECTED' ? 'none' : 'block'}}
+            >
               Tayyorlandi
             </Button>
+
+            <Button variant='contained' size='small' sx = {{display: order?.orderStatusType === 'REJECTED' ? 'block' : 'none'}}>
+              Buyurtmani faollashtirish
+            </Button>
           </Box>
+
+          <ModalDialog open={open} setOpen={setOpen} actionType={actionType} id = {id}/>
+
         </Card>
 
         <Box marginTop={4}>
@@ -53,6 +74,7 @@ function Order() {
             }
           </Grid>
         </Box>
+        
     </MainLayout>
   )
 }

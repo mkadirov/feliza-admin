@@ -7,7 +7,7 @@ function OrderProductCard({item}) {
          
         <Grid container spacing={1}>
             <Grid item xs={4}>
-                <Box sx={{height: '240px'}}>
+                <Box sx={{height: {xs: '240px', xl: '320px'}}}>
                     <img src={item.productImages[0]?.url} alt="" />
                 </Box>
             </Grid>

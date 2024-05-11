@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiUrl = 'https://felizabackend.de/api/karusel/'
+const apiUrl = 'https://felizabackend.uz/api/karusel/'
 
 const createKarusel = async(files, karuselSlide) => {
     const formData = new FormData();

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = 'https://felizabackend.de/api/auth/loginUser'
+const baseURL = 'https://felizabackend.uz/api/auth/loginUser'
 
 
 const loginUser = async(userDetailes)=> {

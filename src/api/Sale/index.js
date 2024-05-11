@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiUrl = 'https://felizabackend.de/api/saleGroup/'
+const apiUrl = 'https://felizabackend.uz/api/saleGroup/'
 
 const addSaleProduct = async(saleProduct) => {
     try {

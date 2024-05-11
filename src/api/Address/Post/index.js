@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'https://felizabackend.de/api/postFilial/'
+const baseUrl = 'https://felizabackend.uz/api/postFilial/'
 
 const addPostFilial = async(postFilial) => {
     try {

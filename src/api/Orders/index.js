@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'https://felizabackend.de/api/order/'
+const baseUrl = 'https://felizabackend.uz/api/order/'
 
 const getNewOrders = async() => {
     try {
@@ -113,7 +113,6 @@ const orderPackedUp = async(id) => {
 const cancelOrder = async(id) => {
     try {
         const token = localStorage.getItem('userToken');
-        console.log(token);
         const res = await axios.put(baseUrl + 'editStatusToRejected/' + id, {
             headers: {
               'Content-Type': 'application/json',
@@ -130,4 +129,28 @@ const cancelOrder = async(id) => {
     }
 }
 
-export { getNewOrders, getOrderById, orderPackedUp, cancelOrder, getCanceledOrders, getPackagedOrders, getShippedOrders}
+const sendOrder = async(id, trackingNumber) => {
+    const postNumber = {
+        postTrackingNumber: trackingNumber
+    }
+
+    try {
+        const token = localStorage.getItem('userToken');
+        const res = await axios.put(baseUrl + 'editStatusToSend/' + id, postNumber, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+        });
+        if(res.status === 200) {
+            return {success: true, data: res.data}
+        }else {
+            return {success: false}
+        }
+    } catch (error) {
+        return {success: false}
+    }
+}
+
+export { getNewOrders, getOrderById, orderPackedUp, cancelOrder, 
+    getCanceledOrders, getPackagedOrders, getShippedOrders, sendOrder}

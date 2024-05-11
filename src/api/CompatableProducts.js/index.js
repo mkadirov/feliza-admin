@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiUrl = 'https://felizabackend.de/api/'
+const apiUrl = 'https://felizabackend.uz/api/'
 
 const createCompatableProduct = async () => {
     try {

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const apiUrl = 'https://felizabackend.de/api/region/'
-const subRegionUrl = 'https://felizabackend.de/api/subRegion/'
+const apiUrl = 'https://felizabackend.uz/api/region/'
+const subRegionUrl = 'https://felizabackend.uz/api/subRegion/'
 
 const addNewRegion = async(region) => {
     try {

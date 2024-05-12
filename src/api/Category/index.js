@@ -108,7 +108,7 @@ const getSubCategories = async() => {
 const getSubCategoriesByParent = async(parent) => {
 
   try {
-    const res = await axios.get('https://felizabackend.de/api/categories/getSubCategoriesByParent/' + parent)
+    const res = await axios.get( apiUrl + 'categories/getSubCategoriesByParent/' + parent)
     if(res.status == 200) {
       return {success: true, data: res.data}
     } else {

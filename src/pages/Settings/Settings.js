@@ -6,6 +6,7 @@ import AddCategory from '../../components/SettingsComponents/Category/AddCategor
 import AddColor from '../../components/SettingsComponents/Color/AddColor'
 import AddBrend from '../../components/SettingsComponents/Brend/AddBrend'
 import AddRegion from '../../components/SettingsComponents/Adress/AddRegion'
+import AddSMS from '../../components/SettingsComponents/SMS/AddSMS'
 
 function Settings() {
 
@@ -35,24 +36,29 @@ function Settings() {
 
         <div className="my-5">
           <Grid container spacing={1}>
-            <Grid item xs={3}>
+            <Grid item xs={2.4}>
               <SettingsButton className={settingType === 1 ? 'activeButton' : ''} onClick={() => setSettingType(1)}>
                 Kategoriya
               </SettingsButton>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2.4}>
             <SettingsButton className={settingType === 2 ? 'activeButton' : ''} onClick={() => setSettingType(2)}>
                 Rang
               </SettingsButton>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2.4}>
               <SettingsButton className={settingType === 3 ? 'activeButton' : ''} onClick={() => setSettingType(3)}>
                 Brend
               </SettingsButton>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2.4}>
               <SettingsButton className={settingType === 4 ? 'activeButton' : ''} onClick={() => setSettingType(4)}>
                 Adress
+              </SettingsButton>
+            </Grid>
+            <Grid item xs={2.4}>
+              <SettingsButton className={settingType === 5 ? 'activeButton' : ''} onClick={() => setSettingType(5)}>
+                SMS
               </SettingsButton>
             </Grid>
           </Grid>
@@ -72,6 +78,9 @@ function Settings() {
         </div>
         <div style={{display: settingType !==4? 'none': 'block'}}>
           <AddRegion/>
+        </div>
+        <div style={{display: settingType !==5? 'none': 'block'}}>
+          <AddSMS/>
         </div>
     </MainLayout>
   )

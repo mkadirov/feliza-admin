@@ -55,6 +55,7 @@ function HandelCategory({categories, setNewCategory}) {
             <TableCell >Main Category</TableCell>
             <TableCell >Name UZB</TableCell>
             <TableCell>Name RUS</TableCell>
+            <TableCell>ID</TableCell>
             <TableCell align="right">Actions</TableCell>
             
           </TableRow>
@@ -71,6 +72,7 @@ function HandelCategory({categories, setNewCategory}) {
               <TableCell>{row.parentCategoryUZ}</TableCell>
               <TableCell>{row.nameUZB}</TableCell>
               <TableCell >{row.nameRUS}</TableCell>
+              <TableCell >{row.id}</TableCell>
               <TableCell align="right">
                 <Tooltip title = "Özgartirish">
                 <IconButton

@@ -29,8 +29,8 @@ function Products() {
         async function fetchData() {
             const res = await getAllProducts();
             if(res.success) {
-                console.log(res.data);
-                setProducts(res.data)
+                console.log(res.data.content);
+                setProducts(res.data.content)
             }
         }
         fetchData();

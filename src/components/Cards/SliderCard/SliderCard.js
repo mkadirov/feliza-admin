@@ -42,6 +42,8 @@ function SliderCard({setIsChanged}) {
             karuselType: linkType,
             parameterId: linkId
         }
+        console.log(images);
+        console.log(karuselSlide);
         const res = await createKarusel(images, karuselSlide);
 
         if(res.success) {

@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, styled } from "@mui/material";
+import { Box, Button, Container, Divider, Grid, styled } from "@mui/material";
 import WestIcon from "@mui/icons-material/West";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +36,7 @@ function AddProduct() {
   const [descriptionRu, setDescriptionRu] = useState("");
   const [refreshCategory, setRefreshCategory] = useState(0);
   const [colorListRefresh, setColorListRefresh] = useState([]);
+  const [IKPUNumber, setIKPUNumber] = useState('')
 
   const StyledButton = styled(Box)(({ theme }) => ({
     borderRadius: "20px",
@@ -180,7 +181,7 @@ function AddProduct() {
   function createProductList() {
     let counter = 0;
     setBackUpList(sizeDetailes);
-    colorList.map((colorItem) => {
+    colorList.map((colorItem, idx) => {
       let productImageList = [];
       let productSizeDetailes = [];
 
@@ -216,6 +217,8 @@ function AddProduct() {
         categoryId: categoryIdList,
         colorId: colorObj.id,
         productSizeVariantDtoList: productSizeDetailes,
+        ikpuNumber: IKPUNumber,
+        active: true
       };
       console.log(product);
 
@@ -223,35 +226,37 @@ function AddProduct() {
         const res = await createProduct(product, productImageList);
         if (res?.success) {
           console.log("Mahsulot yaratildi");
+          setColorListRefresh(prev => [...prev, colorItem]);
+          if(idx == colorList.length -1) {
+            refreshForm();
+          }
         } else {
           console.log("Xatolik!!!!!!!!!!!!!!!");
         }
       };
       fetchData();
     });
-
-    refreshForm();
   }
 
   const refreshForm = () => {
-    console.log(colorListRefresh);
-    setColorList((prev) =>
-      prev.filter((item) => !colorListRefresh.includes(item))
-    );
-    // setProductNameUz('');
-    // setProductNameRu('');
-    // setDescriptionUz('');
-    // setDescriptionRu('');
-    // setRefNumber('');
-    // setImportPrice('');
-    // setPrice('');
-    // setBrand('');
-    // setCategoryList([]);
-    // setColorList([]);
-    // setImageList([]);
-    // setSizeDetailes([]);
-    // setSizeList([])
-    // setRefreshCategory(prev => prev + 1);
+    const countError = colorList.length - colorListRefresh.length
+    if(countError == colorList.length) {
+      setColorList([])
+      setSizeDetailes([]);
+      setBackUpList([])
+      setRefNumber('')
+      setProductNameRu('');
+      setProductNameUz('');
+      setPrice('')
+      setImportPrice('');
+      alert('Barcha mahsulotlar muvofaqiyatli yaratildi')
+    } else {
+      alert( countError + ' ta mahsulot yaratilmadi')
+      setColorList((prev) =>
+        prev.filter((item) => !colorListRefresh.includes(item))
+      );
+      setSizeDetailes(item => !colorListRefresh.includes(item.color) )
+    }
   };
 
   return (
@@ -325,7 +330,28 @@ function AddProduct() {
         refreshCategory={refreshCategory}
       />
 
-      <RefNumber refNumber={refNumber} setRefNumber={setRefNumber} />
+      <Box>
+        <Grid container spacing={2}>
+          <Grid item xs = {6}>
+            <RefNumber refNumber={refNumber} setRefNumber={setRefNumber} />
+          </Grid>
+          <Grid item xs = {6} marginTop={3}>
+          <p className="text-2xl mb-2">
+                    IKPU nomer *
+                </p>
+                <div className="input-container " >
+                    <input 
+                        placeholder='IKPU' 
+                        style={{flex: 1}} 
+                        type="text" 
+                        className='main-input'
+                        value={IKPUNumber}
+                        onChange={(e) => setIKPUNumber(e.target.value)}
+                    />
+                </div>
+          </Grid>
+        </Grid>
+      </Box>
 
       <BrandPriceContainer
         brand={brand}

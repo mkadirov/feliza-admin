@@ -9,7 +9,7 @@ function SearchProduct({linkType, setLinkId}) {
     const [product, setProduct] = useState('')
 
     const handelClick = () => {
-        value > 0 ? findProduct() : alert('ID musbat bölishi kerak')
+        value !== '' ? findProduct() : alert('Iltimos ID ni kriting')
     }
 
     const findProduct = async () => {
@@ -32,7 +32,7 @@ function SearchProduct({linkType, setLinkId}) {
                 size='small'
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                type='number'
+                type='text'
             />
             <Button variant='outlined' size='small' onClick={handelClick}>
                 <Search />

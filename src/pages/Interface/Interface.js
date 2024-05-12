@@ -40,7 +40,7 @@ function Interface() {
                     
                     <Divider sx={{marginY: 3}}/>
                     
-                    <BestsellerSlider/>
+                    {/* <BestsellerSlider/> */}
                 </div>
                 <div className={index === 2 ? 'block' : 'hidden'}>
                     <ContainerSettings/>

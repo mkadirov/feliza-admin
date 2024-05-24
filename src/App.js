@@ -15,15 +15,30 @@ import Order from './pages/Order/Order';
 
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false)
+  const [user, setUser] = useState(() => {
+    const storedUserData = localStorage.getItem("userData");
+
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+
+      if (userData.expirationTime > new Date().getTime()) {
+        return userData.user;
+      } else {
+        localStorage.removeItem("userData");
+        return null;
+      }
+    } else {
+      return null;
+    }
+  });
 
   
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginPage setIsLogin={setIsLogin} />} />
-          {isLogin ? (
+          <Route path="/" element={<LoginPage setUser={setUser} />} />
+          {user ? (
             <>
               <Route path="/home" element={<HomePage />} />
               <Route path="/products" element={<Products />} />

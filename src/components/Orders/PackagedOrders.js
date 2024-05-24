@@ -38,7 +38,7 @@ function PackagedOrders({packagedOrders}) {
         <TableContainer component={Paper} sx={{marginTop: 7}}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead >
-                <TableRow sx={{backgroundColor: '#00695c'}}>
+                <TableRow sx={{backgroundColor: '#f5f5f5'}}>
                   <TableCell sx={{maxWidth: '20px', borderRight: '1px solid grey'}}>#</TableCell>
                   <TableCell align="left">Ism sharfi</TableCell>
                   <TableCell align="right">Telefon raqami</TableCell>

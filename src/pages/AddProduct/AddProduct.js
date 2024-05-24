@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, Grid, styled } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Divider, Grid, styled } from "@mui/material";
 import WestIcon from "@mui/icons-material/West";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +37,7 @@ function AddProduct() {
   const [refreshCategory, setRefreshCategory] = useState(0);
   const [colorListRefresh, setColorListRefresh] = useState([]);
   const [IKPUNumber, setIKPUNumber] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const StyledButton = styled(Box)(({ theme }) => ({
     borderRadius: "20px",
@@ -178,8 +179,36 @@ function AddProduct() {
     );
   }
 
+  const checkProduct = () => {
+    if(productNameRu.trim() == '' || productNameUz.trim() == '') {
+      alert('Mahsulot nomi kritilmadi');
+      return;
+    }
+
+    if(categoryList.length <2) {
+      alert('Asosiy va quyi kategoriyalar tanlanishi shart');
+      return
+    }
+
+    if(price == '' || importPrice == '') {
+      alert('Narx kritilmadi');
+      return;
+    }
+
+    if(refNumber.trim() == "") {
+      alert('Referens raqami kritilmadi');
+      return;
+    }
+
+    if(colorList.length == 0) {
+      alert('Rang tanlanmadi');
+      return
+    }
+    setIsLoading(true)
+    createProductList();
+  }
+
   function createProductList() {
-    let counter = 0;
     setBackUpList(sizeDetailes);
     colorList.map((colorItem, idx) => {
       let productImageList = [];
@@ -200,6 +229,7 @@ function AddProduct() {
           productImageList = [...imageObj.imagesList];
         }
       });
+      console.log(productImageList);
 
       const colorObj = colors.find((item) => item.colorCode == colorItem);
       const categoryIdList = categoryList.map((item) => item.id);
@@ -232,13 +262,17 @@ function AddProduct() {
           }
         } else {
           console.log("Xatolik!!!!!!!!!!!!!!!");
+          setIsLoading(false)
+          alert('Mahsulot yaratishda xatolik')
         }
       };
       fetchData();
     });
+    
   }
 
   const refreshForm = () => {
+    setIsLoading(false)
     const countError = colorList.length - colorListRefresh.length
     if(countError == colorList.length) {
       setColorList([])
@@ -249,6 +283,7 @@ function AddProduct() {
       setProductNameUz('');
       setPrice('')
       setImportPrice('');
+      setIKPUNumber('')
       alert('Barcha mahsulotlar muvofaqiyatli yaratildi')
     } else {
       alert( countError + ' ta mahsulot yaratilmadi')
@@ -260,7 +295,8 @@ function AddProduct() {
   };
 
   return (
-    <Container sx={{ border: "1px solid grey" }}>
+    <Box sx={{position: "relative"}}>
+      <Container sx={{ border: "1px solid grey" }}>
       <Button
         sx={{ my: 2 }}
         variant="contained"
@@ -391,11 +427,39 @@ function AddProduct() {
       <Divider />
 
       <div className="flex justify-end mt-2 mb-6">
-        <Button onClick={createProductList} type="submit" variant="contained">
+        <Button onClick={() => {
+          checkProduct();
+          
+        }} type="submit" variant="contained" disabled={isLoading}>
           Kiritish
         </Button>
       </div>
     </Container>
+
+    {isLoading && (
+        <Box
+          sx={{
+            position: 'fixed', 
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)', 
+            zIndex: 9999,
+          }}
+        >
+          <Box sx={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: "center",
+            alignItems: 'center'
+            }}>
+            <CircularProgress/>
+          </Box>
+        </Box>
+      )}
+    </Box>
   );
 }
 

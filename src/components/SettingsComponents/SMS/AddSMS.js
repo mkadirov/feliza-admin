@@ -17,6 +17,7 @@ function AddSMS() {
   const [smsType, setSmsType] = useState();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [tempList, setTempList] = useState([]);
+  const [hasChanged, setHasChanged] = useState(0)
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -64,9 +65,10 @@ function AddSMS() {
       smsName: smsType,
       text: text,
     };
-    console.log(sms);
+    
     const res = await addSMS(sms);
     if (res?.success) {
+      setHasChanged(prev => prev + 1)
       setText("");
       setSmsType("");
       alert('Sms xabarnoma yaratildi')
@@ -144,7 +146,7 @@ function AddSMS() {
       </Card>
 
       <Box marginTop={5}>
-        <HandleSms/>
+        <HandleSms hasChanged={hasChanged} setHasChanged={setHasChanged}/>
       </Box>
     </div>
   );

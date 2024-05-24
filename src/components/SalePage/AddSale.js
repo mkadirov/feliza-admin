@@ -72,7 +72,7 @@ function AddSale({setRefreshSaleList}) {
                 sale: sale,
                 name: name,
                 referenceNumberList: result, 
-                categoryId: 6
+                categoryId: 17
             }
             
             const res = await addSaleProduct(saleProductObj);
@@ -133,7 +133,7 @@ function AddSale({setRefreshSaleList}) {
                   display="flex"
                   flexDirection="column"
                   minHeight="200px"
-                  gap={1}  // Set main box height to full viewport height
+                  gap={1} 
                 >
                     <Box  flexGrow={1}>
                         <Grid container spacing={1}>
@@ -162,11 +162,8 @@ function AddSale({setRefreshSaleList}) {
                     </Box>
                 </Box>
             </Card>
-            
-            {/* Sale productlar listi va ularni bosharish */}
             <HandelSaleList list = {saleProducts} sale={sale} deleteSaleProduct = {deleteSaleProduct}/>
-
-
+            
             <Box display={'flex'} justifyContent={'end'} marginTop={2}>  
                 <Button variant='contained' size='small' onClick={createSaleGroup}>
                     Saqlash

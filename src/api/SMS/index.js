@@ -49,6 +49,29 @@ const getAllSms = async() => {
     }
 }
 
+const editSms = async(tempSmsName, textBody) => {
+
+    const token = localStorage.getItem('userToken');
+    console.log(token);
+    
+    try {
+        const res = await axios.put(apiUrl + 'edit/' + tempSmsName,  textBody, {
+            headers: {
+             'Content-Type': 'application/json',
+             'Authorization': `Bearer ${token}`
+           },
+         })
+
+        if(res.status == 200) {
+            return { success: true, data: res.data}
+        } else {
+            return { success: false}
+        }
+    } catch (error) {
+        return { success: false}
+    }
+}
 
 
-export {addSMS, getAllSmsTemplateNames, getAllSms}
+
+export {addSMS, getAllSmsTemplateNames, getAllSms, editSms}

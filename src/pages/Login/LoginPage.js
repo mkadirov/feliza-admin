@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../api/Login';
 
-function LoginPage({setIsLogin}) {
+function LoginPage({setUser}) {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -18,7 +18,16 @@ function LoginPage({setIsLogin}) {
         const res = await loginUser(userDetailes)
 
         if(res.success) {
-            setIsLogin(true)
+            const currentTime = new Date().getTime();
+            const expirationTime = currentTime + 24 * 60 * 60 * 30000;
+
+            const userData = {
+              user: res.data,
+              expirationTime: expirationTime,
+            };
+
+            localStorage.setItem('userData', JSON.stringify(userData));
+            setUser(res.data);
             navigate('/home')
             setLogin('')
             setPassword('')

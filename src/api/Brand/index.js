@@ -37,7 +37,7 @@ const getAllBrends = async() => {
 
 const deleteBrand = async(id) => {
   try {
-    const res = await axios.delete(apiUrl + 'brand/' + id);
+    const res = await axios.delete(apiUrl + 'brand/deleteBrand/' + id);
     if(res.status == 200) {
       return {success: true, data: res.data}
     } else {
@@ -50,7 +50,7 @@ const deleteBrand = async(id) => {
 
 const editBrand = async(id, brand) => {
   try {
-    const res = await axios.put(apiUrl + 'brand/' + id, brand)
+    const res = await axios.put(apiUrl + 'brand/editBrand/' + id, brand)
     if(res.status == 200) {
       return {success: true, data: res.data}
     } else {

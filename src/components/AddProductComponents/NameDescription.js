@@ -16,7 +16,6 @@ function NameDescription({productNameUz, setProductNameUz, descriptionRu,
                 type="text" 
                 className='main-input'
                 value={productNameUz}
-                maxLength="18"
                 onChange={(e) => setProductNameUz(e.target.value)}
             />
         </div>

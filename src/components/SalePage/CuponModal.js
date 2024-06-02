@@ -1,5 +1,6 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { editCupon } from "../../api/Cupon";
 
 function CuponModal({
   tempName,
@@ -11,14 +12,33 @@ function CuponModal({
   const [name, setName] = useState(tempName);
   const [summa, setSumma] = useState(tempSumma);
 
-  const editCoupon = async () => {
+  const checkData = () => {
+    if(name.trim() =='') {
+        alert('Bösh matin kritish mumkin emas')
+        return
+    }
+
+    if(summa == '') {
+        alert('Summa bösh bölishi mumkin emas');
+        return
+    }
+
+    if(name == tempName && summa == tempSumma) {
+        alert('Qiymatlar özgartirilmadi');
+        return
+    }
+
+    updateCoupon();
+  }
+
+  const updateCoupon = async () => {
     const cupon = {
       enumName: tempCuponType,
       name: name,
       credit: summa,
       active: true,
     };
-    const res = await editCoupon(cupon);
+    const res = await editCupon(tempCuponType, cupon);
     if (res?.success) {
       setListChanged((prev) => prev + 1);
       handleClose();
@@ -51,7 +71,7 @@ function CuponModal({
       />
 
       <Box display={"flex"} marginTop={2} justifyContent={"end"}>
-        <Button variant="contained" size="small">
+        <Button variant="contained" size="small" onClick={checkData}>
           Özgartirish
         </Button>
       </Box>

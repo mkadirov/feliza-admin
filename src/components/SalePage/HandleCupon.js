@@ -62,18 +62,18 @@ function HandleCupon({ setListChanged, listChanged }) {
           <TableHead>
             <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
               <TableCell>#</TableCell>
-              <TableCell align="start">Kupon turi</TableCell>
-              <TableCell align="start">Kupon nomi</TableCell>
+              <TableCell align="left">Kupon turi</TableCell>
+              <TableCell align="left">Kupon nomi</TableCell>
               <TableCell align="right">Summa</TableCell>
               <TableCell align="right">Özgartirish</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {list.map((row, idx) => (
-              <TableRow key={row.smsName}>
-                <TableCell align="start">{idx + 1}</TableCell>
-                <TableCell align="start">{row.enumName}</TableCell>
-                <TableCell align="start">{row.name}</TableCell>
+              <TableRow key={row.enumName +idx}>
+                <TableCell align="left">{idx + 1}</TableCell>
+                <TableCell align="left">{row.enumName}</TableCell>
+                <TableCell align="left">{row.name}</TableCell>
                 <TableCell align="right">{row.credit}</TableCell>
                 <TableCell align="right">
                   <Edit

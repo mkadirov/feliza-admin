@@ -18,7 +18,7 @@ export const navList = [
     },
     {
         title: 'Foydalanuvchilar',
-        path: '/customers',
+        path: '/users',
         icon: <EmojiPeople/>
     },
     {

@@ -22,11 +22,11 @@ const addCupon = async (cupon) => {
   }
 };
 
-const editCupon = async (cupon, id) => {
+const editCupon = async (enumName, cupon) => {
     try {
       const token = localStorage.getItem("userToken");
       console.log(token);
-      const res = await axios.post(apiUrl + "editCoupon/" + id, cupon, {
+      const res = await axios.put(apiUrl + "editCoupon/" + enumName, cupon, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

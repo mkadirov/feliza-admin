@@ -12,6 +12,7 @@ import AddProduct from './pages/AddProduct/AddProduct';
 import Interface from './pages/Interface/Interface';
 import SalePage from './pages/SalePage/SalePage';
 import Order from './pages/Order/Order';
+import Users from './pages/Users/Users';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
               <Route path="/home" element={<HomePage />} />
               <Route path="/products" element={<Products />} />
               <Route path="/customers" element={<Customers />} />
+              <Route path="/users" element={<Users/>} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/addproduct" element={<AddProduct />}/>
@@ -51,7 +53,7 @@ function App() {
               <Route path="/order/:id" element={<Order/>}/>
             </>
           ) : (
-            // Redirect to login page if not logged in
+            
             <Route
               path="/*"
               element={<Navigate to="/" />}

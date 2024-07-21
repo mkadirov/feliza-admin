@@ -10,6 +10,7 @@ import { Delete } from '@mui/icons-material';
 import { deleteKaruselSlideByID } from '../../../api/Karusel';
 
 function SliderSmallCard({item, idx, setIsChanged}) {
+  
 
     const deleteKaruselSlide = async() => {
         const res = await deleteKaruselSlideByID(item?.id);
@@ -21,12 +22,13 @@ function SliderSmallCard({item, idx, setIsChanged}) {
         }
     }
 
+    console.log(item);
 
   return (
     <Card>
       
       <Box className = 'look-box' sx={{height: '240px'}}>
-        <img src={item? item.productImages[0].url : ''} alt="" />
+        <img src={item? item.productImages[0]?.url : ''} alt="" />
       </Box>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

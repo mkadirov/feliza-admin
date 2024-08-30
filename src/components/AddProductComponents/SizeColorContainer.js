@@ -36,15 +36,21 @@ function SizeColorContainer({colorList, colors, deleteColor, addColor, handleSiz
                     
                     </Box>
                     <div className="input-container mt-3 pl-3" >
-                        <div className="flex gap-2 items-center">
-                           {
+                        {/* <div className="flex gap-2 items-center">
+                           
+                        </div> */}
+                        <Grid container>
+                        {
                             colors.map(color => {
+
                                 return(
-                                    <ColorBox key={color.id} addColor= {addColor} color = {color.colorCode}/>
+                                    <Grid key = {color.colorCode} item xs={1} marginBottom={'2px'}>
+                                        <ColorBox  key={color.id} addColor= {addColor} color = {color.colorCode}/>
+                                    </Grid>
                                 )
                             })
                            }
-                        </div>
+                        </Grid>
                     </div>
                 </div>
             

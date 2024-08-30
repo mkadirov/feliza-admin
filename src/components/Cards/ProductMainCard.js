@@ -6,8 +6,11 @@ import Typography from '@mui/material/Typography';
 import { Box, CardActionArea, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { deleteProduct } from '../../api/Product';
+import { useNavigate } from 'react-router-dom';
 
 function ProductMainCard({item, setNewProduct}) {
+
+  const navigate = useNavigate();
 
   const deleteProductById = async() => {
     const res = await deleteProduct(item.id)
@@ -21,7 +24,7 @@ function ProductMainCard({item, setNewProduct}) {
   return (
     <Card sx={{ maxWidth: 320 }}>
       
-        <div className='image-box'>
+        <div className='image-box' onClick = {() => navigate(`/product/${item.referenceNumber}`)}>
             <img src={item.productImages[0]?.url} alt="" />
         </div>
         <CardContent>

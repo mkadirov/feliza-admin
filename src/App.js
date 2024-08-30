@@ -13,6 +13,7 @@ import Interface from './pages/Interface/Interface';
 import SalePage from './pages/SalePage/SalePage';
 import Order from './pages/Order/Order';
 import Users from './pages/Users/Users';
+import Product from './pages/Product/Product';
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
               <Route path="/interface" element={<Interface />}/>
               <Route path="/sale" element={<SalePage />}/>
               <Route path="/order/:id" element={<Order/>}/>
+              <Route path="/product/:referenceNumber" element={<Product/>} />
             </>
           ) : (
             

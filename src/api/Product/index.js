@@ -84,7 +84,7 @@ const getProductByID = async(id) => {
 
 const getProductByRefNumber = async(refNumber) => {
   try {
-    const res = await axios.get(apiUrl + 'getProductsByReferenceNumber/' + refNumber);
+    const res = await axios.get(apiUrl + 'getProductsByReferenceNumberAdmin/' + refNumber);
     if(res.status == 200) {
         return {success: true, data: res.data}
         

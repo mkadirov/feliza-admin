@@ -52,7 +52,7 @@ function App() {
               <Route path="/interface" element={<Interface />}/>
               <Route path="/sale" element={<SalePage />}/>
               <Route path="/order/:id" element={<Order/>}/>
-              <Route path="/product/:referenceNumber" element={<Product/>} />
+              <Route path="/product/:id" element={<Product/>} />
             </>
           ) : (
             

@@ -24,7 +24,7 @@ function ProductMainCard({item, setNewProduct}) {
   return (
     <Card sx={{ maxWidth: 320 }}>
       
-        <div className='image-box' onClick = {() => navigate(`/product/${item.referenceNumber}`)}>
+        <div className='image-box' onClick = {() => navigate(`/product/${item.id}`)}>
             <img src={item.productImages[0]?.url} alt="" />
         </div>
         <CardContent>

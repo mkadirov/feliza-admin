@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, ClickAwayListener, Grid, Grow, MenuItem, MenuList, Paper, Popper, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
-import { getAllBrends } from '../../api/Brand';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { getAllBrends } from '../../api/Brand';
 
 function BrandPriceContainer({brand, setBrand, price, setPrice, importPrice, setImportPrice, compatibleProductId, setCompatibleProductId}) {
 

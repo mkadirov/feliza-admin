@@ -97,6 +97,27 @@ const getProductByRefNumber = async(refNumber) => {
 }
 
 
+const editProduct = async(id, product) => {
+  try {
+    const token = localStorage.getItem('userToken');
+      console.log(token);
+      
+      const res = await axios.put(apiUrl + 'editProduct/' + id, product, {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+      });
+    if(res.status == 200) {
+      return {success: true, data: res.data}
+    } else {
+      return {success: false}
+    }
+  } catch (error) {
+    return {success: false}
+  }
+}
 
 
-export {createProduct, getAllProducts, deleteProduct, getProductByID, getProductByRefNumber}
+
+export {createProduct, getAllProducts, deleteProduct, getProductByID, getProductByRefNumber, editProduct}

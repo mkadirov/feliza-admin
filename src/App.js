@@ -14,9 +14,12 @@ import SalePage from './pages/SalePage/SalePage';
 import Order from './pages/Order/Order';
 import Users from './pages/Users/Users';
 import Product from './pages/Product/Product';
+import { Box, CircularProgress } from '@mui/material';
+import MyContext from './components/Context/MyContext';
 
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false)
   const [user, setUser] = useState(() => {
     const storedUserData = localStorage.getItem("userData");
 
@@ -37,6 +40,14 @@ function App() {
   
   return (
     <>
+      <MyContext.Provider
+      value={
+        {
+          isLoading,
+          setIsLoading
+        }
+      }
+      >
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage setUser={setUser} />} />
@@ -63,6 +74,33 @@ function App() {
           )}
         </Routes>
       </BrowserRouter>
+
+      {isLoading && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            zIndex: 9999,
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        </Box>
+      )}
+      </MyContext.Provider>
     </>
   );
 }

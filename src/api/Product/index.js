@@ -34,18 +34,23 @@ const createProduct = async(product, imageFiles) => {
 }
 
 
-const getAllProducts = async() => {
-    try {
-        const res = await axios.get(apiUrl + 'getAllProducts')
-        if(res.status == 200) {
-          return {success: true, data: res.data}
-        } else {
-          return {success: false}
-        }
-    } catch (error) {
-        return {success: false}
-    }
-}
+const getAllProducts = async(page) => {
+  try {
+      const res = await axios.get(apiUrl + 'getAllProducts', {
+          params: {
+              page: page-1,
+              size: 12
+          }
+      });
+      if (res.status === 200) {
+          return { success: true, data: res.data };
+      } else {
+          return { success: false };
+      }
+  } catch (error) {
+      return { success: false };
+  }
+};
 
 
 const deleteProduct = async(id) => {

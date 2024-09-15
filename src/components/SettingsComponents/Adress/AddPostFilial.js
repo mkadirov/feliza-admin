@@ -10,7 +10,9 @@ function AddPostFilial({setNewPostFilial, regions}) {
     const [postName, setPostName] = useState('')
     const [postFilialName, setPostFilialName] = useState('')
     const [description, setDescription] = useState('');
+    const [descriptionRUS, setDescriptionRUS] = useState('');
     const [street, setStreet] = useState('')
+    const [streetRUS, setStreetRUS] = useState('')
     const [houseNumber, setHouseNumber] = useState('')
     const [subRegionId, setSubRegionId] = useState('');
     const [subRegion, setSubRegion] = useState('');
@@ -26,8 +28,10 @@ function AddPostFilial({setNewPostFilial, regions}) {
         const postFilial = {
           postName: postName, 
           postFilialName: postFilialName,
-          description: description,
-          street: street,
+          descriptionUZB: description,
+          descriptionRUS: descriptionRUS,
+          streetUZB: street,
+          streetRUS: streetRUS,
           houseNumber: houseNumber,
           subRegionId: subRegion.id,
           regionId: region.id
@@ -39,7 +43,9 @@ function AddPostFilial({setNewPostFilial, regions}) {
           setPostName('');
           setPostFilialName('');
           setDescription('')
+          setDescriptionRUS('')
           setStreet('');
+          setStreetRUS('')
           setHouseNumber('');
           setSubRegionId('');
           setRegion('')
@@ -77,7 +83,7 @@ function AddPostFilial({setNewPostFilial, regions}) {
                         <input 
                             type="text" 
                             placeholder='Viloyat'
-                            value={region == ''? '' : region.name}
+                            value={region == ''? '' : region.nameUZB}
                             onChange={(e) => setRegion(e.target.value)}
                             readOnly
                         
@@ -89,7 +95,7 @@ function AddPostFilial({setNewPostFilial, regions}) {
                         <input 
                             type="text" 
                             placeholder='Tuman'
-                            value={subRegion == ''? '' : subRegion.name}
+                            value={subRegion == ''? '' : subRegion.nameUZB}
                             onChange={(e) => setSubRegion(e.target.value)}
                             readOnly
                         
@@ -119,12 +125,19 @@ function AddPostFilial({setNewPostFilial, regions}) {
                         <input 
                             className='settings-input' 
                             type="text" 
-                            placeholder='Köcha nomi'
+                            placeholder='Köcha nomi (UZB)'
                             value={street}
                             onChange={(e) => setStreet(e.target.value)}
                         />
                         <input 
                             className='settings-input' 
+                            type="text" 
+                            placeholder='Köcha nomi RUS)'
+                            value={streetRUS}
+                            onChange={(e) => setStreetRUS(e.target.value)}
+                        />
+                        <input 
+                            className='settings-input-small' 
                             type="text" 
                             placeholder='Uy raqami'
                             value={houseNumber}
@@ -136,9 +149,19 @@ function AddPostFilial({setNewPostFilial, regions}) {
                     <input 
                         className='settings-input' 
                         type="text" 
-                        placeholder="Pochta filiali haqida ma'lumot"
+                        placeholder="Pochta filiali haqida ma'lumot (UZB)"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
+                    />
+                    
+                </div>
+                <div className="input-container">
+                    <input 
+                        className='settings-input' 
+                        type="text" 
+                        placeholder="Pochta filiali haqida ma'lumot (RUS)"
+                        value={descriptionRUS}
+                        onChange={(e) => setDescriptionRUS(e.target.value)}
                     />
                     <Button  onClick={createNewPostFilial}>
                         Qöshish

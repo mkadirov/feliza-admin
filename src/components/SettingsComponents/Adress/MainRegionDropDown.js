@@ -83,7 +83,7 @@ function MainRegionDropDown({regions, setParentRegion}) {
                         selected={index === selectedIndex}
                         onClick={(event) => handleMenuItemClick(event, index, option)}
                       >
-                        {option.name}
+                        {option.nameUZB}
                       </MenuItem>
                     ))}
                   </MenuList>

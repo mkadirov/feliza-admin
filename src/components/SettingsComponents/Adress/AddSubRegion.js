@@ -5,13 +5,15 @@ import { addNewSubRegion } from '../../../api/Address/Region'
 
 function AddSubRegion({regions, setNewSubRegion, parentRegion, setParentRegion}) {
 
-    const [name, setName] = useState('')
+    const [nameUZB, setNameUZB] = useState('')
+    const [nameRUS, setNameRUS] = useState('')
     const [postCode, setPostCode] = useState('')
     
     
     const createNewSubRegion = async () => {
         const region = {
-          name: name, 
+          nameUZB: nameUZB, 
+          nameRUS: nameRUS,
           postCode: postCode,
           regionId: parentRegion.id,
         }
@@ -19,10 +21,11 @@ function AddSubRegion({regions, setNewSubRegion, parentRegion, setParentRegion})
        
         if (res?.success) {
             console.log('Sub region yaratildi');
-          setName('');
+          setNameUZB('');
+          setNameRUS('')
           setPostCode('');
           setParentRegion('')
-          setNewSubRegion(name)
+          setNewSubRegion(nameUZB)
         } else {
           alert(res.message);
         }
@@ -44,7 +47,7 @@ function AddSubRegion({regions, setNewSubRegion, parentRegion, setParentRegion})
                     <input 
                         type="text" 
                         placeholder='Main Region'
-                        value={parentRegion == ''? '' : parentRegion.name}
+                        value={parentRegion == ''? '' : parentRegion.nameUZB}
                         onChange={(e) => setParentRegion(e.target.value)}
                         readOnly
                         
@@ -55,12 +58,19 @@ function AddSubRegion({regions, setNewSubRegion, parentRegion, setParentRegion})
                     <input 
                         className='settings-input' 
                         type="text" 
-                        placeholder='Tuman'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        placeholder='Tuman (UZB)'
+                        value={nameUZB}
+                        onChange={(e) => setNameUZB(e.target.value)}
                     />
                     <input 
                         className='settings-input' 
+                        type="text" 
+                        placeholder='Tuman (RUS)'
+                        value={nameRUS}
+                        onChange={(e) => setNameRUS(e.target.value)}
+                    />
+                    <input 
+                        className='settings-input-small' 
                         type="text" 
                         placeholder='Postkod'
                         value={postCode}

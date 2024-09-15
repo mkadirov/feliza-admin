@@ -1,4 +1,4 @@
-import { Box, Button, Grid, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import { Box, Button, Divider, Grid, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,7 +8,8 @@ import MainRegionDropDown from './MainRegionDropDown';
 function HandleSubRegion({setNewSubRegion, parentRegion, setParentRegion, subRegions, regions}) {
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
-    const [name, setName] = useState('');
+    const [nameUZB, setNameUZB] = useState('');
+    const [nameRUS, setNameRUS] = useState('');
     const [postCode, setPostCode] = useState('');
     const [regionId, setRegionId] = useState(0)
     
@@ -35,14 +36,16 @@ function HandleSubRegion({setNewSubRegion, parentRegion, setParentRegion, subReg
 
     const editSubRegionById = async() => {
         const region = {
-            name: name,
+            nameUZB: nameUZB,
+            nameRUS: nameRUS,
             postCode: postCode,
             regionId: parentRegion.id
         }
         const res = await editSubRegion(regionId, region);
         if(res.success) {
-            setNewSubRegion(name + postCode)
-            setName('');
+            setNewSubRegion(nameUZB + postCode)
+            setNameUZB('');
+            setNameRUS('')
             setPostCode('');
             setRegionId(0);
             setParentRegion('')
@@ -61,7 +64,8 @@ function HandleSubRegion({setNewSubRegion, parentRegion, setParentRegion, subReg
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell >Viloyat</TableCell>
-            <TableCell >Tuman</TableCell>
+            <TableCell >Tuman (UZB)</TableCell>
+            <TableCell >Tuman (RUS)</TableCell>
             <TableCell >Postkod</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
@@ -75,15 +79,17 @@ function HandleSubRegion({setNewSubRegion, parentRegion, setParentRegion, subReg
               <TableCell sx={{width: '10px', borderRight: '1px solid grey'}} component="th" scope="row">
                 {idx + 1}
               </TableCell>
-              <TableCell>{row.region.name}</TableCell>
-              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.region.nameUZB}</TableCell>
+              <TableCell>{row.nameUZB}</TableCell>
+              <TableCell>{row.nameRUS}</TableCell>
               <TableCell>{row.postCode}</TableCell>
               <TableCell align="right">
                 <IconButton
                     onClick={() => {
                       console.log(row);
                         setOpen(true);
-                        setName(row.name);
+                        setNameUZB(row.nameUZB);
+                        setNameRUS(row.nameRUS)
                         setPostCode(row.postCode);
                         setRegionId(row.id);
                         setParentRegion(row.region)
@@ -119,21 +125,33 @@ function HandleSubRegion({setNewSubRegion, parentRegion, setParentRegion, subReg
                        <input 
                             type="text" 
                             placeholder='Main Region'
-                            value={parentRegion.name}
+                            value={parentRegion.nameUZB}
                             onChange={(e) => setParentRegion(e.target.value)}
                             readOnly
                         
                         />
                         <MainRegionDropDown setParentRegion = {setParentRegion} regions = {regions}/>
                     </div>
+ 
+                    <Divider sx={{marginTop: 1, marginBottom: 2}}/>
                     <TextField 
                         id="outlined-basic" 
-                        label="Tuman" 
+                        label="Tuman (UZB)" 
                         variant="outlined" 
                         size='small' 
                         fullWidth
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={nameUZB}
+                        onChange={(e) => setNameUZB(e.target.value)}
+                    />
+                    <TextField 
+                    sx={{marginTop: 2}}
+                        id="outlined-basic" 
+                        label="Tuman (RUS)" 
+                        variant="outlined" 
+                        size='small' 
+                        fullWidth
+                        value={nameRUS}
+                        onChange={(e) => setNameRUS(e.target.value)}
                     />
                     <TextField 
                         sx={{my: 2}} 

@@ -64,9 +64,11 @@ function HandlePostFilials({postFilials, setNewPostFilial}) {
             <TableCell >Tuman</TableCell>
             <TableCell >Pochta Nomi</TableCell>
             <TableCell >Pochta filiali</TableCell>
-            <TableCell >Köcha nomi</TableCell>
+            <TableCell >Köcha nomi(UZB)</TableCell>
+            <TableCell >Köcha nomi(RUS)</TableCell>
             <TableCell >Uy raqami</TableCell>
-            <TableCell >Info</TableCell>
+            <TableCell >Info (UZB)</TableCell>
+            <TableCell >Info (RUS)</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -79,12 +81,14 @@ function HandlePostFilials({postFilials, setNewPostFilial}) {
               <TableCell sx={{width: '10px', borderRight: '1px solid grey'}} component="th" scope="row">
                 {idx + 1}
               </TableCell>
-              <TableCell>{row.subRegion?.name}</TableCell>
+              <TableCell>{row.subRegion?.nameUZB}</TableCell>
               <TableCell>{row.postName}</TableCell>
               <TableCell>{row.postFilialName}</TableCell>
-              <TableCell>{row.street}</TableCell>
+              <TableCell>{row.streetUZB}</TableCell>
+              <TableCell>{row.streetRUS}</TableCell>
               <TableCell>{row.houseNumber}</TableCell>
-              <TableCell>{row.description}</TableCell>
+              <TableCell>{row.descriptionUZB}</TableCell>
+              <TableCell>{row.descriptionRUS}</TableCell>
               <TableCell align="right">
                 {/* <IconButton
                     onClick={() => {

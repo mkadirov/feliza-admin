@@ -27,6 +27,13 @@ body {
     border-radius: 15px;
     
 }
+.settings-input-small {
+    height: 70%;
+    padding-left: 10px;
+    
+    border-radius: 15px;
+    
+}
 
 .dropdown-box {
     height: 70%;

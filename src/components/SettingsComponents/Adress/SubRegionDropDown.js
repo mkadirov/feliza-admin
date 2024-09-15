@@ -82,7 +82,7 @@ function SubRegionDropDown({subRegions, setSubRegion}) {
                         selected={index === selectedIndex}
                         onClick={(event) => handleMenuItemClick(event, index, option)}
                       >
-                        {option.name}
+                        {option.nameUZB}
                       </MenuItem>
                     ))}
                   </MenuList>

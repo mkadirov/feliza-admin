@@ -9,7 +9,8 @@ import { getAllPostFilials } from '../../../api/Address/Post'
 import HandlePostFilials from './HandlePostFilials'
 
 function AddRegion() {
-    const [name, setName] = useState('')
+    const [nameUZB, setNameUZB] = useState('')
+    const [nameRUS, setNameRUS] = useState('')
     const [postCode, setPostCode] = useState('')
     const [newRegion, setNewRegion] = useState('')
     const [regions, setRegions] = useState([])
@@ -22,14 +23,16 @@ function AddRegion() {
 
     const createRegion = async () => {
         const region = {
-          name: name, 
+          nameUZB: nameUZB,
+          nameRUS: nameRUS, 
           postCode: postCode,
         }
         const res = await addNewRegion(region)
 
         if (res?.success) {
-          setNewRegion(name)
-          setName('');
+          setNewRegion(nameUZB)
+          setNameUZB('');
+          setNameRUS('')
           setPostCode('');
           
         } else {
@@ -80,9 +83,16 @@ function AddRegion() {
                     <input 
                         className='settings-input'
                         type="text" 
-                        placeholder='Main Region'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}   
+                        placeholder='Viloyat (UZB)'
+                        value={nameUZB}
+                        onChange={(e) => setNameUZB(e.target.value)}   
+                    />
+                    <input 
+                        className='settings-input'
+                        type="text" 
+                        placeholder='Viloyat (RUS)'
+                        value={nameRUS}
+                        onChange={(e) => setNameRUS(e.target.value)}   
                     />
                     <input 
                         className='settings-input' 

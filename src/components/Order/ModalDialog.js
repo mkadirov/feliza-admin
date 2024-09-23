@@ -6,8 +6,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { cancelOrder, orderPackedUp } from '../../api/Orders';
+import { useNavigate } from 'react-router-dom';
 
  function ModalDialog({open, setOpen, actionType, id}) {
+
+  const navigate = useNavigate()
 
     const isCanceled = "Buyurtmani bekor qilmoqchimisiz?";
     const isReadyToSend = 'Buyurtma jönatishga tayyormi?';
@@ -28,8 +31,9 @@ import { cancelOrder, orderPackedUp } from '../../api/Orders';
 
   const orderReadyToPack = async() => {
     const res = await orderPackedUp(id);
-    if(res.success) {
+    if(res?.success) {
         alert('Buyurtma jönatishga tayyor')
+        navigate('/orders')
     } else {
         alert('xatolik')
     }
@@ -37,8 +41,9 @@ import { cancelOrder, orderPackedUp } from '../../api/Orders';
 
   const orderCanceled = async() => {
     const res = await cancelOrder(id);
-    if(res.success) {
+    if(res?.success) {
         alert('Buyurtma bekor qilindi')
+        navigate('/orders')
     } else {
         alert('xatolik')
     }

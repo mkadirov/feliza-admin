@@ -66,7 +66,7 @@ function ShippedOrders({shippedOrders}) {
                           <TableCell align="right">{row.address.region.name}</TableCell>
                           <TableCell align="right">{row.orderCost}</TableCell>
                           <TableCell align="right">{formattedDate}</TableCell>
-                          <TableCell align="right">{'bekor qilingan'}</TableCell>
+                          <TableCell align="right">{'jönatildi'}</TableCell>
                         </TableRow>
                       )
                     }

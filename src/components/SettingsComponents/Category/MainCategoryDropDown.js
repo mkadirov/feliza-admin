@@ -43,7 +43,6 @@ export default function MainCategoryDropDown({setParentCategory, categories}) {
     const fetchData = async() => {
         const res = await getParentCategory();
         if(res?.success) {
-            console.log(res.data);
             setOptions(res.data)
         }
     }

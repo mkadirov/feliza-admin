@@ -65,7 +65,7 @@ function NewOrders({newOrders}) {
                           <TableCell align="right">{row.address.region.name}</TableCell>
                           <TableCell align="right">{row.orderCost}</TableCell>
                           <TableCell align="right">{formattedDate}</TableCell>
-                          <TableCell align="right">{'Yangi buyurtma'}</TableCell>
+                          <TableCell align="right">{'yangi buyurtma'}</TableCell>
                         </TableRow>
                       )
                     }

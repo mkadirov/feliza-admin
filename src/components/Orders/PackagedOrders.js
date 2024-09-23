@@ -61,12 +61,12 @@ function PackagedOrders({packagedOrders}) {
                           <TableCell sx={{maxWidth: 20, borderRight: '1px solid grey'}} component="th" scope="row">
                             {idx +1}
                           </TableCell>
-                          <TableCell align="left">{row.customer.fullName}</TableCell>
-                          <TableCell align="right">{row.customer.phoneNumber}</TableCell>
-                          <TableCell align="right">{row.address.region.name}</TableCell>
+                          <TableCell align="left">{row.customer?.fullName}</TableCell>
+                          <TableCell align="right">{row.customer?.phoneNumber}</TableCell>
+                          <TableCell align="right">{row.address?.region?.nameUZB}</TableCell>
                           <TableCell align="right">{row.orderCost}</TableCell>
                           <TableCell align="right">{formattedDate}</TableCell>
-                          <TableCell align="right">{'bekor qilingan'}</TableCell>
+                          <TableCell align="right">{'tayyorlandi'}</TableCell>
                         </TableRow>
                       )
                     }

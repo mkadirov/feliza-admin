@@ -72,7 +72,7 @@ function AddSale({setRefreshSaleList}) {
                 sale: sale,
                 name: name,
                 referenceNumberList: result, 
-                categoryId: 17
+                categoryId: 7
             }
             
             const res = await addSaleProduct(saleProductObj);

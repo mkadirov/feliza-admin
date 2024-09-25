@@ -40,6 +40,7 @@ function PackagedOrders({packagedOrders}) {
               <TableHead >
                 <TableRow sx={{backgroundColor: '#f5f5f5'}}>
                   <TableCell sx={{maxWidth: '20px', borderRight: '1px solid grey'}}>#</TableCell>
+                  <TableCell align="left">Buyurtma raqami</TableCell>
                   <TableCell align="left">Ism sharfi</TableCell>
                   <TableCell align="right">Telefon raqami</TableCell>
                   <TableCell align="right">Region</TableCell>
@@ -61,6 +62,7 @@ function PackagedOrders({packagedOrders}) {
                           <TableCell sx={{maxWidth: 20, borderRight: '1px solid grey'}} component="th" scope="row">
                             {idx +1}
                           </TableCell>
+                          <TableCell align="left">{row.orderNumber}</TableCell>
                           <TableCell align="left">{row.customer?.fullName}</TableCell>
                           <TableCell align="right">{row.customer?.phoneNumber}</TableCell>
                           <TableCell align="right">{row.address?.region?.nameUZB}</TableCell>

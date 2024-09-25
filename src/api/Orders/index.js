@@ -2,6 +2,40 @@ import axios from 'axios'
 
 const baseUrl = 'https://felizabackend.uz/api/order/'
 
+const getAllOrders = async() => {
+    try {
+        const token = localStorage.getItem('userToken');
+        const res = await axios.get(baseUrl + 'getAllOrders', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+        });
+        if(res.status == 200) {
+            return {success: true, data: res.data}
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const getAllPaidOrders = async() => {
+    try {
+        const token = localStorage.getItem('userToken');
+        const res = await axios.get(baseUrl + 'getAllOrdersPaidIsTrue', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+        });
+        if(res.status == 200) {
+            return {success: true, data: res.data}
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 const getNewOrders = async() => {
     try {
         const token = localStorage.getItem('userToken');
@@ -153,4 +187,4 @@ const sendOrder = async(id, trackingNumber) => {
 }
 
 export { getNewOrders, getOrderById, orderPackedUp, cancelOrder, 
-    getCanceledOrders, getPackagedOrders, getShippedOrders, sendOrder}
+    getCanceledOrders, getPackagedOrders, getShippedOrders, sendOrder, getAllPaidOrders, getAllOrders}

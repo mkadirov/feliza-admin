@@ -64,7 +64,7 @@ function NewOrders({newOrders}) {
                           <TableCell align="left">{row.orderNumber}</TableCell>
                           <TableCell align="left">{row.customer.fullName}</TableCell>
                           <TableCell align="right">{row.customer.phoneNumber}</TableCell>
-                          <TableCell align="right">{row.address.region.name}</TableCell>
+                          <TableCell align="right">{row.address.region.nameUZB}</TableCell>
                           <TableCell align="right">{row.orderCost}</TableCell>
                           <TableCell align="right">{formattedDate}</TableCell>
                           <TableCell align="right">{'yangi buyurtma'}</TableCell>

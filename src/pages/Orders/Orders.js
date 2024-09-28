@@ -1,11 +1,12 @@
 import React, { useState, useEffect} from 'react';
 import {Box, Grid, Button} from '@mui/material'
 import MainLayout from '../../components/Layout/MainLayout';
-import { getCanceledOrders, getNewOrders, getPackagedOrders, getShippedOrders } from '../../api/Orders';
+import { getAllDeliveredOrders, getCanceledOrders, getNewOrders, getPackagedOrders, getShippedOrders } from '../../api/Orders';
 import NewOrders from '../../components/Orders/NewOrders';
 import CanceledOrders from '../../components/Orders/CanceledOrders';
 import PackagedOrders from '../../components/Orders/PackagedOrders';
 import ShippedOrders from '../../components/Orders/ShippedOrders';
+import DeliverdOrders from '../../components/Orders/DeliverdOrders';
 
 
 
@@ -17,6 +18,7 @@ const Orders = () => {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [shippedOrders, setShippedOrders] = useState([])
   const [packagedOrders, setPackagedOrders] = useState([])
+  const [deliveredOrders, setDeliveredOrders] = useState([])
 
 
   useEffect(() =>{
@@ -60,6 +62,14 @@ const Orders = () => {
         setCanceledOrders(res.data);
       } 
   }
+
+  const getDeliveredOrderList = async () => {
+    const res = await  getAllDeliveredOrders();
+    if(res?.success) {
+      console.log(res.data);
+      setDeliveredOrders(res.data);
+    } 
+}
   
 
 
@@ -76,9 +86,16 @@ const Orders = () => {
         <Button size='small' fullWidth variant={selectedIndex == 3? 'contained' : 'outlined'} onClick={() => setSelectedIndex(3)}>
           Jönatilgan buyurtmalar
         </Button>
+
         <Button size='small' fullWidth variant={selectedIndex == 4? 'contained' : 'outlined'} onClick={() => {
-          getCanceledOrderList();
+          getDeliveredOrderList();
           setSelectedIndex(4)
+        }}>
+          Yetkazilgan buyurtmalar
+        </Button>
+        <Button size='small' fullWidth variant={selectedIndex == 5? 'contained' : 'outlined'} onClick={() => {
+          getCanceledOrderList();
+          setSelectedIndex(5)
         }}>
           Bekor qilingan buyurtmalar
         </Button>
@@ -94,6 +111,9 @@ const Orders = () => {
         <ShippedOrders shippedOrders={shippedOrders}/>
       </Box>
       <Box sx={{display: selectedIndex==4? 'block' : 'none'}}>
+        <DeliverdOrders list={deliveredOrders}/>
+      </Box>
+      <Box sx={{display: selectedIndex==5? 'block' : 'none'}}>
         <CanceledOrders canceledOrders={canceledOrders}/>
       </Box>
 

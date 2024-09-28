@@ -9,10 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function CanceledOrders({canceledOrders}) {
+function DeliverdOrders({list}) {
     const navigate = useNavigate();
 
-    let sum = canceledOrders?.reduce((acc, item) => acc + item.orderCost, 0);
+    let sum = list?.reduce((acc, item) => acc + item.orderCost, 0);
     
 
   return (
@@ -20,15 +20,15 @@ function CanceledOrders({canceledOrders}) {
         <Card sx={{padding: 2, maxWidth: '500px', marginTop: 7}}>
             <Box display={'flex'} gap={2}>
                 <Typography sx={{color: 'grey'}}>
-                    Bekor qilingan buyurtmalar soni: 
+                    Sahifadagi yetkazilgan buyurtmalar soni: 
                 </Typography>
                 <Typography>
-                    {canceledOrders?.length}
+                    {list?.length}
                 </Typography>
             </Box>
             <Box display={'flex'} gap={2}>
                 <Typography sx={{color: 'grey'}}>
-                Bekor qilingan buyurtmalarning umumiy qiymati: 
+                Sahifadagi yetkazilgan buyurtmalarning umumiy qiymati: 
                 </Typography>
                 <Typography>
                     {sum.toLocaleString().replace(/,/g, ' ')} söm
@@ -49,7 +49,7 @@ function CanceledOrders({canceledOrders}) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {canceledOrders?.map((row, idx) => {
+                {list?.map((row, idx) => {
                     const date = new Date(row.createdAt);
                     const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
                     return (
@@ -66,7 +66,7 @@ function CanceledOrders({canceledOrders}) {
                           <TableCell align="right">{row.address.region.nameUZB}</TableCell>
                           <TableCell align="right">{row.orderCost}</TableCell>
                           <TableCell align="right">{formattedDate}</TableCell>
-                          <TableCell align="right">{'bekor qilingan'}</TableCell>
+                          <TableCell align="right">{'yetkazildi'}</TableCell>
                         </TableRow>
                       )
                     }
@@ -80,4 +80,4 @@ function CanceledOrders({canceledOrders}) {
   )
 }
 
-export default CanceledOrders
+export default DeliverdOrders

@@ -18,7 +18,7 @@ function HomePage() {
       if (res?.success) {
         console.log(res.data);
 
-        const paidOrderList = res.data.filter((item) => item.paid);
+        const paidOrderList = res?.data?.filter((item) => item.paid);
         setSumPaidOrders(transformAndSumOrders(paidOrderList));
         setIsPaidList(getPaidStatusSummary(res.data));
         setListByStatusType(countByOrderStatusType(paidOrderList));

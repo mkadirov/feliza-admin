@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Card, Typography, Button, Grid, TextField } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../../components/Layout/MainLayout";
-import { getOrderById, sendOrder } from "../../api/Orders";
+import { getOrderById, sendOrder, setOrderStatusToDelivered } from "../../api/Orders";
 import OrderInfo from "../../components/Order/OrderInfo";
 import OrderProductCard from "../../components/Order/OrderProductCard";
 import ModalDialog from "../../components/Order/ModalDialog";
@@ -14,7 +14,7 @@ function Order() {
   const [actionType, setActionType] = useState(1);
   const [trackingNumber, setTrackingNumber] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,11 +36,21 @@ function Order() {
     const res = await sendOrder(id, trackingNumber);
     if (res.success) {
       alert("Mahsulot jönatildi");
-      navigate('/orders')
+      navigate("/orders");
     } else {
       alert("Xatolik");
     }
   };
+
+  const orderDelivered =async() => {
+    const res = await setOrderStatusToDelivered(id);
+    if (res.success) {
+      alert("Mahsulot yetkazildi");
+      navigate("/orders");
+    } else {
+      alert("Xatolik");
+    }
+  }
 
   return (
     <MainLayout>
@@ -95,6 +105,19 @@ function Order() {
               Buyurtma jönatildi
             </Button>
           </Box>
+          <Button
+            sx={{
+              backgroundColor: "green",
+              color: "white",
+              "&:hover": { backgroundColor: "#006400" },
+              display: order?.orderStatusType === "SEND" ? "block" : "none",
+            }}
+            size="small"
+            variant="contained"
+            onClick={() => orderDelivered()}
+          >
+            Yetkazildi
+          </Button>
         </Box>
 
         <ModalDialog

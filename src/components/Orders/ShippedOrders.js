@@ -46,7 +46,7 @@ function ShippedOrders({shippedOrders}) {
                   <TableCell align="right">Region</TableCell>
                   <TableCell align="right">Summa</TableCell>
                   <TableCell align="right">Sana</TableCell>
-                  <TableCell align="right">Status</TableCell>
+                  <TableCell align="right">Tracking number</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -65,10 +65,10 @@ function ShippedOrders({shippedOrders}) {
                           <TableCell align="left">{row.orderNumber}</TableCell>
                           <TableCell align="left">{row.customer.fullName}</TableCell>
                           <TableCell align="right">{row.customer.phoneNumber}</TableCell>
-                          <TableCell align="right">{row.address.region.name}</TableCell>
+                          <TableCell align="right">{row.address.region.nameUZB}</TableCell>
                           <TableCell align="right">{row.orderCost}</TableCell>
                           <TableCell align="right">{formattedDate}</TableCell>
-                          <TableCell align="right">{'jönatildi'}</TableCell>
+                          <TableCell align="right">{row.postTrackingNumber}</TableCell>
                         </TableRow>
                       )
                     }

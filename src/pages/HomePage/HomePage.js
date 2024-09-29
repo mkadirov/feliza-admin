@@ -29,21 +29,26 @@ function HomePage() {
   }, []);
 
   function transformAndSumOrders(orders) {
+    // Step 1: Use reduce to group orders by date and sum the orderCost for each date
     const dateCostMap = orders.reduce((acc, order) => {
-      const date = order.createdAt.split("T")[0]; // Make sure to use 'orderTime'
+      const date = order.createdAt.split("T")[0]; // Extract date portion from createdAt
       if (!acc[date]) {
-        acc[date] = { date: date, pv: 0 }; // Create a new entry
+        acc[date] = { date: date, pv: 0 }; // Initialize a new entry for the date
       }
-      acc[date].pv += order.orderCost;
+      acc[date].pv += order.orderCost; // Sum the orderCost for the same date
       return acc;
     }, {});
-
-    // Convert the accumulator object to an array
+  
+    // Step 2: Convert the object to an array
     const resultArray = Object.values(dateCostMap);
-
-    // Return only the last 30 elements of the array
+  
+    // Step 3: Sort the array by date in ascending order (older to newer)
+    resultArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+    // Step 4: Return only the last 30 elements of the sorted array
     return resultArray.slice(-30);
   }
+  
 
   function getPaidStatusSummary(arr) {
     return arr.reduce(

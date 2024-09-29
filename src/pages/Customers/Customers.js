@@ -20,7 +20,7 @@ function Customers() {
       if(res?.success) {
         console.log(res.data);
         
-        setList(res.data)
+        setList(res.data?.content)
       }
     }
 
@@ -45,8 +45,7 @@ function Customers() {
               </TableHead>
               <TableBody>
                 {list?.map((row, idx) => {
-                    const date = new Date(row.createdAt);
-                    const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+                    
                     return (
                         <TableRow
                           key={row.id}

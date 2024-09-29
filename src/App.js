@@ -20,6 +20,7 @@ import MyContext from './components/Context/MyContext';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false)
+  const [pageName, setPageName] = useState('Statistika')
   const [user, setUser] = useState(() => {
     const storedUserData = localStorage.getItem("userData");
 
@@ -44,7 +45,9 @@ function App() {
       value={
         {
           isLoading,
-          setIsLoading
+          setIsLoading,
+          pageName,
+          setPageName
         }
       }
       >

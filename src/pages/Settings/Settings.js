@@ -31,10 +31,10 @@ function Settings() {
   return (
     <MainLayout>
         <p className="text-4xl mt-12">
-            Sozlamalar
+            
         </p>
 
-        <div className="my-5">
+        <div className="mb-5 mt-12">
           <Grid container spacing={1}>
             <Grid item xs={2.4}>
               <SettingsButton className={settingType === 1 ? 'activeButton' : ''} onClick={() => setSettingType(1)}>

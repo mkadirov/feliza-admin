@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import LogoutIcon from '@mui/icons-material/Logout';
+import MyContext from '../Context/MyContext';
 
 const drawerWidth = 240;
 
@@ -26,6 +27,7 @@ function MainLayout({children, props}) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const {pageName, setPageName} = React.useContext(MyContext)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -53,7 +55,10 @@ function MainLayout({children, props}) {
         {list.map((item, idx) => (
           <Box>
             <StyledListItem
-              onClick={() => navigate(item.path)} 
+              onClick={() => {
+                navigate(item.path);
+                setPageName(item.title)
+              }} 
               className={currentPath.startsWith(item.path)? 'active': 'inactive'} 
               key={item.title + idx} 
               disablePadding
@@ -99,8 +104,8 @@ function MainLayout({children, props}) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Admin dashbord
+            <Typography variant="h5" noWrap component="div">
+              {pageName}
             </Typography>
             </Box>
 

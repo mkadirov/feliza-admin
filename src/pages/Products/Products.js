@@ -13,7 +13,7 @@ import { grey } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
 import { Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { getAllProducts } from "../../api/Product";
+import { getAllProducts, getProductByRefNumber } from "../../api/Product";
 import ProductMainCard from "../../components/Cards/ProductMainCard";
 
 function Products() {
@@ -22,6 +22,7 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState("");
   const [page, setPage] = useState(1);
+  const [articulNumber, setArticulNumber] = useState('')
   const [numberOfPages, setNumberOfPages] = useState(1)
 
   const StyledChip = styled(Chip)({
@@ -41,6 +42,16 @@ function Products() {
     }
     fetchData();
   }, [page]);
+
+  const findProducts = async() => {
+    const res = await getProductByRefNumber(articulNumber);
+
+    if(res?.success) {
+      setProducts(res.data)
+    } else {
+      alert('Bunday Artikl raqam bilan mahsulotlar mavjud emas')
+    }
+  }
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -78,10 +89,10 @@ function Products() {
             <div className="flex justify-center items-center">
               <Search />
             </div>
-            <input style={{ flex: 1 }} type="text" className="main-input" />
+            <input style={{ flex: 1 }} type="text" className="main-input" value={articulNumber} onChange={(e) => setArticulNumber(e.target.value)}/>
           </div>
           <div className="rounded-md bg-gray-300 h-full flex ">
-            <Button>Qidirish</Button>
+            <Button onClick={() => findProducts()}>Qidirish</Button>
           </div>
           <Button
             variant="contained"

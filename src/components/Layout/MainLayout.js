@@ -41,7 +41,7 @@ function MainLayout({children, props}) {
     // marginBottom: '10px',
     '&:hover ,&.active': {
       backgroundColor: grey[400],
-      color: 'white'
+      // color: 'white'
     }
   }))
 
@@ -50,7 +50,7 @@ function MainLayout({children, props}) {
       <Toolbar sx={{backgroundColor: 'primary.main', color: 'white'}}>
         <p className="text-4xl">Feliza</p>
       </Toolbar>
-      <Divider />
+     
       <List>
         {list.map((item, idx) => (
           <Box>
@@ -64,13 +64,13 @@ function MainLayout({children, props}) {
               disablePadding
             >
             <ListItemButton>
-              <ListItemIcon>
+              <ListItemIcon sx={{color: 'black'}}>
                 {item.icon}
               </ListItemIcon>
               <ListItemText primary={item.title} />
             </ListItemButton>
             </StyledListItem>
-            <Divider/>
+            {/* <Divider/> */}
           </Box>
         ))}
       </List>
@@ -88,6 +88,7 @@ function MainLayout({children, props}) {
       <CssBaseline />
       <AppBar
         position="fixed"
+        elevation={0}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
@@ -104,7 +105,7 @@ function MainLayout({children, props}) {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h5" noWrap component="div">
+            <Typography variant="h5" sx={{color: 'white'}} noWrap component="div">
               {pageName}
             </Typography>
             </Box>
@@ -139,8 +140,13 @@ function MainLayout({children, props}) {
         <Drawer
           variant="permanent"
           sx={{
+            zIndex: 1200, // Set z-index for the permanent drawer as well
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box', 
+              width: drawerWidth,
+              boxShadow: '5px 0px 15px rgba(0, 0, 0, 0.1)', // Add shadow on the right
+            },
           }}
           open
         >

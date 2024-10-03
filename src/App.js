@@ -14,7 +14,7 @@ import SalePage from './pages/SalePage/SalePage';
 import Order from './pages/Order/Order';
 import Users from './pages/Users/Users';
 import Product from './pages/Product/Product';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, createTheme, ThemeProvider } from '@mui/material';
 import MyContext from './components/Context/MyContext';
 
 
@@ -38,6 +38,20 @@ function App() {
     }
   });
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#3BABB3",
+      },
+      secondary: {
+        main: "#edf2ff",
+      },
+    },
+    shape: {
+      borderRadius: 5,
+    },
+  });
+
   
   return (
     <>
@@ -51,6 +65,7 @@ function App() {
         }
       }
       >
+      <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage setUser={setUser} />} />
@@ -77,6 +92,7 @@ function App() {
           )}
         </Routes>
       </BrowserRouter>
+      </ThemeProvider>
 
       {isLoading && (
         <Box

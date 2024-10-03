@@ -17,7 +17,7 @@ function AddRegion() {
     const [newSubRegion, setNewSubRegion] = useState('')
     const [subRegions, setSubRegions] = useState([]);
     const [parentRegion, setParentRegion] = useState('')
-    const [newPostFilial, setNewPostFilial] = useState('')
+    const [newPostFilial, setNewPostFilial] = useState(1)
     const [postFilials, setPostFilials] = useState([]);
 
 

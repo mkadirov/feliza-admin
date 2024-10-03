@@ -22,6 +22,29 @@ const addPostFilial = async(postFilial) => {
     }
   }
 
+  const editPostFilial = async(id, postFilial) => {
+    try {
+      const token = localStorage.getItem('userToken');
+      console.log(postFilial);
+      const res = await axios.put(baseUrl + 'editPostFilial/' + id, postFilial, {
+           headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+      });
+      if(res.status == 200 || res.status == 201) {
+        return {success: true, data: res.data}
+      }else {
+        console.log(res.message);
+        
+        return {success: false, message: res.message}
+      }
+    } catch (error) {
+      console.log(error.message)
+       return {success: false, message: error.message}
+    }
+  }
+
   const getAllPostFilials = async() => {
     try {
       const res = await axios.get(baseUrl + 'getAllPostFilial')
@@ -55,4 +78,4 @@ const addPostFilial = async(postFilial) => {
     }
 }
 
-  export {addPostFilial, getAllPostFilials, deletePostFilial}
+  export {addPostFilial, getAllPostFilials, deletePostFilial, editPostFilial}

@@ -98,7 +98,7 @@ function HomePage() {
     <MainLayout>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <Card sx={{ marginTop: 3, height: "400px", width: "100%" }}>
+          <Card sx={{ marginTop: 3, height: "480px", width: "100%" }}>
             <Typography variant="h6" marginY={2} textAlign={"center"}>
               To'lov amalga oshirilgan va oshirilmagan buyurtmalar
             </Typography>
@@ -122,7 +122,7 @@ function HomePage() {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Card sx={{ marginTop: 3, height: "400px", width: "100%" }}>
+          <Card sx={{ marginTop: 3, height: "480px", width: "100%" }}>
             <Typography variant="h6" marginY={2} textAlign={"center"}>
               Yetkazilmagan buyurtmalar
             </Typography>

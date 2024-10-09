@@ -199,16 +199,16 @@ const setOrderStatusToDelivered = async (id) => {
   }
 };
 
-const sendOrder = async (id, trackingNumber) => {
-  const postNumber = {
-    postTrackingNumber: trackingNumber,
-  };
+const sendOrder = async (id, postTrackingNumber) => {
+  // const postNumber = {
+  //   postTrackingNumber: trackingNumber,
+  // };
 
   try {
     const token = localStorage.getItem("userToken");
     const res = await axios.put(
       baseUrl + "editStatusToSend/" + id,
-      postNumber,
+      postTrackingNumber,
       {
         headers: {
           "Content-Type": "application/json",

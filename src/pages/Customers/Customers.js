@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import {Box, Card, Typography} from '@mui/material'
+import {Box, Card, Pagination, Typography} from '@mui/material'
 import {useNavigate} from 'react-router-dom'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,19 +13,25 @@ import { getAllCustomers } from '../../api/Customers';
 
 function Customers() {
   const [list, setList] = useState([])
+  const [totalPages, setTotalPages] = useState(1)
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllCustomers();
+      const res = await getAllCustomers(page);
       if(res?.success) {
         console.log(res.data);
-        
+        setTotalPages(res.data.totalPages)
         setList(res.data?.content)
       }
     }
 
     fetchData();
-  }, [])
+  }, [page])
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
   return (
     <MainLayout>
        <Box>
@@ -69,7 +75,9 @@ function Customers() {
             </Table>
         </TableContainer>
 
-        
+        <Box display={'flex'} justifyContent={'center'} marginY={3}>
+           <Pagination count={totalPages} variant="outlined" shape="rounded" onChange={handlePageChange}/>
+        </Box>
     </Box>
     </MainLayout>
   )

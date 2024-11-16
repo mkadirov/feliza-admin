@@ -18,8 +18,8 @@ function SizeColorContainer({colorList, colors, deleteColor, addColor, handleSiz
                     <p className="text-2xl mt-3 mb-2">
                         Ranglar
                     </p>
-                    <Box className="input-container pl-3"  >
-                        <div className="flex items-center gap-2 ">
+                    <Box className="input-container ">
+                        <div className="flex items-center gap-2 mt-2" >
                             {
                                 (colorList.length == 0) && (<Typography sx={{color: grey[500]}}>Rang tanlang</Typography>)
                             }

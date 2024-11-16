@@ -53,8 +53,10 @@ input:focus {
 
 .input-container {
     @apply w-full  overflow-hidden flex items-center gap-2 bg-gray-300;
-    height: 60px;
+    min-height: 60px;
     border-radius: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px
 }
 
 .input-container-big {

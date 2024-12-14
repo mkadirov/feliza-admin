@@ -2,6 +2,9 @@ import React from 'react'
 import {Card, Box, Typography, Grid} from '@mui/material'
 
 function OrderProductCard({item}) {
+
+  console.log(item);
+  
   return (
     <Card sx={{padding: 2}}>
          

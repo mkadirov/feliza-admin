@@ -47,6 +47,7 @@ function Product() {
           ({ id, ...rest }) => rest
         );
         console.log(temp);
+        const tempCategory = temp?.category?.reverse()
         setProduct(temp);
         setProductNameUz(temp?.nameUZB);
         setProductNameRu(temp?.nameRUS);
@@ -54,7 +55,7 @@ function Product() {
         setColorList([temp.color.colorCode]);
         setDescriptionRu(temp.descriptionRUS);
         setDescriptionUz(temp.descriptionUZB);
-        setCategoryList(temp.category);
+        setCategoryList(tempCategory);
         setParentCategory(temp?.category[0]?.nameUZB);
         setBrand(temp.brand);
         setIkpuNumber(temp.ikpunumber);

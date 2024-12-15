@@ -78,7 +78,8 @@ const getNotPaidOrders = async() => {
     if(res?.success) {
       console.log(res.data);
       const list = res.data.filter(item => item.paid == false)
-      setNotPaidOrders(list.reverse())
+      list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setNotPaidOrders(list)
     } 
 }
   

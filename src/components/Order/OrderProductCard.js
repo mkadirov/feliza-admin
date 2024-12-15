@@ -23,12 +23,17 @@ function OrderProductCard({item}) {
                 <Box display={'flex'} gap={1}>
                     <Typography sx={{ color: "grey" }}>Narxi:</Typography>
 
-                    <Typography>{item?.sellPrice} söm</Typography>
+                    <Typography>{item?.productCost} söm</Typography>
                 </Box>
                 <Box display={'flex'} gap={1}>
                     <Typography sx={{ color: "grey" }}>Barcode:</Typography>
 
                     <Typography>{item?.productSizeVariant?.barCode}</Typography>
+                </Box>
+                <Box display={'flex'} gap={1}>
+                    <Typography sx={{ color: "grey" }}>Ref number:</Typography>
+
+                    <Typography>{item?.referenceNumber}</Typography>
                 </Box>
                 <Box display={'flex'} gap={1} marginTop={3} alignItems={'center'}>
                     <Typography sx={{ color: "grey" }}>Ölchami:</Typography>

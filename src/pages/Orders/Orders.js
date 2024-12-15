@@ -1,12 +1,13 @@
 import React, { useState, useEffect} from 'react';
 import {Box, Grid, Button} from '@mui/material'
 import MainLayout from '../../components/Layout/MainLayout';
-import { getAllDeliveredOrders, getCanceledOrders, getNewOrders, getPackagedOrders, getShippedOrders } from '../../api/Orders';
+import { getAllDeliveredOrders, getAllOrders, getCanceledOrders, getNewOrders, getPackagedOrders, getShippedOrders } from '../../api/Orders';
 import NewOrders from '../../components/Orders/NewOrders';
 import CanceledOrders from '../../components/Orders/CanceledOrders';
 import PackagedOrders from '../../components/Orders/PackagedOrders';
 import ShippedOrders from '../../components/Orders/ShippedOrders';
 import DeliverdOrders from '../../components/Orders/DeliverdOrders';
+import NotPaidOrders from '../../components/Orders/NotPaidOrders';
 
 
 
@@ -19,6 +20,7 @@ const Orders = () => {
   const [shippedOrders, setShippedOrders] = useState([])
   const [packagedOrders, setPackagedOrders] = useState([])
   const [deliveredOrders, setDeliveredOrders] = useState([])
+  const [notPaidOrders, setNotPaidOrders] = useState([])
 
 
   useEffect(() =>{
@@ -70,6 +72,15 @@ const Orders = () => {
       setDeliveredOrders(res.data);
     } 
 }
+
+const getNotPaidOrders = async() => {
+  const res = await  getAllOrders();
+    if(res?.success) {
+      console.log(res.data);
+      const list = res.data.filter(item => item.paid == false)
+      setNotPaidOrders(list.reverse())
+    } 
+}
   
 
 
@@ -99,6 +110,12 @@ const Orders = () => {
         }}>
           Bekor qilingan buyurtmalar
         </Button>
+        <Button size='small' fullWidth variant={selectedIndex == 6? 'contained' : 'outlined'} onClick={() => {
+          getNotPaidOrders()
+          setSelectedIndex(6)
+        }}>
+          Amalga oshmagan buyurtmalar
+        </Button>
       </Box>
       
       <Box sx={{display: selectedIndex==1? 'block' : 'none'}}>
@@ -115,6 +132,9 @@ const Orders = () => {
       </Box>
       <Box sx={{display: selectedIndex==5? 'block' : 'none'}}>
         <CanceledOrders canceledOrders={canceledOrders}/>
+      </Box>
+      <Box sx={{display: selectedIndex==6? 'block' : 'none'}}>
+        <NotPaidOrders notPaidOrders={notPaidOrders}/>
       </Box>
 
     </MainLayout>

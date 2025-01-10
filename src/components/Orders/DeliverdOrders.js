@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import {Box, Card, Typography} from '@mui/material'
+import {Box, Card, Pagination, Typography} from '@mui/material'
 import {useNavigate} from 'react-router-dom'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,9 +8,31 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { getAllDeliveredOrders } from '../../api/Orders';
 
-function DeliverdOrders({list}) {
+function DeliverdOrders() {
     const navigate = useNavigate();
+    const [page, setPage] = useState(1)
+    const [list, setList] = useState([])
+    const [totalPages, setTotalPages] = useState(1)
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const res = await  getAllDeliveredOrders(page);
+        if(res?.success) {
+          setList(res.data?.content);
+          setTotalPages(res.data.totalPages)
+          console.log(res.data);
+          
+        } 
+      }
+      fetchData();
+    }, [page])
+
+    const handlePageChange = (event, value) => {
+      setPage(value);
+    };
 
     let sum = list?.reduce((acc, item) => acc + item.orderCost, 0);
     
@@ -75,6 +97,9 @@ function DeliverdOrders({list}) {
             </Table>
         </TableContainer>
 
+        <Box display={'flex'} justifyContent={'center'} marginY={3}>
+           <Pagination count={totalPages} variant="outlined" shape="rounded" onChange={handlePageChange}/>
+        </Box>
         
     </Box>
   )

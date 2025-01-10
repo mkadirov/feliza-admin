@@ -36,13 +36,14 @@ const getAllPaidOrders = async () => {
   }
 };
 
-const getAllDeliveredOrders = async () => {
+
+const getAllDeliveredOrders = async (pages) => {
   try {
     const token = localStorage.getItem("userToken");
     const res = await axios.get(baseUrl + "getReachedOrders", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+      params: {
+        page: pages-1,
+        size: 15
       },
     });
     if (res.status == 200) {

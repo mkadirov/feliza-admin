@@ -65,13 +65,13 @@ const Orders = () => {
       } 
   }
 
-  const getDeliveredOrderList = async () => {
-    const res = await  getAllDeliveredOrders();
-    if(res?.success) {
-      console.log(res.data);
-      setDeliveredOrders(res.data);
-    } 
-}
+//   const getDeliveredOrderList = async () => {
+//     const res = await  getAllDeliveredOrders();
+//     if(res?.success) {
+//       console.log(res.data);
+//       setDeliveredOrders(res.data);
+//     } 
+// }
 
 const getNotPaidOrders = async() => {
   const res = await  getAllOrders();
@@ -100,7 +100,7 @@ const getNotPaidOrders = async() => {
         </Button>
 
         <Button size='small' fullWidth variant={selectedIndex == 4? 'contained' : 'outlined'} onClick={() => {
-          getDeliveredOrderList();
+          
           setSelectedIndex(4)
         }}>
           Yetkazilgan buyurtmalar
@@ -129,7 +129,7 @@ const getNotPaidOrders = async() => {
         <ShippedOrders shippedOrders={shippedOrders}/>
       </Box>
       <Box sx={{display: selectedIndex==4? 'block' : 'none'}}>
-        <DeliverdOrders list={deliveredOrders}/>
+        <DeliverdOrders />
       </Box>
       <Box sx={{display: selectedIndex==5? 'block' : 'none'}}>
         <CanceledOrders canceledOrders={canceledOrders}/>

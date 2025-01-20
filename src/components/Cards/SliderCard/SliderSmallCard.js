@@ -28,7 +28,7 @@ function SliderSmallCard({item, idx, setIsChanged}) {
     <Card>
       
       <Box className = 'look-box' sx={{height: '240px'}}>
-        <img src={item? item.productImages[0]?.url : ''} alt="" />
+        <img src={item? item.productImages?.url : ''} alt="" />
       </Box>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

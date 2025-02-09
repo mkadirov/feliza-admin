@@ -46,8 +46,15 @@ const editUser = async (id, userDto) => {
 }
 
 const getAllUsers = async() => {
+    
     try {
-        const res = await axios.get(apiUrl + 'geAllUser')
+        const token = localStorage.getItem('userToken');
+        const res = await axios.get(apiUrl + 'geAllUser', {
+            headers: {
+             'Content-Type': 'application/json',
+             'Authorization': `Bearer ${token}`
+           },
+         })
         if(res.status == 200) {
           return {success: true, data: res.data}
         } else {

@@ -5,21 +5,29 @@ const apiUrl = "https://felizabackend.uz/api/customers/";
 const getAllCustomers = async (pages) => {
     try {
         const token = localStorage.getItem('userToken');
-        console.log(token);
+        if (!token) {
+            throw new Error("No token found");
+        }
+
         const res = await axios.get(apiUrl + 'getAllCustomers', {
             params: {
-                page: pages-1,
+                page: pages - 1,
                 size: 15
             },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         });
-        if(res.status == 200) {
-            return {success: true, data: res.data}
+
+        if (res.status === 200) {
+            return { success: true, data: res.data };
         } else {
-            return {success: false}
+            return { success: false };
         }
     } catch (error) {
-        console.log(error.message);
+        console.log("Error:", error.message);
+        return { success: false, error: error.message };
     }
 }
 
-export {getAllCustomers}
+export { getAllCustomers };

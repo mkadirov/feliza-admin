@@ -43,8 +43,15 @@ const editCupon = async (enumName, cupon) => {
   };
 
 const getCuponNames = async () => {
+  
   try {
-    const res = await axios.get(apiUrl + "enums/couponNames");
+    const token = localStorage.getItem("userToken");
+    const res = await axios.get(apiUrl + "enums/couponNames", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (res?.status == 200) {
       return { success: true, data: res.data };
@@ -58,7 +65,13 @@ const getCuponNames = async () => {
 
 const getAllCupons = async () => {
     try {
-      const res = await axios.get(apiUrl + "getAllCoupons");
+      const token = localStorage.getItem("userToken");
+      const res = await axios.get(apiUrl + "getAllCoupons", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
   
       if (res?.status == 200) {
         return { success: true, data: res.data };

@@ -24,7 +24,13 @@ const addSaleProduct = async (saleProduct) => {
 
 const getAllSaleGroups = async () => {
   try {
-    const res = await axios.get(apiUrl + "getAllSaleGroups");
+    const token = localStorage.getItem("userToken");
+    const res = await axios.get(apiUrl + "getAllSaleGroups", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (res.status == 200) {
       return { success: true, data: res.data };
     } else {

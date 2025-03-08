@@ -20,21 +20,64 @@ import React, { useState } from "react";
 import { deleteCategory, editCategory } from "../../../api/Category";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Delete } from "@mui/icons-material";
 
 function HandelCategory({ categories, setNewCategory }) {
   const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
+
   const [nameUz, setNameUz] = useState("");
   const [nameRu, setNameRu] = useState("");
   const [categoryId, setCategoryId] = useState(0);
   const [parentCategory, setParentCategory] = useState("");
+  const [image, setImage] = useState(null);
+  const [verticalImage, setVerticalImage] = useState(null);
+  const [showImageBox, setShowImageBox] = useState(false);
+  const [showVerticalImageBox, setShowVerticalImageBox] = useState(false);
+  // const [images, setImages] = useState([]);
+  // const [verticakImages, setVerticalImages] = useState([]);
+
+  const handleClose = () => {
+    setOpen(false);
+    setImage(null);
+    setVerticalImage(null);
+    setShowVerticalImageBox(false);
+    setShowImageBox(false);
+  };
+
+  const handleImageChange = (event) => {
+    const files = event.target.files;
+    setImage(files[0]);
+    // setImages(files);
+    setShowImageBox(true);
+  };
+
+  const handleVerticalImageChange = (event) => {
+    const files = event.target.files;
+    setVerticalImage(files[0]);
+    console.log(files[0]);
+
+    // setVerticalImages(files);
+    setShowVerticalImageBox(true);
+  };
+
+  const deleteSlideImage = () => {
+    setShowImageBox(false);
+    setImage(null);
+    // setImages([]);
+  };
+
+  const deleteVerticalSlideImage = () => {
+    setShowVerticalImageBox(false);
+    setVerticalImage(null);
+    // setVerticalImages([]);
+  };
 
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 800,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -47,8 +90,6 @@ function HandelCategory({ categories, setNewCategory }) {
   };
 
   const editCategoryById = async () => {
-    
-
     const parentCategoryTemp = {
       nameUZB: nameUz,
       nameRUS: nameRu,
@@ -61,9 +102,10 @@ function HandelCategory({ categories, setNewCategory }) {
       nameRUS: nameRu,
     };
 
-    const category = parentCategory?.nameUZB == "" ? parentCategoryTemp : childCategory;
+    const category =
+      parentCategory?.nameUZB == "" ? parentCategoryTemp : childCategory;
 
-    const res = await editCategory(categoryId, category);
+    const res = await editCategory(categoryId, category, image, verticalImage);
     if (res.success) {
       setNewCategory(nameUz + nameRu);
       setNameRu("");
@@ -92,7 +134,6 @@ function HandelCategory({ categories, setNewCategory }) {
               categories.map((row, idx) => (
                 <TableRow
                   key={row.id}
-                  
                   sx={{ "&:last-child td": { border: 0 } }}
                 >
                   <TableCell
@@ -110,11 +151,23 @@ function HandelCategory({ categories, setNewCategory }) {
                     <Tooltip title="Özgartirish">
                       <IconButton
                         onClick={() => {
+                          console.log(row);
+                          setImage(row?.horizontalImage?.url);
+                          setVerticalImage(row?.verticalImage?.url);
+                          row?.horizontalImage !== null
+                            ? setShowImageBox(true)
+                            : setShowImageBox(false);
+                          row?.verticalImage !== null
+                            ? setShowVerticalImageBox(true)
+                            : setShowVerticalImageBox(false);
                           setOpen(true);
                           setNameUz(row.nameUZB);
                           setNameRu(row.nameRUS);
                           setCategoryId(row.id);
-                          setParentCategory({nameUZB: row?.parentCategoryUZ, nameRUS: row?.parentCategoryRU})
+                          setParentCategory({
+                            nameUZB: row?.parentCategoryUZ,
+                            nameRUS: row?.parentCategoryRU,
+                          });
                         }}
                       >
                         <EditIcon />
@@ -140,15 +193,146 @@ function HandelCategory({ categories, setNewCategory }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography textAlign={'center'} id="modal-modal-title" variant="h6" component="h2">
+          <Typography
+            textAlign={"center"}
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+          >
             Kategoriya özgartirish
           </Typography>
 
-          <Divider sx={{marginY: 1}}/>
+          <Divider sx={{ marginY: 1 }} />
 
-          <Typography  fontSize={18} fontWeight={'bold'} textAlign={'center'}>
+          <Typography fontSize={18} fontWeight={"bold"} textAlign={"center"}>
             {parentCategory.nameUZB}
           </Typography>
+
+          <Box display={"flex"} gap={2} justifyContent={"center"}>
+            <div className="w-3/6 relative">
+              <div
+                className={` ${
+                  showImageBox ? "hidden" : "block"
+                } flex justify-center items-center border border-gray-300 rounded-md`}
+                style={{ height: "280px" }}
+              >
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  placeholder="Data"
+                  id={`image-main-${categoryId}`}
+                  hidden
+                  onChange={(e) => handleImageChange(e)}
+                />
+
+                <div>
+                  <Button
+                    variant="outlined"
+                    onClick={() =>
+                      document
+                        .getElementById(`image-main-${categoryId}`)
+                        .click()
+                    }
+                  >
+                    Rasm yuklash
+                  </Button>
+                </div>
+              </div>
+
+              <div
+                className={showImageBox ? "block" : "hidden"}
+                style={{ height: "280px" }}
+              >
+                {image ? (
+                  // agar kategoriyada rasm url bo'lsa uklangan file URL ga aylantirilmaydi
+                  <img
+                    src={
+                      image instanceof File ? URL.createObjectURL(image) : image
+                    }
+                    alt="Image preview"
+                    onLoad={(e) => URL.revokeObjectURL(e.target.src)} // Memory leak oldini olish
+                  />
+                ) : (
+                  <Box></Box>
+                )}
+              </div>
+              {showImageBox && (
+                <IconButton
+                  onClick={deleteSlideImage}
+                  sx={{
+                    position: "absolute",
+                    top: 5,
+                    right: 5,
+                    backgroundColor: "white",
+                  }}
+                >
+                  <Delete />
+                </IconButton>
+              )}
+            </div>
+            <div className="w-2/6 relative">
+              <div
+                className={` ${
+                  showVerticalImageBox ? "hidden" : "block"
+                } flex justify-center items-center border border-gray-300 rounded-md`}
+                style={{ height: "280px" }}
+              >
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  placeholder="Data"
+                  id={`vertical-image-${categoryId}`}
+                  hidden
+                  onChange={(e) => handleVerticalImageChange(e)}
+                />
+
+                <div>
+                  <Button
+                    variant="outlined"
+                    onClick={() =>
+                      document
+                        .getElementById(`vertical-image-${categoryId}`)
+                        .click()
+                    }
+                  >
+                    Rasm yuklash
+                  </Button>
+                </div>
+              </div>
+
+              <div
+                className={showVerticalImageBox ? "block" : "hidden"}
+                style={{ height: "280px" }}
+              >
+                {verticalImage ? (
+                  <img
+                    src={
+                      verticalImage instanceof File ? URL.createObjectURL(verticalImage) : verticalImage
+                    }
+                    alt="Image preview"
+                    //onLoad={(e) => URL.revokeObjectURL(e.target.src)} // Memory leak oldini olish
+                  />
+                ) : (
+                  <Box></Box>
+                )}
+              </div>
+              {showVerticalImageBox && (
+                <IconButton
+                  onClick={deleteVerticalSlideImage}
+                  sx={{
+                    position: "absolute",
+                    top: 5,
+                    right: 5,
+                    backgroundColor: "white",
+                  }}
+                >
+                  <Delete />
+                </IconButton>
+              )}
+            </div>
+          </Box>
 
           <div className="my-5">
             <TextField

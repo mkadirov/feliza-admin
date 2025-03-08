@@ -10,8 +10,6 @@ import DeliverdOrders from '../../components/Orders/DeliverdOrders';
 import NotPaidOrders from '../../components/Orders/NotPaidOrders';
 
 
-
-
 const Orders = () => {
 
   const [newOrders, setNewOrders] = useState([]);
@@ -23,6 +21,8 @@ const Orders = () => {
   const [notPaidOrders, setNotPaidOrders] = useState([])
 
 
+
+  
   useEffect(() =>{
     const fetchData = async () => {
       const res = await  getNewOrders();

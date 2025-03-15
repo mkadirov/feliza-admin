@@ -52,7 +52,7 @@ function ContainerSettings() {
   };
 
   const editBlockPlacment = () => {
-    setIsLoading(true)
+    
 
     const newBloks = boxes.map((item) => item.containerBlock)
     
@@ -73,13 +73,16 @@ function ContainerSettings() {
         const res = await editCategoryBlockById(blockItem.id, data)
         if(res?.success) {
           console.log("Block örni özgardi");
-          
+          if(index == newBloks.length-1) {
+            
+            alert("Özgarish yakunlandi")
+          }
         } else {
           console.log("Xatolik");
-          
         }
       }
       fetchData()
+
       
     });
 
@@ -108,7 +111,10 @@ function ContainerSettings() {
         </SortableContext>
       </DndContext>
 
-      <Button variant="contained" onClick={() => editBlockPlacment()}>
+      <Button variant="contained" onClick={() => {
+        editBlockPlacment()
+        
+      }}>
         Özgartirish
       </Button>
     </div>

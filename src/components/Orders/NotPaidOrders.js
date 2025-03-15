@@ -63,9 +63,9 @@ function NotPaidOrders({notPaidOrders}) {
                             {idx +1}
                           </TableCell>
                           <TableCell align="left">{row.orderNumber}</TableCell>
-                          <TableCell align="left">{row.customer.fullName}</TableCell>
-                          <TableCell align="right">{row.customer.phoneNumber}</TableCell>
-                          <TableCell align="right">{row.address.region.nameUZB}</TableCell>
+                          <TableCell align="left">{row.customer?.fullName}</TableCell>
+                          <TableCell align="right">{row.customer?.phoneNumber}</TableCell>
+                          <TableCell align="right">{row.address?.region?.nameUZB}</TableCell>
                           <TableCell align="right">{row.orderCost}</TableCell>
                           <TableCell align="right">{formattedDate}</TableCell>
                           <TableCell align="right">{"tölanmagan"}</TableCell>

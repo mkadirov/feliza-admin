@@ -5,8 +5,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Edit } from "@mui/icons-material";
 import { useState } from "react";
 import ModalBox from "./ModalBox";
+import SliderModalBox from "./SliderModalBox";
 
-function SortableItem({ id, index, containerBlock, menuType, setIsListChanged }) {
+function SliderSortableItems({ id, containerBlock, setIsListChanged }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
   const [open, setOpen] = useState(false);
@@ -18,7 +19,7 @@ function SortableItem({ id, index, containerBlock, menuType, setIsListChanged })
     transform: CSS.Transform.toString(transform),
     transition,
     width: "200px",
-    height: menuType ? "200px" : "300px",
+    height: "200px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -28,11 +29,7 @@ function SortableItem({ id, index, containerBlock, menuType, setIsListChanged })
     color: "white",
     borderRadius: "8px",
     cursor: "grab",
-    backgroundImage: `url(${
-      Boolean(menuType)
-        ? containerBlock?.category?.horizontalImage?.url
-        : containerBlock?.category?.verticalImage?.url
-    })`,
+    backgroundImage: `url(${containerBlock?.category?.horizontalImage?.url})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -110,11 +107,11 @@ function SortableItem({ id, index, containerBlock, menuType, setIsListChanged })
         aria-describedby="modal-modal-description"
       >
         <Box sx={styleModal}>
-            <ModalBox containerBlock={containerBlock} menuType={menuType} handleClose={handleClose} setIsListChanged={setIsListChanged}/>
+            <SliderModalBox containerBlock={containerBlock}  handleClose={handleClose} setIsListChanged={setIsListChanged}/>
         </Box>
       </Modal>
     </Box>
   );
 }
 
-export default SortableItem;
+export default SliderSortableItems;

@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const apiUrl = 'https://felizabackend.uz/api/categoryBlock/'
+const apiUrl = 'https://felizabackend.uz/api/smallSlider/'
 
-const getAllCategoryBLocksList = async() => {
+const getAllSmallSliderList = async() => {
     try {
       const token = localStorage.getItem("userToken");
-      const res = await axios.get(apiUrl + 'getAllCategoryBlocks', {
+      const res = await axios.get(apiUrl + 'getAllSmallSliders', {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -21,11 +21,11 @@ const getAllCategoryBLocksList = async() => {
     }
 }
 
-const editCategoryBlockById = async (id, categoryBlock) => {
+const editSmallSliderById = async (id, categoryBlock) => {
     try {
       const token = localStorage.getItem("userToken");
       console.log(token);
-      const res = await axios.put(apiUrl + "editCategoryBlock/" + id, categoryBlock, {
+      const res = await axios.put(apiUrl + "editSmallSlider/" + id, categoryBlock, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -41,4 +41,5 @@ const editCategoryBlockById = async (id, categoryBlock) => {
     }
   };
 
-export {getAllCategoryBLocksList, editCategoryBlockById}
+  export {getAllSmallSliderList, editSmallSliderById}
+

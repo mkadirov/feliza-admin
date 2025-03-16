@@ -373,6 +373,7 @@ function AddProduct() {
           categoryList={categoryList}
           setCategoryList={setCategoryList}
           refreshCategory={refreshCategory}
+          isShortList={false}
         />
 
         <Box>

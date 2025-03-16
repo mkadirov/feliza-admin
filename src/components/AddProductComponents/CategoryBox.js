@@ -13,7 +13,7 @@ import {getParentCategory, getSubCategories, getSubCategoriesByParent } from '..
 
 
 
-export default function CategoryBox({categoryList, setCategoryList, refreshCategory}) {
+export default function CategoryBox({categoryList, setCategoryList, refreshCategory, isShortList}) {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const [selectedIndex, setSelectedIndex] = useState(1);
@@ -29,7 +29,15 @@ export default function CategoryBox({categoryList, setCategoryList, refreshCateg
       setParentCategory(categoryItem.nameUZB)
     }
     if(!isExists) {
-      setCategoryList([...categoryList, categoryItem])
+      if (isShortList) {
+        setCategoryList((prevList) => 
+          prevList.length === 0 
+            ? [categoryItem]  // Agar list bo‘sh bo‘lsa, faqat yangi element qo‘shiladi
+            : [prevList[0], categoryItem] // Aks holda, birinchi va oxirgi element saqlanadi
+        );
+      } else {
+        setCategoryList([...categoryList, categoryItem]);
+      }
     }
     setOpen(false);
   };
@@ -137,7 +145,7 @@ export default function CategoryBox({categoryList, setCategoryList, refreshCateg
                         placement === 'bottom' ? 'center top' : 'center bottom',
                     }}
                   >
-                    <Paper>
+                    <Paper sx={{ maxHeight: 300, overflow: "auto" }}>
                       <ClickAwayListener onClickAway={handleClose}>
                         <MenuList id="split-button-menu" autoFocusItem>
                           {list.map((categoryItem, index) => (

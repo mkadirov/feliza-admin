@@ -38,7 +38,7 @@ const getAllProducts = async(page) => {
   try {
       const res = await axios.get(apiUrl + 'getAllProducts', {
           params: {
-              page: page-1,
+              page: page,
               size: 12
           }
       });

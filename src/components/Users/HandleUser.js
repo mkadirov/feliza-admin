@@ -1,5 +1,6 @@
 import {
-  Box,Modal,
+  Box,
+  Modal,
   Paper,
   Table,
   TableBody,
@@ -7,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -14,12 +16,12 @@ import { getAllUsers } from "../../api/UsersApi";
 import { Delete, Edit } from "@mui/icons-material";
 import UserModal from "./UserModal";
 
-function HandleUser({ hasChanged, setHasChanged}) {
+function HandleUser({ hasChanged, setHasChanged }) {
   const [list, setList] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [tempUser, setTempUser] = useState('')
+  const [tempUser, setTempUser] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,26 +36,25 @@ function HandleUser({ hasChanged, setHasChanged}) {
   }, [hasChanged]);
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '900px',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "900px",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
     boxShadow: 24,
     p: 4,
   };
 
   const openModal = (user) => {
-    if(user.fullName == 'felizaRootAdmin'){
-        alert('Asosiy admin özgartirilmaydi')
+    if (user.fullName == "felizaRootAdmin") {
+      alert("Asosiy admin özgartirilmaydi");
     } else {
-        handleOpen();
-        setTempUser(user)
+      handleOpen();
+      setTempUser(user);
     }
-    
-  }
+  };
   return (
     <div className="mt-4">
       <TableContainer component={Paper}>
@@ -80,20 +81,29 @@ function HandleUser({ hasChanged, setHasChanged}) {
                 <TableCell align="right">{row.phoneNumber}</TableCell>
                 <TableCell align="right">{row.birthDate}</TableCell>
                 <TableCell align="right">
-                  <Box>
-                    {row?.authorities.map((item, idx) => {
-                      return (
-                        <Typography key={row.phoneNumber + item.roleName}>
-                          {item.roleName}
-                        </Typography>
-                      );
-                    })}
-                  </Box>
+                  <Tooltip
+                    title={
+                      <Box>
+                        {row?.authorities.map((item, idx) => {
+                          return (
+                            <Typography key={row.phoneNumber + item.roleName}>
+                              {item.roleName}
+                            </Typography>
+                          );
+                        })}
+                      </Box>
+                    }
+                    placement="top-start"
+                  >
+                    {row.authorities[0].roleName}
+
+                    {row.authorities.length > 1 && "..."}
+                  </Tooltip>
                 </TableCell>
                 <TableCell align="right">
                   <Box display={"flex"} justifyContent={"end"} gap={1}>
-                      <Edit onClick = {() => openModal(row)}/>
-                      <Delete/>
+                    <Edit onClick={() => openModal(row)} />
+                    <Delete />
                   </Box>
                 </TableCell>
               </TableRow>
@@ -112,7 +122,11 @@ function HandleUser({ hasChanged, setHasChanged}) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Foydalanuvchini özgartirish
           </Typography>
-          <UserModal tempUser = {tempUser} setHasChanged={setHasChanged} closeModal={handleClose}/>
+          <UserModal
+            tempUser={tempUser}
+            setHasChanged={setHasChanged}
+            closeModal={handleClose}
+          />
         </Box>
       </Modal>
     </div>

@@ -51,6 +51,7 @@ function Order() {
       alert("Xatolik");
     }
   }
+console.log(order);
 
   return (
     <MainLayout>

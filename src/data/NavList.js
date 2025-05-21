@@ -8,7 +8,7 @@ export const navList = [
     },
     {
         title: 'Mahsulotlar',
-        path: '/products',
+        path: '/products?page=1',
         icon: <QrCodeScanner/>
     },
     {
@@ -39,6 +39,11 @@ export const navList = [
     {
         title: 'Sale',
         path: '/sale',
+        icon: <Percent/>
+    },
+    {
+        title: 'Coupons',
+        path: '/coupons',
         icon: <Percent/>
     },
 ]

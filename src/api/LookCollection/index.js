@@ -56,4 +56,23 @@ const getLookCollectionByID = async (id) => {
   }
 }
 
-export {addLookCollection, getAllCollections, getLookCollectionByID}
+const deleteLookCollection = async(id) => {
+  try {
+    const token = localStorage.getItem('userToken');
+    console.log(token);
+    const res = await axios.delete(apiUrl + 'deleteLookCollectionById/' + id, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if(res.status == 200) {
+      return {success: true, data: res.data}
+    } else {
+      return {success: false, message: 'res Error'}
+    }
+  } catch (error) {
+    return {success: false, message: error}
+  }
+}
+
+export {addLookCollection, getAllCollections, getLookCollectionByID,deleteLookCollection}

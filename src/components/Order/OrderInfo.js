@@ -11,18 +11,20 @@ function OrderInfo({ order }) {
       <Box display={"flex"} gap={1}>
         <Typography sx={{ color: "grey" }}>Ism sharfi:</Typography>
 
-        <Typography>{order?.receiverName}</Typography>
+        <Typography fontWeight={"bold"}>{order?.receiverName}</Typography>
       </Box>
 
       <Box display={"flex"} gap={1}>
         <Typography sx={{ color: "grey" }}>Telefon raqami:</Typography>
 
-        <Typography>{order?.receiverPhoneNumber}</Typography>
+        <Typography fontWeight={"bold"}>
+          {order?.receiverPhoneNumber}
+        </Typography>
       </Box>
       <Box display={"flex"} gap={1}>
         <Typography sx={{ color: "grey" }}>Manzili:</Typography>
 
-        <Typography>
+        <Typography fontWeight={"bold"}>
           {order?.address?.region?.nameUZB},{" "}
           {order?.address?.subRegion?.nameUZB},{" "}
           {order?.address?.street
@@ -32,6 +34,34 @@ function OrderInfo({ order }) {
               order.address?.postFilial?.postFilialName}
           , {order?.address?.houseNumber}
         </Typography>
+      </Box>
+
+      <Box display={"flex"} gap={1}>
+        <Typography sx={{ color: "grey" }}>Buyurtma raqami:</Typography>
+
+        <Typography fontWeight={"bold"}>{order?.orderNumber}</Typography>
+      </Box>
+
+      <Box display={"flex"} gap={1}>
+        <Typography sx={{ color: "grey" }}>Kupon:</Typography>
+
+        <Typography
+          style={{
+            textTransform: "uppercase",
+            color: order?.couponCustomer?.coupon?.active ? "green" : "red",
+          }}
+          fontWeight={"bold"}
+        >
+          {order?.couponCustomer
+            ? order?.couponCustomer?.coupon?.name
+            : "Kupon yo'q"}
+        </Typography>
+      </Box>
+
+      <Box display={"flex"} gap={1}>
+        <Typography sx={{ color: "grey" }}>Umumiy Summa:</Typography>
+
+        <Typography fontWeight={"bold"}>{order?.orderCost}</Typography>
       </Box>
     </Box>
   );

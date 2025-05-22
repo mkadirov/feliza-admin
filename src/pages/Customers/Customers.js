@@ -10,6 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import MainLayout from '../../components/Layout/MainLayout'
 import { getAllCustomers } from '../../api/Customers';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+
 
 function Customers() {
   const [list, setList] = useState([])
@@ -110,7 +112,16 @@ function Customers() {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full max-w-sm px-4 py-2 transition duration-200 border border-gray-300 shadow-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
+          <a
+            href="https://felizabackend.uz/api/customers/export"
+            download
+            className="inline-flex items-center px-4 py-2 text-white transition duration-200 bg-[rgb(59,171,179)] shadow-md hover:bg-[rgb(49,135,141)] rounded-xl"
+          >
+            <FileDownloadIcon style={{ marginRight: '8px' }} />
+            Yuklab olish
+          </a>
         </Box>
+
 
         {/* Jadval */}
         <TableContainer component={Paper} sx={{ marginTop: 4 }}>

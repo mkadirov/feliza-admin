@@ -21,9 +21,9 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import MyContext from "./components/Context/MyContext";
-import CouponPage from "./pages/CouponPage/CouponPage";
+import Notifications from "./pages/Notifications/Notifications";
+import NotificationDetail from "./pages/Notifications/NotificationDetail";
 import CustomerDetail from "./pages/Customers/CustomerDetail";
-
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [pageName, setPageName] = useState("Statistika");
@@ -86,7 +86,11 @@ function App() {
                   <Route path="/sale" element={<SalePage />} />
                   <Route path="/order/:id" element={<Order />} />
                   <Route path="/product/:id" element={<Product />} />
-                  <Route path="/coupons" element={<CouponPage />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route
+                    path="/notification/:id"
+                    element={<NotificationDetail />}
+                  />
                 </>
               ) : (
                 <Route path="/*" element={<Navigate to="/" />} />

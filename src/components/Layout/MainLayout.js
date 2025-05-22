@@ -2,7 +2,6 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
@@ -23,7 +22,6 @@ import MyContext from "../Context/MyContext";
 const drawerWidth = 240;
 
 function MainLayout({ children, props }) {
-  //   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -33,15 +31,12 @@ function MainLayout({ children, props }) {
     setMobileOpen(!mobileOpen);
   };
 
-  const currentPath = location.pathname;
-
+  const currentPath = location.pathname + location.search;
   const list = navList;
 
   const StyledListItem = styled(ListItem)(({ theme }) => ({
-    // marginBottom: '10px',
     "&:hover ,&.active": {
       backgroundColor: grey[400],
-      // color: 'white'
     },
   }));
 
@@ -70,14 +65,11 @@ function MainLayout({ children, props }) {
                 <ListItemText primary={item.title} />
               </ListItemButton>
             </StyledListItem>
-            {/* <Divider/> */}
           </Box>
         ))}
       </List>
     </div>
   );
-
-  //   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>

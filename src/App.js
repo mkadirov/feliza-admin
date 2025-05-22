@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import MyContext from "./components/Context/MyContext";
 import CouponPage from "./pages/CouponPage/CouponPage";
+import CustomerDetail from "./pages/Customers/CustomerDetail";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -76,6 +77,7 @@ function App() {
                   <Route path="/home" element={<HomePage />} />
                   <Route path="/products" element={<Products />} />
                   <Route path="/customers" element={<Customers />} />
+                  <Route path="/customers/:id" element={<CustomerDetail />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/orders" element={<Orders />} />

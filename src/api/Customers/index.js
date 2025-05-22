@@ -12,7 +12,7 @@ const getAllCustomers = async (pages) => {
         const res = await axios.get(apiUrl + 'getAllCustomers', {
             params: {
                 page: pages - 1,
-                size: 15
+                size: 500
             },
             headers: {
                 Authorization: `Bearer ${token}`

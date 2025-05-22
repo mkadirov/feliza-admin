@@ -23,7 +23,7 @@ import {
 import MyContext from "./components/Context/MyContext";
 import Notifications from "./pages/Notifications/Notifications";
 import NotificationDetail from "./pages/Notifications/NotificationDetail";
-
+import CustomerDetail from "./pages/Customers/CustomerDetail";
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [pageName, setPageName] = useState("Statistika");

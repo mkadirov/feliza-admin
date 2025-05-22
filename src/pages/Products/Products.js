@@ -32,6 +32,7 @@ import {
 } from "../../api/Product";
 
 function Products() {
+  const [selectedModalImg, setSelectedModalImg] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activePage, setActivePage] = useState(1);
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ function Products() {
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    setSearchParams({ page: value }); // URL yangilanadi
+    setSearchParams({ page: value });
   };
 
   const handleToggleRequest = (e) => {
@@ -233,7 +234,10 @@ function Products() {
                   </TableCell>
                   <TableCell align="right">
                     <img
-                      onClick={() => setOpen(true)}
+                      onClick={() => {
+                        setSelectedModalImg(row?.productImages);
+                        setOpen(true);
+                      }}
                       src={row?.productImages[0].url}
                       className="w-28 h-24 rounded hover:scale-150 cursor-zoom-in"
                     />
@@ -245,7 +249,7 @@ function Products() {
                       aria-describedby="modal-modal-description"
                       BackdropProps={{
                         sx: {
-                          backgroundColor: "rgba(0, 0, 0, 0.1)", // yoki transparent, white, etc.
+                          backgroundColor: "rgba(0, 0, 0, 0.1)",
                         },
                       }}
                     >
@@ -255,7 +259,7 @@ function Products() {
                           top: "50%",
                           left: "50%",
                           transform: "translate(-50%, -50%)",
-                          width: 1200,
+                          width: 1400,
                           bgcolor: "background.paper",
                           backgroundColor: "white",
                           background: "#fff",
@@ -270,11 +274,11 @@ function Products() {
                           gap: 1,
                         }}
                       >
-                        {row?.productImages.map((item) => (
+                        {selectedModalImg.map((item) => (
                           <img
                             key={item.id}
                             src={item.url}
-                            className="w-1/3 object-contain bg-gray-400 max-h-72 rounded hover:scale-150 cursor-zoom-in"
+                            className="w-1/5 object-contain bg-gray-400 max-h-96 rounded hover:scale-150 cursor-zoom-in"
                           />
                         ))}
                       </Box>
@@ -427,7 +431,9 @@ function Products() {
 
         <Box marginY={3} display={"flex"} justifyContent={"center"}>
           <Pagination
-            count={activePage == 1 ? numberOfPages : numberOfPagesActive}
+            count={
+              activePage == 1 ? numberOfPages - 1 : numberOfPagesActive - 1
+            }
             page={+page}
             variant="outlined"
             shape="rounded"

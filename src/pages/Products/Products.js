@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MainLayout from "../../components/Layout/MainLayout";
 import {
   Box,
   Button,
   Chip,
   Divider,
-  Grid,
+  Modal,
   Pagination,
+  Popover,
   styled,
   Switch,
   Table,
@@ -18,7 +19,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import Paper from "@mui/material/Paper";
 import { grey } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
 import { Delete, Edit, Search } from "@mui/icons-material";
@@ -26,46 +26,61 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   deleteProduct,
   editProduct,
+  getAllActiveProducts,
   getAllProducts,
   getProductByRefNumber,
 } from "../../api/Product";
-import ProductMainCard from "../../components/Cards/ProductMainCard";
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activePage, setActivePage] = useState(1);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState("");
+  const [productsActive, setProductsActive] = useState([]);
   const [page, setPage] = useState(searchParams.get("page"));
   const [articulNumber, setArticulNumber] = useState("");
   const [numberOfPages, setNumberOfPages] = useState(1);
+  const [numberOfPagesActive, setNumberOfPagesActive] = useState(1);
   const [totalElements, setTotalElements] = useState(0);
-
+  const [totalElementsActive, setTotalElementsActive] = useState(0);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [pendingValue, setPendingValue] = useState(null);
+  const switchRef = useRef(null);
+  const [open, setOpen] = useState(false);
   const StyledChip = styled(Chip)({
     "&.activeChip": {
       backgroundColor: grey[400],
     },
   });
 
-  // Sahifa raqami URL dan o'qiladi (Back bosilganda)
   useEffect(() => {
-    const currentPage = parseInt(searchParams.get("page"));
+    const currentPage = parseInt(searchParams.get("page") || 1);
     setPage(currentPage);
   }, [searchParams]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await getAllProducts(page);
-      if (res?.success) {
-        console.log(res?.data);
-        setProducts(res?.data?.content);
-        setNumberOfPages(res?.data?.totalPages);
-        setTotalElements(res?.data?.totalElements);
-      }
+  async function fetchData() {
+    const res = await getAllProducts(page);
+    if (res?.success) {
+      console.log(res?.data);
+      setProducts(res?.data?.content);
+      setNumberOfPages(res?.data?.totalPages);
+      setTotalElements(res?.data?.totalElements);
     }
+  }
+  async function fetchDataActiveProducts() {
+    const res = await getAllActiveProducts(page);
+    if (res?.success) {
+      console.log(res?.data);
+      setProductsActive(res?.data?.content);
+      setNumberOfPagesActive(res?.data?.totalPages);
+      setTotalElementsActive(res?.data?.totalElements);
+    }
+  }
+  useEffect(() => {
     fetchData();
-  }, [page]);
+    fetchDataActiveProducts();
+  }, [page, activePage]);
 
   const findProducts = async () => {
     const res = await getProductByRefNumber(articulNumber);
@@ -81,7 +96,37 @@ function Products() {
     setPage(value);
     setSearchParams({ page: value }); // URL yangilanadi
   };
-  console.log(page);
+
+  const handleToggleRequest = (e) => {
+    const nextValue = e.target.checked;
+    setPendingValue(nextValue);
+    setAnchorEl(switchRef.current);
+  };
+
+  const handleConfirm = async (row) => {
+    const res = await editProduct(row.id, {
+      nameUZB: row.nameUZB,
+      nameRUS: row.nameRUS,
+      descriptionUZB: row.descriptionUZB,
+      descriptionRUS: row.descriptionRUS,
+      sellPrice: row.sellPrice,
+      brandId: row.brand.id,
+      categoryId: row.category.map((item) => item.id),
+      colorId: row.color.id,
+      productSizeVariantDtoList: row.productSizeVariantList,
+      ikpuNumber: row.ikpunumber,
+      mxikNumber: row.mxiknumber,
+      active: pendingValue,
+    });
+
+    if (res.success) {
+      fetchData();
+    }
+
+    setAnchorEl(null);
+  };
+
+  const currentProducts = activePage == 1 ? products : productsActive;
 
   return (
     <MainLayout>
@@ -90,12 +135,18 @@ function Products() {
           <StyledChip
             className={activePage == 1 ? "activeChip" : "inactiveChip"}
             label={`Barcha mahsulotlar(${totalElements})`}
-            onClick={() => setActivePage(1)}
+            onClick={() => {
+              setActivePage(1);
+              setSearchParams({ page: 1 });
+            }}
           />
           <StyledChip
             className={activePage == 2 ? "activeChip" : "inactiveChip"}
-            label="Aktiv(0)"
-            onClick={() => setActivePage(2)}
+            label={`Aktiv(${totalElementsActive})`}
+            onClick={() => {
+              setActivePage(2);
+              setSearchParams({ page: 1 });
+            }}
           />
         </div>
 
@@ -112,6 +163,12 @@ function Products() {
               className="main-input"
               value={articulNumber}
               onChange={(e) => setArticulNumber(e.target.value)}
+              placeholder="Mahsulotni artikul raqami"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  findProducts();
+                }
+              }}
             />
           </div>
           <div className="rounded-md bg-gray-300 h-full flex ">
@@ -125,24 +182,6 @@ function Products() {
             Qo'shish
           </Button>
         </div>
-
-        {/* <Grid container sx={{ marginTop: 3 }} spacing={2}>
-          {products?.map((item, index) => {
-            return (
-              <Grid
-                item
-                xs={6}
-                md={4}
-                lg={4}
-                xl={3}
-                key={index}
-                className="mt-2"
-              >
-                <ProductMainCard item={item} setNewProduct={setNewProduct} />
-              </Grid>
-            );
-          })}
-        </Grid> */}
 
         <TableContainer>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -168,9 +207,9 @@ function Products() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {products?.map((row) => (
+              {currentProducts?.map((row) => (
                 <TableRow
-                  key={row.name}
+                  key={row.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell align="justify" component="th" scope="row">
@@ -194,15 +233,57 @@ function Products() {
                   </TableCell>
                   <TableCell align="right">
                     <img
+                      onClick={() => setOpen(true)}
                       src={row?.productImages[0].url}
-                      className="w-14 h-12 rounded hover:scale-150 cursor-zoom-in"
+                      className="w-28 h-24 rounded hover:scale-150 cursor-zoom-in"
                     />
+
+                    <Modal
+                      open={open}
+                      onClose={() => setOpen(false)}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                      BackdropProps={{
+                        sx: {
+                          backgroundColor: "rgba(0, 0, 0, 0.1)", // yoki transparent, white, etc.
+                        },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          width: 1200,
+                          bgcolor: "background.paper",
+                          backgroundColor: "white",
+                          background: "#fff",
+                          border: "2px solid #000",
+                          boxShadow: 10,
+                          p: 2,
+                          display: "flex",
+                          flexDirection: "row",
+                          flexWrap: "wrap",
+                          justifyContent: "center",
+
+                          gap: 1,
+                        }}
+                      >
+                        {row?.productImages.map((item) => (
+                          <img
+                            key={item.id}
+                            src={item.url}
+                            className="w-1/3 object-contain bg-gray-400 max-h-72 rounded hover:scale-150 cursor-zoom-in"
+                          />
+                        ))}
+                      </Box>
+                    </Modal>
                   </TableCell>
                   <TableCell align="left" component="th" scope="row">
                     {row.nameUZB}
                   </TableCell>
                   <TableCell align="left">{row.referenceNumber}</TableCell>
-                  {/* <TableCell align="left">{row?.category[0].nameUZB}</TableCell> */}
                   <TableCell align="left">
                     <p
                       style={{
@@ -214,45 +295,60 @@ function Products() {
 
                     <Switch
                       defaultChecked={row.active}
-                      onChange={async (e) => {
-                        const res = await editProduct(row.id, {
-                          nameUZB: row.nameUZB,
-                          nameRUS: row.nameRUS,
-                          descriptionUZB: row.descriptionUZB,
-                          descriptionRUS: row.descriptionRUS,
-                          sellPrice: row.sellPrice,
-                          brandId: row.brand.id,
-                          categoryId: row.category.map((item) => item.id),
-                          colorId: row.color.id,
-                          productSizeVariantDtoList: row.productSizeVariantList,
-                          ikpuNumber: row.ikpunumber,
-                          mxikNumber: row.mxiknumber,
-                          active: e.target.checked,
-                        });
-                        if (res.success) {
-                          console.log("Mahsulot statusi özgartirildi");
-                          setNewProduct(row);
-                        }
-
-                        console.log({
-                          nameUZB: row.nameUZB,
-                          nameRUS: row.nameRUS,
-                          descriptionUZB: row.descriptionUZB,
-                          descriptionRUS: row.descriptionRUS,
-                          sellPrice: row.sellPrice,
-                          brandId: row.brand.id,
-                          categoryId: row.category.map((item) => item.id),
-                          colorId: row.color.id,
-                          productSizeVariantDtoList: row.productSizeVariantList,
-                          ikpuNumber: row.ikpunumber,
-                          mxikNumber: row.mxiknumber,
-                          active: e.target.checked,
-                        });
-                        console.log(e.target.checked);
-                      }}
+                      onChange={handleToggleRequest}
                       value={row.avtive}
                       color={row.active ? "primary" : "error"}
+                      inputRef={switchRef}
+                      checked={row.active}
+                      onClick={() => setSelectedRow(row)}
                     />
+
+                    <Popover
+                      align="center"
+                      className="fixed top-0 left-0  -translate-y-1/2 translate-x-0 p-6 rounded-lg  z-50"
+                      open={Boolean(anchorEl)}
+                      anchorEl={anchorEl}
+                      onClose={() => {
+                        setPendingValue(null);
+                        setAnchorEl(null);
+                      }}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                    >
+                      <Box p={2}>
+                        <Typography mb={1}>
+                          Rostdan ham mahsulotni{" "}
+                          {pendingValue
+                            ? "faollashtirmoqchimisiz"
+                            : "faolsizlantirmoqchimisiz"}
+                          ?
+                        </Typography>
+                        <Box display="flex" justifyContent="flex-end" gap={1}>
+                          <Button
+                            size="small"
+                            onClick={() => {
+                              setPendingValue(null);
+                              setAnchorEl(null);
+                            }}
+                          >
+                            Yo‘q
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="contained"
+                            onClick={() => {
+                              if (selectedRow) {
+                                handleConfirm(selectedRow);
+                              }
+                            }}
+                          >
+                            Ha
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Popover>
                   </TableCell>
                   <TableCell align="left">
                     <Tooltip
@@ -315,7 +411,7 @@ function Products() {
 
                           if (res.success) {
                             console.log("Mahsulot öchirildi");
-                            setNewProduct(row);
+                            fetchData();
                           }
                         }}
                       >
@@ -331,7 +427,7 @@ function Products() {
 
         <Box marginY={3} display={"flex"} justifyContent={"center"}>
           <Pagination
-            count={numberOfPages}
+            count={activePage == 1 ? numberOfPages : numberOfPagesActive}
             page={+page}
             variant="outlined"
             shape="rounded"

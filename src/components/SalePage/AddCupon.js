@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import MainLayout from "../../components/Layout/MainLayout";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -59,7 +58,6 @@ const AddCupon = () => {
     fetchData();
     getCouponByName("w");
   }, []);
-  console.log(list);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,10 +86,6 @@ const AddCupon = () => {
       if (res?.success) {
         fetchData();
       }
-
-      console.log("Create", form);
-
-      //   console.log(form);
     }
   };
 
@@ -102,184 +96,190 @@ const AddCupon = () => {
     }
   };
   return (
-    // <MainLayout>
-      <div className="space-y-3">
-        <Box display={"flex"} justifyContent={"end"}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setOpen(true);
-              setForm({
-                enumName: "",
-                name: "",
-                credit: "",
-                active: false,
-              });
-            }}
-          >
-            Create
-          </Button>
-        </Box>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell width={10}>ENUM Name</TableCell>
-                <TableCell align="right">Credit</TableCell>
-                <TableCell align="right">Status</TableCell>
-                <TableCell width={10} align="center">
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {list.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {row.enumName}
-                  </TableCell>
-                  <TableCell align="right">{row.credit}</TableCell>
-                  <TableCell align="right">
-                    {row.active ? "active" : "noactive"}
-                  </TableCell>
-
-                  <TableCell align="right">
-                    <Box className="space-x-2" display={"flex"}>
-                      <Edit
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setOpen(true);
-                          setIsEdit(true);
-                          setForm({
-                            enumName: row.enumName,
-                            name: row.name,
-                            credit: row.credit,
-                            active: row.active,
-                          });
-                        }}
-                      />
-                      <Delete className="cursor-pointer hover:text-red-500" onClick={() => handleDelete(row.id)} />
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          open={open}
-          onClose={(_, reason) => {
-            if (reason !== "backdropClick") {
-              setOpen(false);
-            }
-          }}
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 500,
-            },
+    <div className="space-y-3">
+      <Box display={"flex"} justifyContent={"end"}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            setOpen(true);
+            setForm({
+              enumName: "",
+              name: "",
+              credit: "",
+              active: false,
+            });
           }}
         >
-          <Fade in={open}>
-            <Box
-              sx={{
+          Create
+        </Button>
+      </Box>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell width={10}>ENUM Name</TableCell>
+              <TableCell align="right">Credit</TableCell>
+              <TableCell align="right">Status</TableCell>
+              <TableCell width={10} align="center">
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {list.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {row.enumName}
+                </TableCell>
+                <TableCell align="right">{row.credit}</TableCell>
+                <TableCell align="right">
+                  {row.active ? "active" : "noactive"}
+                </TableCell>
+
+                <TableCell align="right">
+                  <Box className="space-x-2" display={"flex"}>
+                    <Edit
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setOpen(true);
+                        setIsEdit(true);
+                        setForm({
+                          enumName: row.enumName,
+                          name: row.name,
+                          credit: row.credit,
+                          active: row.active,
+                        });
+                      }}
+                    />
+                    <Delete
+                      className="cursor-pointer hover:text-red-500"
+                      onClick={() => handleDelete(row.id)}
+                    />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            setOpen(false);
+          }
+        }}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={open}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              bgcolor: "background.paper",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+              pt: 5,
+            }}
+          >
+            <Close
+              style={{
                 position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                bgcolor: "background.paper",
-                border: "2px solid #000",
-                boxShadow: 24,
-                p: 4,
-                pt: 5,
+                right: 0,
+                top: 0,
+                padding: 0,
+                margin: 5,
+                paddingInline: 0,
+                cursor: "pointer",
+                background: "red",
+                color: "white",
+                borderRadius: 5,
+              }}
+              onClick={() => setOpen(false)}
+            />
+
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                width: 400,
               }}
             >
-              <Close
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  top: 0,
-                  padding: 0,
-                  margin: 5,
-                  paddingInline: 0,
-                  cursor: "pointer",
-                  background: "red",
-                  color: "white",
-                  borderRadius: 5,
-                }}
-                onClick={() => setOpen(false)}
+              <FormControl fullWidth>
+                <InputLabel required id="enum-select-label">
+                  Enum Name
+                </InputLabel>
+                <Select
+                  labelId="enum-select-label"
+                  name="enumName"
+                  value={form.enumName}
+                  label="Enum Name"
+                  onChange={handleChange}
+                  required
+                >
+                  {byName.map((item) => (
+                    <MenuItem key={item} value={item}>
+                      {item.replace(/_/g, " ")}{" "}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <TextField
+                required
+                label="Name"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
               />
 
-              <Box
-                component="form"
-                onSubmit={handleSubmit}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 2,
-                  width: 400,
-                }}
-              >
-                <FormControl fullWidth>
-                  <InputLabel id="enum-select-label">Enum Name</InputLabel>
-                  <Select
-                    labelId="enum-select-label"
-                    name="enumName"
-                    value={form.enumName}
-                    label="Enum Name"
-                    onChange={handleChange}
-                  >
-                    {byName.map((item) => (
-                      <MenuItem key={item} value={item}>
-                        {item.replace(/_/g, " ")}{" "}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              <TextField
+                required
+                label="Credit"
+                name="credit"
+                type="number"
+                value={form.credit}
+                onChange={handleChange}
+              />
 
-                <TextField
-                  label="Name"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                />
+              <FormControlLabel
+                control={
+                  <Checkbox checked={form.active} onChange={handleCheckbox} />
+                }
+                label="Active"
+              />
 
-                <TextField
-                  label="Credit"
-                  name="credit"
-                  type="number"
-                  value={form.credit}
-                  onChange={handleChange}
-                />
-
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={form.active} onChange={handleCheckbox} />
-                  }
-                  label="Active"
-                />
-
-                <Button type="submit" variant="contained" color="primary">
-                  Saqlash
-                </Button>
-              </Box>
+              <Button type="submit" variant="contained" color="primary">
+                Saqlash
+              </Button>
             </Box>
-          </Fade>
-        </Modal>
-      </div>
-    // </MainLayout>
+          </Box>
+        </Fade>
+      </Modal>
+    </div>
   );
 };
 

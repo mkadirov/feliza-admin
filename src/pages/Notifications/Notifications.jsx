@@ -7,42 +7,33 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import {
-  getAllCupons,
-  getCuponNames,
-  deleteCoupon,
-  addCupon,
-  editCupon,
-} from "../../api/Cupon";
+
 import {
   Backdrop,
   Box,
   Button,
   Checkbox,
   Fade,
-  FormControl,
   FormControlLabel,
-  InputLabel,
   MenuItem,
   Modal,
   Select,
+  TextareaAutosize,
   TextField,
 } from "@mui/material";
-import { ChecklistRtl, Close, Delete, Edit } from "@mui/icons-material";
+import { ChecklistRtl, Close } from "@mui/icons-material";
 import {
   addNotificationToAll,
   getNotificationForCustumer,
 } from "../../api/Notifications";
-import { getAllCustomers } from "../../api/Customers";
-import { Link } from "react-router-dom";
+import { getAllCollections } from "../../api/LookCollection";
+import { getAllSaleGroups } from "../../api/Sale";
 
 const Notafications = () => {
-  const [userSelected, setuserSelected] = useState("");
+  const [selectedType, setselectedType] = useState("");
+  const [reserveSelected, setreserveSelected] = useState([]);
   const [list, setList] = useState([]);
-  const [userList, setuserList] = useState([]);
-  const [byName, setByName] = useState([]);
   const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [form, setForm] = useState({
     message: "",
     title: "",
@@ -51,39 +42,24 @@ const Notafications = () => {
     read: false,
   });
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [loading, setLoading] = useState(false);
 
-  // Handle file select
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
+
   async function fetchData() {
     const res = await getNotificationForCustumer(
       "1d37f0d2-6cb2-4e75-9982-cd9fea0556af"
     );
+
     if (res?.success) {
       setList(res?.data);
     }
   }
-  async function fetchAllUsers() {
-    const res = await getAllCustomers(1);
-    if (res?.success) {
-      setuserList(res?.data);
-    }
-  }
 
-  const getCouponByName = async (name) => {
-    const res = await getCuponNames(name);
-    if (res?.success) {
-      setByName(res?.data);
-    }
-  };
   useEffect(() => {
     fetchData();
-    fetchAllUsers();
-    getCouponByName("w");
   }, []);
-  console.log(list);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -91,7 +67,13 @@ const Notafications = () => {
       ...prev,
       [name]: name === "credit" ? +value : value,
     }));
+    if (name === "type") {
+      setselectedType(value);
+    }
   };
+  useEffect(() => {
+    fetchForType();
+  }, [selectedType]);
 
   const handleCheckbox = (e) => {
     setForm((prev) => ({
@@ -102,41 +84,42 @@ const Notafications = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isEdit) {
-      const res = await editCupon(form.enumName, form);
-      if (res?.success) {
-        fetchData();
-      }
-    } else {
-      const res = await addNotificationToAll(form, selectedFile);
-      console.log(form);
+    const res = await addNotificationToAll(form, selectedFile);
 
-      if (res?.success) {
-        fetchData();
-        setOpen(false);
-        setForm({
-          message: "",
-          title: "",
-          type: "",
-          reserveId: "",
-          read: false,
-        });
-      }
-
-      console.log("Create", form);
-
-      //   console.log(form);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    const res = await deleteCoupon(id);
     if (res?.success) {
       fetchData();
+      setOpen(false);
+      setForm({
+        message: "",
+        title: "",
+        type: "",
+        reserveId: "",
+        read: false,
+      });
+
+      console.log("Create:", form);
     }
   };
 
-  console.log(userList);
+  async function fetchForType() {
+    if (selectedType == "LookCollection") {
+      const res = await getAllCollections();
+
+      if (res.success) {
+        setreserveSelected(res.data);
+      }
+    }
+    if (selectedType == "sale") {
+      const res = await getAllSaleGroups();
+
+      if (res.success) {
+        setreserveSelected(res.data);
+      }
+    }
+    if (selectedType == "user") {
+      setreserveSelected([{ id: null, name: "Null" }]);
+    }
+  }
 
   return (
     <MainLayout>
@@ -173,7 +156,7 @@ const Notafications = () => {
             <TableBody>
               {list.map((row) => (
                 <TableRow
-                  key={row.name}
+                  key={row.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
@@ -201,28 +184,6 @@ const Notafications = () => {
                   <TableCell align="right">
                     {row.createdAt.split("T")[0]}
                   </TableCell>
-
-                  {/* <TableCell align="right">
-                    <Box className="space-x-2" display={"flex"}>
-                      <Edit
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setOpen(true);
-                          setIsEdit(true);
-                          setForm({
-                            enumName: row.enumName,
-                            name: row.name,
-                            credit: row.credit,
-                            active: row.active,
-                          });
-                        }}
-                      />
-                      <Delete
-                        className="cursor-pointer hover:text-red-500"
-                        onClick={() => handleDelete(row.id)}
-                      />
-                    </Box>
-                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
@@ -291,6 +252,7 @@ const Notafications = () => {
                   name="title"
                   // value={form.name}
                   onChange={handleChange}
+                  required
                 />
                 <input
                   type="file"
@@ -299,26 +261,47 @@ const Notafications = () => {
                   className="block"
                 />
 
-                <TextField
-                  label="Reserveid"
-                  name="reserveId"
-                  type="number"
-                  // value={form.credit}
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={form.type}
+                  name="type"
+                  label="Type"
                   onChange={handleChange}
-                />
-                <TextField
+                  required
+                >
+                  <MenuItem value={"sale"}>sale</MenuItem>
+                  <MenuItem value={"LookCollection"}>Look Collection</MenuItem>
+                  <MenuItem value={"text"}>text</MenuItem>
+                </Select>
+
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={form.reserveId}
+                  name="reserveId"
+                  label="ReserveId"
+                  onChange={handleChange}
+                >
+                  {reserveSelected.map((item) => (
+                    <MenuItem value={item.id} key={item.id}>
+                      <h1 className="space-x-2">
+                        <span>{item?.id}</span>
+                        <span>{item?.name}</span>
+                      </h1>
+                    </MenuItem>
+                  ))}
+                </Select>
+
+                <TextareaAutosize
                   label="Massage"
                   name="message"
                   type="text"
-                  // value={form.credit}
+                  className="border-2 border-gray-300 rounded-md p-2"
                   onChange={handleChange}
-                />
-                <TextField
-                  label="Type"
-                  name="type"
-                  type="text"
-                  // value={form.credit}
-                  onChange={handleChange}
+                  minRows={3}
+                  placeholder="Message"
+                  required
                 />
 
                 <FormControlLabel

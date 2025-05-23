@@ -113,7 +113,7 @@ function Customers() {
             className="w-full max-w-sm px-4 py-2 transition duration-200 border border-gray-300 shadow-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <a
-            href="https://felizabackend.uz/api/customers/export"
+            href="https://felizabackend.uz/api/export/exportCustomers"
             download
             className="inline-flex items-center px-4 py-2 text-white transition duration-200 bg-[rgb(59,171,179)] shadow-md hover:bg-[rgb(49,135,141)] rounded-xl"
           >

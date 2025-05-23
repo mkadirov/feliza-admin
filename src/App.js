@@ -23,6 +23,7 @@ import {
 import MyContext from "./components/Context/MyContext";
 import CouponPage from "./pages/CouponPage/CouponPage";
 import CustomerDetail from "./pages/Customers/CustomerDetail";
+import Review from "./pages/Review/Review";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +88,7 @@ function App() {
                   <Route path="/order/:id" element={<Order />} />
                   <Route path="/product/:id" element={<Product />} />
                   <Route path="/coupons" element={<CouponPage />} />
+                  <Route path="/review" element={<Review />} />
                 </>
               ) : (
                 <Route path="/*" element={<Navigate to="/" />} />

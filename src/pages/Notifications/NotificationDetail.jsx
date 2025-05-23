@@ -7,13 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import {
-  getAllCupons,
-  getCuponNames,
-  deleteCoupon,
-  addCupon,
-  editCupon,
-} from "../../api/Cupon";
+import { getCuponNames, deleteCoupon, editCupon } from "../../api/Cupon";
 import {
   Backdrop,
   Box,
@@ -28,24 +22,46 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { Close, Delete, Edit } from "@mui/icons-material";
+import { ChecklistRtl, Close, Delete, Edit } from "@mui/icons-material";
+import {
+  addNotificationToAll,
+  getNotificationForCustumer,
+} from "../../api/Notifications";
+import { getAllCustomers } from "../../api/Customers";
+import { Link, useParams } from "react-router-dom";
 
-const CouponPage = () => {
+const NotaficationDetail = () => {
+  const { id } = useParams();
+  const [userSelected, setuserSelected] = useState("");
   const [list, setList] = useState([]);
+  const [userList, setuserList] = useState([]);
   const [byName, setByName] = useState([]);
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [form, setForm] = useState({
-    enumName: "",
-    name: "",
-    credit: "",
-    active: false,
+    message: "",
+    title: "",
+    type: "",
+    reserveId: "",
+    read: false,
   });
+  const [selectedFile, setSelectedFile] = useState(null);
+  // const [loading, setLoading] = useState(false);
 
+  // Handle file select
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
   async function fetchData() {
-    const res = await getAllCupons();
+    const res = await getNotificationForCustumer(id);
     if (res?.success) {
       setList(res?.data);
+    }
+  }
+  async function fetchAllUsers() {
+    const res = await getAllCustomers(1);
+    if (res?.success) {
+      setuserList(res?.data);
     }
   }
 
@@ -57,6 +73,7 @@ const CouponPage = () => {
   };
   useEffect(() => {
     fetchData();
+    fetchAllUsers();
     getCouponByName("w");
   }, []);
   console.log(list);
@@ -72,7 +89,7 @@ const CouponPage = () => {
   const handleCheckbox = (e) => {
     setForm((prev) => ({
       ...prev,
-      active: e.target.checked,
+      read: e.target.checked,
     }));
   };
   const handleSubmit = async (e) => {
@@ -84,9 +101,19 @@ const CouponPage = () => {
         fetchData();
       }
     } else {
-      const res = await addCupon(form);
+      const res = await addNotificationToAll(form, selectedFile);
+      console.log(form);
+
       if (res?.success) {
         fetchData();
+        setOpen(false);
+        setForm({
+          message: "",
+          title: "",
+          type: "",
+          reserveId: "",
+          read: false,
+        });
       }
 
       console.log("Create", form);
@@ -101,20 +128,25 @@ const CouponPage = () => {
       fetchData();
     }
   };
+
+  console.log(userList);
+
   return (
     <MainLayout>
       <div className="space-y-3">
         <Box display={"flex"} justifyContent={"end"}>
+          
           <Button
             variant="contained"
             color="primary"
             onClick={() => {
               setOpen(true);
               setForm({
-                enumName: "",
-                name: "",
-                credit: "",
-                active: false,
+                message: "",
+                title: "",
+                type: "",
+                reserveId: "",
+                read: false,
               });
             }}
           >
@@ -125,13 +157,11 @@ const CouponPage = () => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell width={10}>ENUM Name</TableCell>
-                <TableCell align="right">Credit</TableCell>
-                <TableCell align="right">Status</TableCell>
-                <TableCell width={10} align="center">
-                  Actions
-                </TableCell>
+                <TableCell>ReserveId</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell width={10}>Message</TableCell>
+                <TableCell align="right">Type</TableCell>
+                <TableCell align="right">Created At</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -141,17 +171,32 @@ const CouponPage = () => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    <p
+                      style={{
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {row.reserveId}
+                    </p>
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {row.enumName}
+                    <p
+                      style={{
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {row.title} {row.read && <ChecklistRtl />}
+                    </p>
                   </TableCell>
-                  <TableCell align="right">{row.credit}</TableCell>
+                  <TableCell component="th" scope="row">
+                    {row.message}
+                  </TableCell>
+                  <TableCell align="right">{row.type}</TableCell>
                   <TableCell align="right">
-                    {row.active ? "active" : "noactive"}
+                    {row.createdAt.split("T")[0]}
                   </TableCell>
 
-                  <TableCell align="right">
+                  {/* <TableCell align="right">
                     <Box className="space-x-2" display={"flex"}>
                       <Edit
                         className="cursor-pointer"
@@ -166,9 +211,12 @@ const CouponPage = () => {
                           });
                         }}
                       />
-                      <Delete className="cursor-pointer hover:text-red-500" onClick={() => handleDelete(row.id)} />
+                      <Delete
+                        className="cursor-pointer hover:text-red-500"
+                        onClick={() => handleDelete(row.id)}
+                      />
                     </Box>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
@@ -232,43 +280,51 @@ const CouponPage = () => {
                   width: 400,
                 }}
               >
-                <FormControl fullWidth>
-                  <InputLabel id="enum-select-label">Enum Name</InputLabel>
-                  <Select
-                    labelId="enum-select-label"
-                    name="enumName"
-                    value={form.enumName}
-                    label="Enum Name"
-                    onChange={handleChange}
-                  >
-                    {byName.map((item) => (
-                      <MenuItem key={item} value={item}>
-                        {item.replace(/_/g, " ")}{" "}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
                 <TextField
-                  label="Name"
-                  name="name"
-                  value={form.name}
+                  label="Title"
+                  name="title"
+                  // value={form.name}
                   onChange={handleChange}
+                />
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  required
+                  className="block"
                 />
 
                 <TextField
-                  label="Credit"
-                  name="credit"
+                  label="Reserveid"
+                  name="reserveId"
                   type="number"
-                  value={form.credit}
+                  // value={form.credit}
+                  onChange={handleChange}
+                />
+                <TextField
+                  label="Massage"
+                  name="message"
+                  type="text"
+                  // value={form.credit}
+                  onChange={handleChange}
+                />
+                <TextField
+                  label="Type"
+                  name="type"
+                  type="text"
+                  // value={form.credit}
                   onChange={handleChange}
                 />
 
                 <FormControlLabel
                   control={
-                    <Checkbox checked={form.active} onChange={handleCheckbox} />
+                    <Checkbox
+                      defaultValue={false}
+                      onChange={handleCheckbox}
+                      style={{
+                        display: "none",
+                      }}
+                    />
                   }
-                  label="Active"
                 />
 
                 <Button type="submit" variant="contained" color="primary">
@@ -283,4 +339,4 @@ const CouponPage = () => {
   );
 };
 
-export default CouponPage;
+export default NotaficationDetail;

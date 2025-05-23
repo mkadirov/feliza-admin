@@ -1,169 +1,286 @@
-import { Box, Button, Card, Grid, Menu, MenuItem, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { addCupon, getCuponNames } from "../../api/Cupon";
-import HandleCupon from "./HandleCupon";
+import { useEffect, useState } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import {
+  getAllCupons,
+  getCuponNames,
+  deleteCoupon,
+  addCupon,
+  editCupon,
+} from "../../api/Cupon";
+import {
+  Backdrop,
+  Box,
+  Button,
+  Checkbox,
+  Fade,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+  TextField,
+} from "@mui/material";
+import { Close, Delete, Edit } from "@mui/icons-material";
 
-function AddCupon() {
-  const [name, setName] = useState("");
-  const [cuponName, setCuponName] = useState('')
-  const [summa, setSumma] = useState('')
+const AddCupon = () => {
   const [list, setList] = useState([]);
-  const [listChanged, setListChanged] = useState(0)
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [byName, setByName] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [form, setForm] = useState({
+    enumName: "",
+    name: "",
+    credit: "",
+    active: false,
+  });
 
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleCuponItem = (name) => {
-    setCuponName(name);
-    setAnchorEl(null);
+  async function fetchData() {
+    const res = await getAllCupons();
+    if (res?.success) {
+      setList(res?.data);
+    }
   }
 
+  const getCouponByName = async (name) => {
+    const res = await getCuponNames(name);
+    if (res?.success) {
+      setByName(res?.data);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getCuponNames();
+    fetchData();
+    getCouponByName("w");
+  }, []);
 
-      if(res.success) {
-        setList(res?.data)
-        console.log(res.data);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === "credit" ? +value : value,
+    }));
+  };
+
+  const handleCheckbox = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      active: e.target.checked,
+    }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isEdit) {
+      const res = await editCupon(form.enumName, form);
+      if (res?.success) {
+        fetchData();
+      }
+    } else {
+      const res = await addCupon(form);
+      if (res?.success) {
+        fetchData();
       }
     }
+  };
 
-    fetchData();
-  }, [])
-
-  
-
-
-  const checkCuponDetail = () => {
-
-    if(cuponName.trim() == '') {
-      alert('Iltimos kupon turini tanlang')
-      return;
+  const handleDelete = async (id) => {
+    const res = await deleteCoupon(id);
+    if (res?.success) {
+      fetchData();
     }
-
-    if(name.trim() =='') {
-      alert('Iltimos kupon nomini kriting')
-      return;
-    }
-
-    if(summa == "") {
-      alert('Summa bösh bölishi mumkin emas');
-      return
-    }
-    createCupon()
-  }
-
-
-  const createCupon = async () => {
-
-    const cupon = {
-      enumName: cuponName,
-      name: name,
-      credit: summa,
-      active: true
-    }
-    const res = await addCupon(cupon)
-
-    if(res?.success) {
-      console.log('Kupon yaratildi');
-      setListChanged(prev => prev + 1)
-      setCuponName('')
-      setName('')
-      setSumma('')
-    } else {
-      console.log('Xatolik');
-    }
-  }
-
-
+  };
   return (
-    <div className="mt-3">
-      <Card sx={{ padding: 2 }}>
-        <Grid container spacing={1}>
-          <Grid
-            item
-            xs={6}
-            display={"flex"}
-            gap={1}
-            sx={{ borderRight: "1px solid grey", paddingRight: 1 }}
-          >
-            <TextField
-              size="small"
-              fullWidth
-              value={cuponName}
-              aria-readonly
-              placeholder="Kupon turi"
-            />
+    <div className="space-y-3">
+      <Box display={"flex"} justifyContent={"end"}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            setOpen(true);
+            setForm({
+              enumName: "",
+              name: "",
+              credit: "",
+              active: false,
+            });
+          }}
+        >
+          Create
+        </Button>
+      </Box>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell width={10}>ENUM Name</TableCell>
+              <TableCell align="right">Credit</TableCell>
+              <TableCell align="right">Status</TableCell>
+              <TableCell width={10} align="center">
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {list.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {row.enumName}
+                </TableCell>
+                <TableCell align="right">{row.credit}</TableCell>
+                <TableCell align="right">
+                  {row.active ? "active" : "noactive"}
+                </TableCell>
 
-            <Button 
-              variant="contained" 
-              size="small"
-              onClick={handleClick}
-            >
-              <ArrowDropDownIcon />
-            </Button>
-          </Grid>
-          <Grid item xs={4} display={"flex"} gap={1}>
-            <TextField
-              size="small"
-              fullWidth
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              aria-readonly
-              placeholder="Kupon nomi"
-              type="text"
-            />
-          </Grid>
-          <Grid item xs={2} display={"flex"} gap={1}>
-            <TextField
-              size="small"
-              fullWidth
-              value={summa}
-              onChange={(e) => setSumma(e.target.value)}
-              aria-readonly
-              placeholder="Summa"
-              type="number"
-            />
-          </Grid>
-        </Grid>
+                <TableCell align="right">
+                  <Box className="space-x-2" display={"flex"}>
+                    <Edit
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setOpen(true);
+                        setIsEdit(true);
+                        setForm({
+                          enumName: row.enumName,
+                          name: row.name,
+                          credit: row.credit,
+                          active: row.active,
+                        });
+                      }}
+                    />
+                    <Delete
+                      className="cursor-pointer hover:text-red-500"
+                      onClick={() => handleDelete(row.id)}
+                    />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-        <Box display={"flex"} justifyContent={"end"} marginTop={1}>
-          <Button size="small" variant="contained" onClick={checkCuponDetail}>
-            Saqlash
-          </Button>
-        </Box>
-      </Card>
-
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
         open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
+        onClose={(_, reason) => {
+          if (reason !== "backdropClick") {
+            setOpen(false);
+          }
+        }}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
         }}
       >
-        {
-          list.map((item, idx) => {
-            return(
-              <MenuItem key={item + idx} onClick={() => handleCuponItem(item)}>{item}</MenuItem>
-            )
-          })
-        }
-      </Menu>
+        <Fade in={open}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              bgcolor: "background.paper",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+              pt: 5,
+            }}
+          >
+            <Close
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                padding: 0,
+                margin: 5,
+                paddingInline: 0,
+                cursor: "pointer",
+                background: "red",
+                color: "white",
+                borderRadius: 5,
+              }}
+              onClick={() => setOpen(false)}
+            />
 
-      <HandleCupon listChanged={listChanged} setListChanged={setListChanged}/>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                width: 400,
+              }}
+            >
+              <FormControl fullWidth>
+                <InputLabel required id="enum-select-label">
+                  Enum Name
+                </InputLabel>
+                <Select
+                  labelId="enum-select-label"
+                  name="enumName"
+                  value={form.enumName}
+                  label="Enum Name"
+                  onChange={handleChange}
+                  required
+                >
+                  {byName.map((item) => (
+                    <MenuItem key={item} value={item}>
+                      {item.replace(/_/g, " ")}{" "}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <TextField
+                required
+                label="Name"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+              />
+
+              <TextField
+                required
+                label="Credit"
+                name="credit"
+                type="number"
+                value={form.credit}
+                onChange={handleChange}
+              />
+
+              <FormControlLabel
+                control={
+                  <Checkbox checked={form.active} onChange={handleCheckbox} />
+                }
+                label="Active"
+              />
+
+              <Button type="submit" variant="contained" color="primary">
+                Saqlash
+              </Button>
+            </Box>
+          </Box>
+        </Fade>
+      </Modal>
     </div>
   );
-}
+};
 
 export default AddCupon;

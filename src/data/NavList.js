@@ -9,7 +9,7 @@ export const navList = [
     },
     {
         title: 'Mahsulotlar',
-        path: '/products?page=1',
+        path: '/products',
         icon: <QrCodeScanner />
     },
     {
@@ -43,14 +43,15 @@ export const navList = [
         icon: <Percent />
     },
     {
-        title: 'Coupons',
-        path: '/coupons',
-        icon: <Percent />
-    },
-    {
         title: 'Review',
         path: '/review',
         icon: <RemoveRedEyeIcon />
+    },
+    {
+
+        title: 'Notifications',
+        path: '/notifications',
+        icon: <NotificationAdd />
     },
 ]
 

@@ -1,50 +1,57 @@
-import {BarChart, QrCodeScanner, EmojiPeople, Settings, ShoppingBag, ColorLens, Percent, PersonOutline, NotificationAdd} from '@mui/icons-material'
+import { BarChart, QrCodeScanner, EmojiPeople, Settings, ShoppingBag, ColorLens, Percent, PersonOutline, NotificationAdd } from '@mui/icons-material'
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 export const navList = [
     {
         title: 'Statistika',
         path: '/home',
-        icon: <BarChart/>
+        icon: <BarChart />
     },
     {
         title: 'Mahsulotlar',
         path: '/products',
-        icon: <QrCodeScanner/>
+        icon: <QrCodeScanner />
     },
     {
         title: 'Buyurtmalar',
         path: '/orders',
-        icon: <ShoppingBag/>
+        icon: <ShoppingBag />
     },
     {
         title: 'Foydalanuvchilar',
         path: '/users',
-        icon: <EmojiPeople/>
+        icon: <EmojiPeople />
     },
     {
         title: 'Mijozlar',
         path: '/customers',
-        icon: <PersonOutline/>
+        icon: <PersonOutline />
     },
     {
         title: 'Sozlamalar',
         path: '/settings',
-        icon: <Settings/>
+        icon: <Settings />
     },
     {
         title: 'Interface',
         path: '/interface',
-        icon: <ColorLens/>
+        icon: <ColorLens />
     },
     {
         title: 'Sale',
         path: '/sale',
-        icon: <Percent/>
+        icon: <Percent />
     },
     {
+        title: 'Review',
+        path: '/review',
+        icon: <RemoveRedEyeIcon />
+    },
+    {
+
         title: 'Notifications',
         path: '/notifications',
-        icon: <NotificationAdd  />
+        icon: <NotificationAdd />
     },
 ]
 

@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
-import MainLayout from "./components/Layout/MainLayout";
 import LoginPage from "./pages/Login/LoginPage";
 import HomePage from "./pages/HomePage/HomePage";
 import { useState } from "react";
@@ -24,6 +23,8 @@ import MyContext from "./components/Context/MyContext";
 import Notifications from "./pages/Notifications/Notifications";
 import NotificationDetail from "./pages/Notifications/NotificationDetail";
 import CustomerDetail from "./pages/Customers/CustomerDetail";
+import Review from "./pages/Review/Review";
+
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [pageName, setPageName] = useState("Statistika");
@@ -86,6 +87,7 @@ function App() {
                   <Route path="/sale" element={<SalePage />} />
                   <Route path="/order/:id" element={<Order />} />
                   <Route path="/product/:id" element={<Product />} />
+                  <Route path="/review" element={<Review />} />
                   <Route path="/notifications" element={<Notifications />} />
                   <Route
                     path="/notification/:id"

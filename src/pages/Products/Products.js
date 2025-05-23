@@ -61,7 +61,7 @@ function Products() {
   }, [searchParams]);
 
   async function fetchData() {
-    const res = await getAllProducts(page);
+    const res = await getAllProducts(page - 1);
     if (res?.success) {
       console.log(res?.data);
       setProducts(res?.data?.content);
@@ -81,7 +81,7 @@ function Products() {
   useEffect(() => {
     fetchData();
     fetchDataActiveProducts();
-  }, [page, activePage]);
+  }, [page, activePage, totalElements]);
 
   const findProducts = async () => {
     const res = await getProductByRefNumber(articulNumber);
@@ -379,17 +379,17 @@ function Products() {
                   <TableCell align="left">{row.sellPrice}</TableCell>
                   <TableCell align="left">
                     <Tooltip
-                      title={row.productSizeVariantList.map((item) => (
+                      title={row?.productSizeVariantList?.map((item) => (
                         <p
                           className="px-3 font-bold text-base border-b"
                           key={item.id}
                         >
-                          {item.size}: {item.quantity}
+                          {item?.size}: {item?.quantity}
                         </p>
                       ))}
                       placement="top-start"
                     >
-                      {row.productSizeVariantList[0].size}
+                      {row?.productSizeVariantList[0]?.size}
                       {row.productSizeVariantList.length > 1 && (
                         <span className="text-gray-400">
                           {" "}
@@ -431,9 +431,7 @@ function Products() {
 
         <Box marginY={3} display={"flex"} justifyContent={"center"}>
           <Pagination
-            count={
-              activePage == 1 ? numberOfPages - 1 : numberOfPagesActive - 1
-            }
+            count={activePage == 1 ? numberOfPages : numberOfPagesActive}
             page={+page}
             variant="outlined"
             shape="rounded"

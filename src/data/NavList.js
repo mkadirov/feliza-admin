@@ -1,4 +1,4 @@
-import { BarChart, QrCodeScanner, EmojiPeople, Settings, ShoppingBag, ColorLens, Percent, PersonOutline } from '@mui/icons-material'
+import { BarChart, QrCodeScanner, EmojiPeople, Settings, ShoppingBag, ColorLens, Percent, PersonOutline, NotificationAdd } from '@mui/icons-material'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 export const navList = [

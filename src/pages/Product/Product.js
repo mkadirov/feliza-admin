@@ -56,7 +56,7 @@ function Product() {
         setDescriptionRu(temp.descriptionRUS);
         setDescriptionUz(temp.descriptionUZB);
         setCategoryList(tempCategory);
-        setParentCategory(temp?.category[0]?.nameUZB);
+        setParentCategory(temp?.category[1]?.parentCategoryUZ);
         setBrand(temp.brand);
         setIkpuNumber(temp.ikpunumber);
         setMxikNumber(temp.mxikNumber);

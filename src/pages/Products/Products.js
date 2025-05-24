@@ -46,6 +46,7 @@ function Products() {
   const [totalElementsActive, setTotalElementsActive] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElDelete, setAnchorElDelete] = useState(null);
   const [pendingValue, setPendingValue] = useState(null);
   const switchRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -410,17 +411,55 @@ function Products() {
                           padding: 0,
                           margin: 0,
                         }}
-                        onClick={async () => {
-                          const res = await deleteProduct(row.id);
-
-                          if (res.success) {
-                            console.log("Mahsulot öchirildi");
-                            fetchData();
-                          }
+                        onClick={(e) => {
+                          setAnchorElDelete(e.currentTarget);
                         }}
                       >
                         <Delete />
                       </button>
+
+                      <Popover
+                        open={Boolean(anchorElDelete)}
+                        anchorEl={anchorElDelete}
+                        onClose={() => setAnchorElDelete(null)}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "left",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "left",
+                        }}
+                      >
+                        <Box p={2}>
+                          <Typography mb={1}>
+                            Rostdan ham mahsulotni o'chirmoqchimisiz?
+                          </Typography>
+                          <Box display="flex" justifyContent="flex-end" gap={1}>
+                            <Button
+                              size="small"
+                              onClick={() => {
+                                setAnchorElDelete(null);
+                              }}
+                            >
+                              Yo‘q
+                            </Button>
+                            <Button
+                              size="small"
+                              variant="contained"
+                              onClick={async () => {
+                                const res = await deleteProduct(row.id);
+                                if (res.success) {
+                                  console.log("Mahsulot öchirildi");
+                                  fetchData();
+                                }
+                              }}
+                            >
+                              Ha
+                            </Button>
+                          </Box>
+                        </Box>
+                      </Popover>
                     </Box>
                   </TableCell>
                 </TableRow>

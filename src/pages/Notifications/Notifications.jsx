@@ -28,6 +28,7 @@ import {
 } from "../../api/Notifications";
 import { getAllCollections } from "../../api/LookCollection";
 import { getAllSaleGroups } from "../../api/Sale";
+import { getAllCategories } from "../../api/Category";
 
 const Notafications = () => {
   const [selectedType, setselectedType] = useState("");
@@ -102,18 +103,19 @@ const Notafications = () => {
   };
 
   async function fetchForType() {
-    if (selectedType == "LookCollection") {
-      const res = await getAllCollections();
+    // if (selectedType == "LookCollection") {
+    //   const res = await getAllCollections();
 
-      if (res.success) {
-        setreserveSelected(res.data);
-      }
-    }
+    //   if (res.success) {
+    //     setreserveSelected(res.data);
+    //   }
+    // }
     if (selectedType == "sale") {
-      const res = await getAllSaleGroups();
+      const res = await getAllCategories();
 
       if (res.success) {
         setreserveSelected(res.data);
+        console.log("Sale Groups:", res.data);
       }
     }
     if (selectedType == "user") {
@@ -248,7 +250,7 @@ const Notafications = () => {
                 }}
               >
                 <TextField
-                  label="Title"
+                  placeholder="Sarlavha kiriting"
                   name="title"
                   // value={form.name}
                   onChange={handleChange}
@@ -260,7 +262,7 @@ const Notafications = () => {
                   required
                   className="block"
                 />
-
+                <p>Turni tanlash</p>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -271,16 +273,16 @@ const Notafications = () => {
                   required
                 >
                   <MenuItem value={"sale"}>sale</MenuItem>
-                  <MenuItem value={"LookCollection"}>Look Collection</MenuItem>
+                  {/* <MenuItem value={"LookCollection"}>Look Collection</MenuItem> */}
                   <MenuItem value={"text"}>text</MenuItem>
                 </Select>
-
+                <p>Kategoryni tanlash</p>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={form.reserveId}
                   name="reserveId"
-                  label="ReserveId"
+                  // label="ReserveId"
                   onChange={handleChange}
                 >
                   {reserveSelected.map((item) => (
@@ -288,19 +290,19 @@ const Notafications = () => {
                       <h1 className="space-x-2">
                         <span>{item?.id}</span>
                         <span>{item?.name}</span>
+                        <span>{item?.nameUZB}</span>
                       </h1>
                     </MenuItem>
                   ))}
                 </Select>
 
                 <TextareaAutosize
-                  label="Massage"
                   name="message"
                   type="text"
                   className="border-2 border-gray-300 rounded-md p-2"
                   onChange={handleChange}
                   minRows={3}
-                  placeholder="Message"
+                  placeholder="Xabar kiriting"
                   required
                 />
 

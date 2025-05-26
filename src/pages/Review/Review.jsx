@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MainLayout from '../../components/Layout/MainLayout';
-
 import {
     Table,
     TableBody,
@@ -17,13 +16,15 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Delete } from '@mui/icons-material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 
 const Review = () => {
     const [reviews, setReviews] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
 
-    function fetchData() {
+    const fetchData = () => {
         axios
             .get('https://felizabackend.uz/api/review/getAllReviews')
             .then((res) => {
@@ -33,7 +34,8 @@ const Review = () => {
             .catch((err) => {
                 console.log('Error', err);
             });
-    }
+    };
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -48,58 +50,74 @@ const Review = () => {
         setSelectedImage('');
     };
 
-    // detele function 
     const deleteReview = (id) => {
         axios
             .delete(`https://felizabackend.uz/api/review/deleteReview/${id}`)
             .then((res) => {
                 console.log(res.data);
                 fetchData();
+                alert('Izoh muvaffaqiyatli o`chirildi.');
+            });
+    };
+
+    const approveReview = (id) => {
+        axios
+            .put('https://felizabackend.uz/api/review/moderateReview', { reviewId: id })
+            .then((res) => {
+                console.log('Tastiqlandi:', res.data);
+                fetchData();
+                alert('Izoh tasdiqlandi va ilovada ko‘rinadi.');
             })
-    }
+            .catch((err) => {
+                console.error('Tasdiqlashda xatolik:', err.response?.data || err);
+                alert('Izohni tasdiqlashda xatolik yuz berdi.');
+            });
+    };
+
+
+
     return (
         <MainLayout>
-            <Typography variant="h4" align="center" gutterBottom>
+            <Typography variant="h4" align="center" gutterBottom sx={{ mt: 3, mb: 3 }}>
                 Foydalanuvchi Izohlari
             </Typography>
 
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto' }}>
                 <Table>
-                    <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-                        <TableRow style={{
-                            background: 'linear-gradient(to right, #f5f5f5, #e0e0e0)',
-                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                            borderRadius: '4px',
-                            padding: '10px',
-                            marginBottom: '10px',
-                            fontWeight: 'bold',
-                        }}>
-                            <TableCell>Rasm</TableCell>
-                            <TableCell>Foydalanuvchi</TableCell>
-                            <TableCell>Telefon</TableCell>
-                            <TableCell>Izoh</TableCell>
-                            <TableCell>Delete</TableCell>
+                    <TableHead>
+                        <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
+                            <TableCell><strong>Rasm</strong></TableCell>
+                            <TableCell><strong>Foydalanuvchi</strong></TableCell>
+                            <TableCell><strong>Telefon</strong></TableCell>
+                            <TableCell><strong>Izoh</strong></TableCell>
+                            <TableCell><strong>Delete</strong></TableCell>
+                            <TableCell><strong>Tasdiqlash</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {reviews.map((item) => (
-                            <TableRow key={item.id}>
-                                <TableCell>
-                                    <img
-                                        src={item.customer?.image?.url || '/default-avatar.jpg'}
-                                        alt="User"
-                                        style={{
-                                            width: 50,
-                                            height: 50,
-                                            borderRadius: '50%',
-                                            cursor: 'pointer',
-                                            transition: 'transform 0.3s ease',
-                                        }}
-                                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                        onClick={() => handleImageClick(item.customer?.image?.url)}
-                                    />
-
+                            <TableRow key={item.id} hover>
+                                <TableCell className='flex'>
+                                    {item?.reviewImages?.map((event, index) => (
+                                        <img
+                                            key={index}
+                                            src={event?.url || '/default-avatar.jpg'}
+                                            alt="Mahsulot rasmi"
+                                            style={{
+                                                width: 50,
+                                                height: 50,
+                                                borderRadius: '8px',
+                                                cursor: 'pointer',
+                                                marginRight: '5px',
+                                                objectFit: 'cover',
+                                                transition: 'transform 0.3s ease',
+                                                border: '2px solid #eee',
+                                            }}
+                                            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.1)')}
+                                            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                                            onClick={() => handleImageClick(event?.url)}
+                                        />
+                                    ))}
                                 </TableCell>
                                 <TableCell>{item.customer?.fullName || 'Ismsiz'}</TableCell>
                                 <TableCell>{item.customer?.phoneNumber || 'Nomaʼlum'}</TableCell>
@@ -123,40 +141,48 @@ const Review = () => {
                                         onMouseEnter={(e) => (e.currentTarget.style.background = '#b71c1c')}
                                         onMouseLeave={(e) => (e.currentTarget.style.background = 'red')}
                                     >
-                                        <Delete
-                                            sx={{
-                                                color: 'white',
-                                                fontSize: '20px',
-                                                transition: 'color 0.3s ease',
-                                                '&:hover': {
-                                                    color: '#ffebee',
-                                                },
-                                            }}
-                                        />
+                                        <Delete sx={{ fontSize: '20px', color: 'white' }} />
                                     </button>
                                 </TableCell>
-
+                                <TableCell>
+                                    {item.approved ? (
+                                        <span style={{ color: 'green', fontWeight: 'bold' }}>Tasdiqlangan</span>
+                                    ) : (
+                                        <button
+                                            onClick={() => approveReview(item.id)}
+                                            style={{
+                                                background: 'green',
+                                                color: 'white',
+                                                border: 'none',
+                                                padding: '5px 10px',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold',
+                                            }}
+                                        >
+                                            <CheckCircleIcon />
+                                        </button>
+                                    )}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
 
-            {/* Modal */}
+            {/* Modal (Dialog) */}
             <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-                <DialogContent sx={{ position: 'relative', p: 2 }}>
+                <DialogContent sx={{ position: 'relative', p: 2, textAlign: 'center' }}>
                     <IconButton
                         onClick={handleClose}
                         aria-label="close"
-                        setOpen={false}
                         sx={{
                             position: 'absolute',
                             top: 8,
                             right: 8,
                             color: 'error.main',
-                            transition: 'color 0.3s ease',
                             '&:hover': {
-                                color: '#b71c1c', // dark red
+                                color: '#b71c1c',
                             },
                         }}
                     >
@@ -167,16 +193,13 @@ const Review = () => {
                         src={selectedImage}
                         alt="To'liq rasm"
                         style={{
-                            width: '100%',
-                            maxWidth: '500px',
+                            maxWidth: '100%',
                             maxHeight: '80vh',
-                            margin: '0 auto',
-                            display: 'block',
                             borderRadius: '10px',
-                            objectFit: 'contain'
+                            objectFit: 'contain',
+                            margin: 'auto',
                         }}
                     />
-
                 </DialogContent>
             </Dialog>
         </MainLayout>

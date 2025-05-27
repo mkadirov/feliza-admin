@@ -57,6 +57,7 @@ const Review = () => {
                 console.log(res.data);
                 fetchData();
                 alert('Izoh muvaffaqiyatli o`chirildi.');
+                console.log('Izoh o`chirildi:', res.data);
             });
     };
 

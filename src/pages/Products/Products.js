@@ -21,8 +21,8 @@ import {
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
-import { Delete, Edit, Search } from "@mui/icons-material";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Delete, Download, Edit, Search } from "@mui/icons-material";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   deleteProduct,
   editProduct,
@@ -132,24 +132,31 @@ function Products() {
 
   return (
     <MainLayout>
-      <div className="mt-12 ">
-        <div className="py-4 flex gap-2">
-          <StyledChip
-            className={activePage == 1 ? "activeChip" : "inactiveChip"}
-            label={`Barcha mahsulotlar(${totalElements})`}
-            onClick={() => {
-              setActivePage(1);
-              setSearchParams({ page: 1 });
-            }}
-          />
-          <StyledChip
-            className={activePage == 2 ? "activeChip" : "inactiveChip"}
-            label={`Aktiv(${totalElementsActive})`}
-            onClick={() => {
-              setActivePage(2);
-              setSearchParams({ page: 1 });
-            }}
-          />
+      <div className="mt-3">
+        <div className="py-4 flex gap-2 justify-between items-center align-middle">
+          <div className="space-x-2">
+            <StyledChip
+              className={activePage == 1 ? "activeChip" : "inactiveChip"}
+              label={`Barcha mahsulotlar(${totalElements})`}
+              onClick={() => {
+                setActivePage(1);
+                setSearchParams({ page: 1 });
+              }}
+            />
+            <StyledChip
+              className={activePage == 2 ? "activeChip" : "inactiveChip"}
+              label={`Aktiv(${totalElementsActive})`}
+              onClick={() => {
+                setActivePage(2);
+                setSearchParams({ page: 1 });
+              }}
+            />
+          </div>
+          <Link to={"https://felizabackend.uz/api/export/exportProducts"}>
+            <Button variant="contained" startIcon={<Download />}>
+              Yuklab olish
+            </Button>
+          </Link>
         </div>
 
         <Divider />

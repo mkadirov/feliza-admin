@@ -32,6 +32,7 @@ import {
 } from "../../api/Product";
 
 function Products() {
+  const [selectId, setselectId] = useState(null);
   const [selectedModalImg, setSelectedModalImg] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activePage, setActivePage] = useState(1);
@@ -420,6 +421,7 @@ function Products() {
                         }}
                         onClick={(e) => {
                           setAnchorElDelete(e.currentTarget);
+                          setselectId(row.id);
                         }}
                       >
                         <Delete />
@@ -440,7 +442,8 @@ function Products() {
                       >
                         <Box p={2}>
                           <Typography mb={1}>
-                            Rostdan ham mahsulotni o'chirmoqchimisiz?
+                            Rostdan ham shu mahsulotni o'chirmoqchimisiz?{" "}
+                            {selectId}
                           </Typography>
                           <Box display="flex" justifyContent="flex-end" gap={1}>
                             <Button
@@ -455,9 +458,10 @@ function Products() {
                               size="small"
                               variant="contained"
                               onClick={async () => {
-                                const res = await deleteProduct(row.id);
+                                const res = await deleteProduct(selectId);
                                 if (res.success) {
                                   console.log("Mahsulot öchirildi");
+                                  setAnchorElDelete(null);
                                   fetchData();
                                 }
                               }}

@@ -9,7 +9,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import MainLayout from "../../components/Layout/MainLayout";
 import { useParams } from "react-router-dom";
-import { editProduct, getProductByID } from "../../api/Product";
+import { editProduct, editRefNumber, getProductByID } from "../../api/Product";
 import ProductColorContainer from "../../components/Product/ProductColorContainer";
 import { getAllColors } from "../../api/Color";
 import ProductCategoryBox from "../../components/Product/ProductCategoryBox";
@@ -28,6 +28,8 @@ function Product() {
   const [descriptionRu, setDescriptionRu] = useState("");
   const [ikpuNumber, setIkpuNumber] = useState("");
   const [mxikNumber, setMxikNumber] = useState("");
+  const [refNumber, setRefNumber] = useState("");
+  const [initialRefNumber, setInitialRefNumber] = useState("");
   const [colors, setColors] = useState([]);
   const [colorList, setColorList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
@@ -35,36 +37,41 @@ function Product() {
   const [parentCategory, setParentCategory] = useState(0);
   const [sizes, setSizes] = useState([]);
   const [isActive, setIsActive] = useState(true);
-
+  const [isChanged, setIsChanged] = useState(false);
   const { setIsLoading } = useContext(MyContext);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await getProductByID(id);
-      if (res?.success) {
-        const temp = res.data;
-        const itemsWithoutId = temp?.productSizeVariantList?.map(
-          ({ id, ...rest }) => rest
-        );
-        console.log(temp);
-        const tempCategory = temp?.category?.reverse()
-        setProduct(temp);
-        setProductNameUz(temp?.nameUZB);
-        setProductNameRu(temp?.nameRUS);
-        setPrice(temp?.sellPrice);
-        setColorList([temp.color.colorCode]);
-        setDescriptionRu(temp.descriptionRUS);
-        setDescriptionUz(temp.descriptionUZB);
-        setCategoryList(tempCategory);
-        setParentCategory(temp?.category[1]?.parentCategoryUZ);
-        setBrand(temp.brand);
-        setIkpuNumber(temp.ikpunumber);
-        setMxikNumber(temp.mxikNumber);
-        setSizes(itemsWithoutId);
-        setIsActive(temp.active);
-      }
-    };
+    setIsChanged(refNumber !== initialRefNumber);
+  }, [refNumber, initialRefNumber]);
 
+  const fetchData = async () => {
+    const res = await getProductByID(id);
+    if (res?.success) {
+      const temp = res.data;
+      const itemsWithoutId = temp?.productSizeVariantList?.map(
+        ({ id, ...rest }) => rest
+      );
+      console.log(temp);
+      const tempCategory = temp?.category?.reverse();
+      setProduct(temp);
+      setProductNameUz(temp?.nameUZB);
+      setProductNameRu(temp?.nameRUS);
+      setPrice(temp?.sellPrice);
+      setColorList([temp.color.colorCode]);
+      setDescriptionRu(temp.descriptionRUS);
+      setDescriptionUz(temp.descriptionUZB);
+      setCategoryList(tempCategory);
+      setParentCategory(temp?.category[1]?.parentCategoryUZ);
+      setBrand(temp.brand);
+      setIkpuNumber(temp.ikpunumber);
+      setMxikNumber(temp.mxikNumber);
+      setRefNumber(temp.referenceNumber);
+      setInitialRefNumber(temp.referenceNumber);
+      setSizes(itemsWithoutId);
+      setIsActive(temp.active);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [id]);
 
@@ -181,15 +188,47 @@ function Product() {
         })}
       </Grid>
 
-      <Box display={"flex"} gap={3} alignItems={"center"} marginTop={2}>
-        <Typography>Mahsulot statusi:</Typography>
-        <Switch
-          checked={isActive}
-          onChange={handleChange}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-        <Typography>{isActive ? "Aktiv" : "Aktiv emas"}</Typography>
-      </Box>
+      <div className="flex justify-between mt-5">
+        <div className="flex gap-3 items-center">
+          <Typography>Mahsulot statusi:</Typography>
+          <Switch
+            checked={isActive}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+          <Typography>{isActive ? "Aktiv" : "Aktiv emas"}</Typography>
+        </div>
+
+        <div className="flex gap-3">
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            size="small"
+            value={refNumber ? refNumber : ""}
+            onChange={(e) => setRefNumber(e.target.value)}
+            helperText="Ref nomer"
+          />
+
+          <Button
+            disabled={!isChanged}
+            className="h-fit"
+            onClick={async () => {
+              const res = await editRefNumber(id, refNumber);
+              if (res?.success) {
+                console.log("Ref Nomer özgartirildi");
+                alert("Ref Nomer özgartirildi");
+                fetchData();
+              } else {
+                setIsLoading(false);
+                alert("Ref Nomer özgartirishda xatolik");
+              }
+              console.log(res);
+            }}
+            variant="contained"
+            children="Ref O'zgartirish"
+          />
+        </div>
+      </div>
 
       <Grid container spacing={2} marginTop={3}>
         <Grid item xs={12} md={6}>

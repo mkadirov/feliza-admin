@@ -100,9 +100,7 @@ const getProductByID = async (id) => {
 
 const getProductByRefNumber = async (refNumber) => {
   try {
-    const res = await axios.get(
-      apiUrl + "searchProduct/" + refNumber
-    );
+    const res = await axios.get(apiUrl + "searchProduct/" + refNumber);
     if (res.status == 200) {
       return { success: true, data: res.data };
     } else {
@@ -134,6 +132,28 @@ const editProduct = async (id, product) => {
   }
 };
 
+const editRefNumber = async (id, refNumber) => {
+  try {
+    const token = localStorage.getItem("userToken");
+    const formData = new FormData();
+    formData.append("refNumber", refNumber); // Yuborilayotgan key: refNumber
+
+    const res = await axios.put(`${apiUrl}editRefnumber/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 200) {
+      return { success: true, data: res.data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    return { success: false, error };
+  }
+};
+
 export {
   createProduct,
   getAllProducts,
@@ -141,5 +161,6 @@ export {
   getProductByID,
   getProductByRefNumber,
   editProduct,
-  getAllActiveProducts
+  editRefNumber,
+  getAllActiveProducts,
 };

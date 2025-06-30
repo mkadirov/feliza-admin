@@ -2,12 +2,18 @@ import axios from 'axios'
 
 const apiUrl = 'https://felizabackend.uz/api/karusel/'
 
-const createKarusel = async(files, karuselSlide) => {
+const createKarusel = async(imagesData, karuselSlide) => {
     const formData = new FormData();
 
-    for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
-    }
+      // Mobil rasmlarni qo‘shish
+  for (let i = 0; i < imagesData.mobile.length; i++) {
+    formData.append('mobileImage', imagesData.mobile[i]);
+  }
+
+  // Desktop rasmlarni qo‘shish
+  for (let i = 0; i < imagesData.desktop.length; i++) {
+    formData.append('desktopImage', imagesData.desktop[i]);
+  }
 
     formData.append('karuselDto', JSON.stringify(karuselSlide));
     try {

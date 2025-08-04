@@ -4,6 +4,7 @@ import { Box, Button, Card, Grid, Divider } from "@mui/material";
 import AddSale from "../../components/SalePage/AddSale";
 import SaleList from "../../components/SalePage/SaleList";
 import AddCupon from "../../components/SalePage/AddCupon";
+import CustomerCupon from "../../components/SalePage/CustomerCupon";
 
 function SalePage() {
   const [selectedIndex, setSelectedIndex] = useState(1);
@@ -14,7 +15,7 @@ function SalePage() {
       <Box sx={{ marginTop: 8 }}>
         <Box>
           <Grid container spacing={1}>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 variant={selectedIndex == 1 ? "contained" : "outlined"}
                 size="small"
@@ -24,7 +25,7 @@ function SalePage() {
                 Yangi chegirma qo'shish
               </Button>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 variant={selectedIndex == 2 ? "contained" : "outlined"}
                 size="small"
@@ -34,7 +35,7 @@ function SalePage() {
                 Mavjud chegirmalar
               </Button>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 variant={selectedIndex == 3 ? "contained" : "outlined"}
                 size="small"
@@ -42,6 +43,16 @@ function SalePage() {
                 onClick={() => setSelectedIndex(3)}
               >
                 Kuponlar
+              </Button>
+            </Grid>
+            <Grid item xs={3}>
+              <Button
+                variant={selectedIndex == 4 ? "contained" : "outlined"}
+                size="small"
+                fullWidth
+                onClick={() => setSelectedIndex(4)}
+              >
+                Mijozlar uchun Kuponlar
               </Button>
             </Grid>
           </Grid>
@@ -59,7 +70,10 @@ function SalePage() {
           />
         </Box>
         <Box sx={{ display: selectedIndex == 3 ? "block" : "none" }}>
-          <AddCupon/>
+          <AddCupon />
+        </Box>
+        <Box sx={{ display: selectedIndex == 4 ? "block" : "none" }}>
+          <CustomerCupon />
         </Box>
       </Box>
     </MainLayout>

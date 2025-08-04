@@ -95,6 +95,8 @@ const AddCupon = () => {
       fetchData();
     }
   };
+  console.log(list);
+
   return (
     <div className="space-y-3">
       <Box display={"flex"} justifyContent={"end"}>

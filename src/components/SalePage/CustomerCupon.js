@@ -26,6 +26,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { getAllCupons, getCuponNames } from "../../api/Cupon";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const CustomerCupon = () => {
   const [searchPhone, setSearchPhone] = useState("+998");
@@ -63,8 +64,8 @@ const CustomerCupon = () => {
       const dataToPost = {
         customerId: res.data.id,
         couponName: form.couponName,
-        // expireDate: form.expireDate || null,
-        expireDate: null,
+        expireDate: form.expireDate || null,
+        // expireDate: null,
         isActiveCustomerCoupon: form.isActiveCustomerCoupon,
       };
       console.log(dataToPost);
@@ -135,11 +136,31 @@ const CustomerCupon = () => {
         </div>
       </div>
 
+      <div className="border shadow-md p-3 flex justify-between gap-3 items-center mt-5">
+        <div className="">
+          {customerCupons[0]?.customer?.image?.url ? (
+            <img
+              className="w-20 h-20"
+              src={customerCupons[0]?.customer?.image?.url}
+            />
+          ) : (
+            <div className="border flex justify-center items-center w-20 h-20">
+              <AccountCircleIcon />
+            </div>
+          )}
+        </div>
+        <p>{customerCupons[0]?.customer?.fullName}</p>
+        <p>{customerCupons[0]?.customer?.phoneNumber}</p>
+        <p>{customerCupons[0]?.customer?.birthDate}</p>
+        <p>{customerCupons[0]?.customer?.status?.statusName}</p>
+      </div>
+
       <TableContainer component={Paper} sx={{ mt: 3 }}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Kupon nomi</TableCell>
+              <TableCell>Kupon narxi</TableCell>
               <TableCell>Holati</TableCell>
               <TableCell>Muddati</TableCell>
             </TableRow>
@@ -147,9 +168,12 @@ const CustomerCupon = () => {
           <TableBody>
             {customerCupons?.map((coupon, index) => (
               <TableRow key={index}>
-                <TableCell>{coupon.couponName}</TableCell>
+                <TableCell>{coupon.coupon.name}</TableCell>
                 <TableCell>
-                  {coupon.isActiveCustomerCoupon ? "Aktiv" : "Noaktiv"}
+                  {coupon.coupon.credit.toLocaleString("uz-UZ") + " so'm"}
+                </TableCell>
+                <TableCell>
+                  {coupon.coupon.active ? "Aktiv" : "Noaktiv"}
                 </TableCell>
                 <TableCell>{coupon.expireDate || "Belgilanmagan"}</TableCell>
               </TableRow>
